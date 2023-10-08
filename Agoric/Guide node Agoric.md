@@ -57,7 +57,7 @@ c/
 
 5/ Create a validator:
 
-    aurad tx staking create-validator \
+    agd tx staking create-validator \
     --amount=1000000ubld \
     --pubkey=$(agd tendermint show-validator) \
     --moniker="Moniker" \
