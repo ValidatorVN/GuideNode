@@ -1,0 +1,145 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;30m"
+echo "██╗   ██╗██╗     ███████╗██████╗ "
+echo "██║   ██║██║     ██╔════╝██╔══██╗"
+echo "██║   ██║██║     █████╗  ██████╔╝"
+echo "██║   ██║██║     ██╔══╝  ██╔══██╗"
+echo "╚██████╔╝███████║███████╔██║  ██║"
+echo " ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝"
+echo -e "\e[0m"
+
+
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "******************************************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "******************************************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "******************************************"
+read Validator_Name
+echo "******************************************"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="xstaxy-1" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.20.5" && \
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
+sudo rm -rf /usr/local/go && \
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
+rm "go$ver.linux-amd64.tar.gz" && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
+source $HOME/.bash_profile && \
+go version
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd || return
+rm -rf entangle-blockchain
+git clone https://github.com/Entangle-Protocol/entangle-blockchain.git
+cd entangle-blockchain || return
+git checkout ce539b81e760a3e75acd7fde9038c21fbe7b7baa
+make install
+entangled version
+
+entangled init $Validator_Name --chain-id $CHAIN_ID
+
+wget -O $HOME/.entangled/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Entangle/genesis.json"
+wget -O $HOME/.entangled/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Entangle/addrbook.json"
+
+echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
+
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025aNGL\"/;" ~/.entangled/config/app.toml
+external_address=$(wget -qO- eth0.me)
+sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.entangled/config/config.toml
+peers=""
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.entangled/config/config.toml
+seeds="164c358ecd1a37dfe61ca1e4b30e3c7becb555a6@rpc-t.entangle.nodestake.top:666"
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.entangled/config/config.toml
+sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.entangled/config/config.toml
+sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.entangled/config/config.toml
+
+# pruning and indexer
+pruning="custom" && \
+pruning_keep_recent="100" && \
+pruning_keep_every="0" && \
+pruning_interval="10" && \
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.entangled/config/app.toml && \
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.entangled/config/app.toml && \
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.entangled/config/app.toml && \
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.entangled/config/app.toml
+
+sudo tee /etc/systemd/system/entangled.service > /dev/null <<EOF
+[Unit]
+Description=entangled node
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which entangled) start
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+entangled tendermint unsafe-reset-all --home $HOME/.entangled --keep-addr-book
+
+SNAP_NAME=$(curl -s https://ss-t.entangle.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+curl -o - -L https://ss-t.entangle.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.entangled
+
+# start service
+sudo systemctl daemon-reload
+sudo systemctl enable entangled
+sudo systemctl restart entangled
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u entangled -f --no-hostname -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s entangled status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
+
+break
+;;
+"Delete Node")
+sudo systemctl stop entangled && \
+sudo systemctl disable entangled && \
+rm /etc/systemd/system/entangled.service && \
+sudo systemctl daemon-reload && \
+cd $HOME && \
+rm -rf .entangled && \
+rm -rf entangled entangle && \
+rm -rf $(which entangled)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
