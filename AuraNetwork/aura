@@ -56,8 +56,8 @@ make install
 
 aurad init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O $HOME/.aura/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/edit/main/AuraNetwork/genesis.json"
-wget -O $HOME/.aura/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/edit/main/AuraNetwork/addrbook.json"
+wget -O $HOME/.aura/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/AuraNetwork/genesis.json"
+wget -O $HOME/.aura/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/AuraNetwork/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
