@@ -19,11 +19,13 @@ do
 case $opt in
 
 "Install Node")
-echo "*********************"
+echo "***************************************************************"
 echo -e "\e[1m\e[35m		Lets's begin\e[0m"
 echo "*********************"
 echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "***************************************************************"
 read Validator_Name
+echo "***************************************************************"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
 echo export CHAIN_ID="xstaxy-1" >> $HOME/.bash_profile
 source ~/.bash_profile
@@ -96,6 +98,11 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
+
+aurad tendermint unsafe-reset-all --home $HOME/.aura --keep-addr-book
+
+SNAP_NAME=$(curl -s https://snapshots.nodejumper.io/aura/info.json | jq -r .fileName)
+curl "https://snapshots.nodejumper.io/aura/${SNAP_NAME}" | lz4 -dc - | tar -xf - -C "$HOME/.aura"
 
 # start service
 sudo systemctl daemon-reload
