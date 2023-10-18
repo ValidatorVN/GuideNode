@@ -35,7 +35,7 @@ sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq bui
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
-ver="1.19" && \
+ver="1.20.1" && \
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
 sudo rm -rf /usr/local/go && \
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
@@ -46,11 +46,13 @@ go version
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
-cd $HOME
+cd || return
+rm -rf aura
 git clone https://github.com/aura-nw/aura
-cd aura
+cd aura || return
 git checkout aura_v0.4.5
 make install
+aurad version # main_v0.4.5
 
 aurad init $Validator_Name --chain-id $CHAIN_ID
 
@@ -59,7 +61,7 @@ wget -O $HOME/.aura/config/addrbook.json "https://raw.githubusercontent.com/Node
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.001uaura\"/;" ~/.aura/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025uaura\"/;" ~/.aura/config/app.toml
 external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.aura/config/config.toml
 peers="ebc272824924ea1a27ea3183dd0b9ba713494f83@auranetwork-mainnet-peer.autostake.com:26966,edbd221ceecf4e0234fb60d617a025c6b0e56bf0@178.250.154.15:36656,b91ee5c72905bc49beed2720bb882c923c68fbc9@80.92.206.66:26656"
@@ -68,7 +70,6 @@ seeds="ebc272824924ea1a27ea3183dd0b9ba713494f83@auranetwork-mainnet-peer.autosta
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.aura/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.aura/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.aura/config/config.toml
-
 
 # pruning and indexer
 pruning="custom" && \
@@ -79,7 +80,6 @@ sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.aura/config/app.toml 
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.aura/config/app.toml && \
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.aura/config/app.toml && \
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.aura/config/app.toml
-
 
 sudo tee /etc/systemd/system/aurad.service > /dev/null <<EOF
 [Unit]
@@ -106,8 +106,7 @@ echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
 echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u aurad -f --no-hostname -o cat\e[0m'
 echo -e "To check sync status: \e[1m\e[35mcurl -s aurad status 2>&1 | jq .SyncInfo.catching_up\e[0m"
-break
-;;
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
 
 "Delete Node")
 sudo systemctl stop aurad && \
@@ -119,8 +118,6 @@ rm -rf .aura && \
 rm -rf aura && \
 rm -rf $(which aurad)
 
-break
-;;
 "Exit")
 exit
 esac
