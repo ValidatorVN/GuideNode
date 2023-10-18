@@ -23,9 +23,7 @@ echo "*********************"
 echo -e "\e[1m\e[35m		Lets's begin\e[0m"
 echo "*********************"
 echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
-echo "ℕ𝕠𝕕𝕖 & 𝕍𝕒𝕝𝕚𝕕𝕒𝕥𝕠𝕣 𝕍ℕ"
 read Validator_Name
-echo "ℕ𝕠𝕕𝕖 & 𝕍𝕒𝕝𝕚𝕕𝕒𝕥𝕠𝕣 𝕍ℕ"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
 echo export CHAIN_ID="xstaxy-1" >> $HOME/.bash_profile
 source ~/.bash_profile
