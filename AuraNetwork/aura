@@ -19,13 +19,13 @@ do
 case $opt in
 
 "Install Node")
-echo "***************************************************************"
+echo "******************************************"
 echo -e "\e[1m\e[35m		Lets's begin\e[0m"
-echo "*********************"
+echo "******************************************"
 echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
-echo "***************************************************************"
+echo "******************************************"
 read Validator_Name
-echo "***************************************************************"
+echo "******************************************"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
 echo export CHAIN_ID="xstaxy-1" >> $HOME/.bash_profile
 source ~/.bash_profile
