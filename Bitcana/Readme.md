@@ -38,7 +38,7 @@ Create Validator
     --commission-max-rate "0.20" \
     --commission-max-change-rate "0.01" \
     --min-self-delegation "1" \
-    --gas-prices "0ubcna" \
+    --gas-prices "0.001ubcna" \
     --gas "auto" \
     --gas-adjustment "1.5" \
     --from wallet \
