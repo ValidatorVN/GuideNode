@@ -6,37 +6,37 @@
 
 Add new key
 
-        entangled keys add wallet
+    entangled keys add wallet
 
 Recover existing key
 
-        entangled keys add wallet --recover
+    entangled keys add wallet --recover
 
 List All key
 
-        entangled keys list
+    entangled keys list
 
 Delete key
 
-        entangled keys delete wallet
+    entangled keys delete wallet
 
 Query Wallet Balance
 
-        entangled q bank balances $(entangled keys show wallet -a)
+    entangled q bank balances $(entangled keys show wallet -a)
 
 Create Validator
 
-        entangled tx staking create-validator \
-        --amount "1000000000000000000aNGL" \
-        --pubkey $(entangled tendermint show-validator) \
-        --moniker "MONIKER" \
-        --chain-id entangle_33133-1 \
-        --commission-rate "0.05" \
-        --commission-max-rate "0.20" \
-        --commission-max-change-rate "0.01" \
-        --min-self-delegation "1" \
-        --gas-prices "10aNGL" \
-        --gas "500000" \
-        --gas-adjustment "1.5" \
-        --from wallet \
-        -y
+    entangled tx staking create-validator \
+    --amount "1000000000000000000aNGL" \
+    --pubkey $(entangled tendermint show-validator) \
+    --moniker "MONIKER" \
+    --chain-id entangle_33133-1 \
+    --commission-rate "0.05" \
+    --commission-max-rate "0.20" \
+    --commission-max-change-rate "0.01" \
+    --min-self-delegation "1" \
+    --gas-prices "10aNGL" \
+    --gas "500000" \
+    --gas-adjustment "1.5" \
+    --from wallet \
+    -y
