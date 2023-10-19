@@ -8,6 +8,10 @@ Add new key
 
     entangled keys add wallet
 
+Export private key
+
+    entangled keys unsafe-export-eth-key wallet
+
 Recover existing key
 
     entangled keys add wallet --recover
