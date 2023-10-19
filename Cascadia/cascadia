@@ -122,7 +122,7 @@ sudo systemctl restart cascadiad
 echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
 echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u cascadiad -f --no-hostname -o cat\e[0m'
-echo -e "To check sync status: \e[1m\e[35mcurl -s aurad status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e "To check sync status: \e[1m\e[35mcurl -s cascadiad status 2>&1 | jq .SyncInfo.catching_up\e[0m"
 echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
 echo -e "Save private key validator \e[1m\e[35mcat $HOME/.cascadiad/config/priv_validator_key.json\e[0m"
 
