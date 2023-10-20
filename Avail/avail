@@ -68,13 +68,11 @@ sudo tee /etc/systemd/system/availd.service > /dev/null <<EOF
 Description=Avail Validator
 After=network.target
 StartLimitIntervalSec=0
-
 [Service] 
 User=root 
 ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain kate --name "${Validator_Name}"
 Restart=always 
 RestartSec=3
-
 [Install] 
 WantedBy=multi-user.target
 EOF
