@@ -1,6 +1,6 @@
 # Auto Install
 
-    wget -O aura https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/AuraNetwork/aura && chmod +x aura && ./aura
+    wget -O dym https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Dymension/dym && chmod +x aura && ./dym
 
 # Command
 
