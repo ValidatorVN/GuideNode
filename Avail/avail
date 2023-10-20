@@ -63,17 +63,17 @@ cargo run --locked --release -- --chain kate -d ./output
 
 echo -e "              \e[1m\e[32m3. Create SystemD--> \e[0m" && sleep 1
 
-sudo tee /etc/systemd/system/availd.service > /dev/null <<EOF
-[Unit] 
-Description=Avail Validator
-After=network.target
-StartLimitIntervalSec=0
-[Service] 
-User=root 
+sudo tee /etc/systemd/system/availd.service > /dev/null << EOF
+[Unit]
+Description=Avail Node
+After=network-online.target
+[Service]
+User=$USER
 ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain kate --name "${Validator_Name}"
-Restart=always 
-RestartSec=3
-[Install] 
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=10000
+[Install]
 WantedBy=multi-user.target
 EOF
 
