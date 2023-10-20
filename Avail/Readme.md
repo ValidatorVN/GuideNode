@@ -1,6 +1,6 @@
 # Auto Install
 
-    wget -O avail https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/AuraNetwork/avail && chmod +x avail && ./avail
+    wget -O avail https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Avail/avail && chmod +x avail && ./avail
 
 # Command
 
