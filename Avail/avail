@@ -1,0 +1,109 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;30m"
+echo "██╗   ██╗██╗     ███████╗██████╗ "
+echo "██║   ██║██║     ██╔════╝██╔══██╗"
+echo "██║   ██║██║     █████╗  ██████╔╝"
+echo "██║   ██║██║     ██╔══╝  ██╔══██╗"
+echo "╚██████╔╝███████║███████╔██║  ██║"
+echo " ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝"
+echo -e "\e[0m"
+
+
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "******************************************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "******************************************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "******************************************"
+read Validator_Name
+echo "******************************************"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt-get update
+sudo apt install build-essential
+sudo apt install --assume-yes git clang curl libssl-dev protobuf-compiler
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+rustup default stable
+rustup update
+rustup update nightly
+rustup target add wasm32-unknown-unknown --toolchain nightly
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+
+#INSTALL
+cd || return
+rm -rf avail
+git clone https://github.com/availproject/avail.git
+cd avail || return
+mkdir -p output
+mkdir -p data
+cargo run --locked --release -- --chain kate -d ./output
+
+echo -e "              \e[1m\e[32m3. Create SystemD--> \e[0m" && sleep 1
+
+sudo tee /etc/systemd/system/availd.service > /dev/null <<EOF
+[Unit] 
+Description=Avail Validator
+After=network.target
+StartLimitIntervalSec=0
+
+[Service] 
+User=root 
+ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain kate --name "${Validator_Name}"
+Restart=always 
+RestartSec=3
+
+[Install] 
+WantedBy=multi-user.target
+
+# start service
+sudo systemctl daemon-reload
+sudo systemctl enable availd
+sudo systemctl restart availd
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u availd -f --no-hostname -o cat\e[0m'
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
+
+break
+;;
+"Delete Node")
+sudo systemctl stop availd && \
+sudo systemctl disable availd && \
+rm /etc/systemd/system/availd.service && \
+sudo systemctl daemon-reload && \
+cd $HOME && \
+rm -rf .avail && \
+rm -rf avail && \
+rm -rf $(which availd)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
