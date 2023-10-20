@@ -1,0 +1,144 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;30m"
+echo "██╗   ██╗██╗     ███████╗██████╗ "
+echo "██║   ██║██║     ██╔════╝██╔══██╗"
+echo "██║   ██║██║     █████╗  ██████╔╝"
+echo "██║   ██║██║     ██╔══╝  ██╔══██╗"
+echo "╚██████╔╝███████║███████╔██║  ██║"
+echo " ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝"
+echo -e "\e[0m"
+
+
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "******************************************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "******************************************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "******************************************"
+read Validator_Name
+echo "******************************************"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="fetchhub-4" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.21.1" && \
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
+sudo rm -rf /usr/local/go && \
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
+rm "go$ver.linux-amd64.tar.gz" && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
+source $HOME/.bash_profile && \
+go version
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd || return
+rm -rf fetch
+git clone https://github.com/fetchai/fetchd fetch
+cd fetch || return
+git checkout v0.10.7
+make install
+fetch version
+
+aurad init $Validator_Name --chain-id $CHAIN_ID
+
+wget -O $HOME/.aura/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Fetch.ai/genesis.json"
+wget -O $HOME/.aura/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Fetch.ai/addrbook.json"
+
+echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
+
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025afet\"/;" ~/.fetchd/config/app.toml
+external_address=$(wget -qO- eth0.me)
+sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.fetchd/config/config.toml
+peers="c1a24d8d8c5522200bf3229c917e094fb312a7eb@65.108.131.174:15256,ebc272824924ea1a27ea3183dd0b9ba713494f83@fetchhub-mainnet-peer.autostake.com:27266"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.fetchd/config/config.toml
+seeds="ebc272824924ea1a27ea3183dd0b9ba713494f83@fetchhub-mainnet-seed.autostake.com:27266"
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.fetchd/config/config.toml
+sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.fetchd/config/config.toml
+sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.fetchd/config/config.toml
+
+# pruning and indexer
+pruning="custom" && \
+pruning_keep_recent="100" && \
+pruning_keep_every="0" && \
+pruning_interval="10" && \
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.fetchd/config/app.toml && \
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.fetchd/config/app.toml && \
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.fetchd/config/app.toml && \
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.fetchd/config/app.toml
+
+sudo tee /etc/systemd/system/fetchd.service > /dev/null <<EOF
+[Unit]
+Description=fetchd node
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which fetchd) start
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+fetchd tendermint unsafe-reset-all --home $HOME/.fetchd --keep-addr-book
+
+curl -o - -L https://snapshots.polkachu.com/snapshots/fetch/fetch_13412171.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.fetchd
+
+# start service
+sudo systemctl daemon-reload
+sudo systemctl enable fetchd
+sudo systemctl restart fetchd
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u fetchd -f --no-hostname -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s fetchd status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
+
+break
+;;
+"Delete Node")
+sudo systemctl stop fetchd && \
+sudo systemctl disable fetchd && \
+rm /etc/systemd/system/fetchd.service && \
+sudo systemctl daemon-reload && \
+cd $HOME && \
+rm -rf .fetchd && \
+rm -rf fetch && \
+rm -rf $(which fetchd)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
