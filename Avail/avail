@@ -12,6 +12,9 @@ echo "██║   ██║██║     █████╗  ██████�
 echo "██║   ██║██║     ██╔══╝  ██╔══██╗"
 echo "╚██████╔╝███████║███████╔██║  ██║"
 echo " ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝"
+echo "Guide: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/RunnodeVietNamese"
+echo "Github: https://github.com/NodeValidatorVN"
 echo -e "\e[0m"
 
 
@@ -50,7 +53,7 @@ rustup update
 rustup update nightly
 rustup target add wasm32-unknown-unknown --toolchain nightly
 
-echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+echo -e "              \e[1m\e[32m2. Downloading and building binaries--> \e[0m" && sleep 1
 
 #INSTALL
 cd || return
