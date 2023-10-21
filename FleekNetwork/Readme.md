@@ -1,3 +1,7 @@
+# Source
+
+    https://blog.fleek.network/post/fleek-network-testnet-phase-1/
+
 # Auto Install
 
     curl https://get.fleek.network | bash
