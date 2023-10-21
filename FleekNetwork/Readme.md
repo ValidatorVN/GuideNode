@@ -24,3 +24,7 @@ Stop
 Backup key
 
     cd $HOME/.lightning/keystore
+
+Show Node key & Consensus
+
+    lgtn keys show
