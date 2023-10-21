@@ -1,0 +1,162 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;33m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗███████╗██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   █████╗  ██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██╔══╝  ██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ███████╔██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝"
+echo "Guide: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/RunnodeVietNamese"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "******************************************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "******************************************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "******************************************"
+read Validator_Name
+echo "******************************************"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="astra_11110-1" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.19.1" && \
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
+sudo rm -rf /usr/local/go && \
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
+rm "go$ver.linux-amd64.tar.gz" && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
+source $HOME/.bash_profile && \
+go version
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd || return
+rm -rf astra
+git clone https://github.com/AstraProtocol/astra.git
+cd astra || return
+git checkout v3.1.0
+make install
+astrad version
+
+astrad init $Validator_Name --chain-id $CHAIN_ID
+
+wget -O $HOME/.astrad/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/AstraProtocol/genesis.json"
+wget -O $HOME/.astrad/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/AstraProtocol/addrbook.json"
+
+echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
+
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"1000000000aastra\"/;" ~/.astrad/config/app.toml
+external_address=$(wget -qO- eth0.me)
+sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.astrad/config/config.toml
+peers=""
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.astrad/config/config.toml
+seeds="665532046ce09bb9c364826cc6b589ca89eddea2@34.87.148.96:26656,a99a441714f2d11c69b5746e4ff6ad64a9fa0ad7@34.92.235.232:26656"
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.astrad/config/config.toml
+sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.astrad/config/config.toml
+sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.astrad/config/config.toml
+
+# pruning and indexer
+pruning="custom" && \
+pruning_keep_recent="100" && \
+pruning_keep_every="0" && \
+pruning_interval="10" && \
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.aura/config/app.toml && \
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.astrad/config/app.toml && \
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.astrad/config/app.toml && \
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.astrad/config/app.toml
+
+sudo tee /etc/systemd/system/astrad.service > /dev/null <<EOF
+[Unit]
+Description=astrad node
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which astrad) start
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+astrad tendermint unsafe-reset-all --home $HOME/.astrad --keep-addr-book
+
+INTERVAL=20000
+# GET TRUST HASH AND TRUST HEIGHT
+
+LATEST_HEIGHT=$(curl -s https://cosmos.astranaut.io:26657/block | jq -r .result.block.header.height);
+BLOCK_HEIGHT=$(($LATEST_HEIGHT-$INTERVAL))
+TRUST_HASH=$(curl -s "https://cosmos.astranaut.io:26657/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+# TELL USER WHAT WE ARE DOING
+echo "TRUST HEIGHT: $BLOCK_HEIGHT"
+echo "TRUST HASH: $TRUST_HASH"
+
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"https://cosmos.astranaut.io:26657,https://cosmos.astranaut.io:26657\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.astrad/config/config.toml
+
+# start service
+sudo systemctl daemon-reload
+sudo systemctl enable astrad
+sudo systemctl restart astrad
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u astrad -f --no-hostname -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s astrad status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
+
+break
+;;
+"Delete Node")
+sudo systemctl stop astrad && \
+sudo systemctl disable astrad && \
+rm /etc/systemd/system/astrad.service && \
+sudo systemctl daemon-reload && \
+cd $HOME && \
+rm -rf .astrad && \
+rm -rf astra && \
+rm -rf $(which astrad)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
