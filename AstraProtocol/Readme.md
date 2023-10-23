@@ -39,3 +39,9 @@ Create New Validator
     --fees 40000000000000000aastra \
     --gas=auto \
     -y 
+
+Withdraw Commission And Rewards From Your Validator
+
+    astrad tx distribution withdraw-rewards $(astrad keys show wallet --bech val -a) --commission --from wallet --chain-id astra_11110-1 --fees 40000000000000000aastra --gas=auto -y 
+
+    astrad tx staking delegate $(astrad keys show wallet --bech val -a) 40000000000000000aastra --from wallet --chain-id astra_11110-1 --fees 40000000000000000aastra --gas=auto -y
