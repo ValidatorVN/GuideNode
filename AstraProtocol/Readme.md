@@ -36,14 +36,14 @@ Create New Validator
     --commission-max-change-rate=0.01 \
     --min-self-delegation=1 \
     --from=wallet \
-    --fees 40000000000000000aastra \
+    --fees 22000000000000000aastra \
     --gas=auto \
     -y 
 
 Withdraw Commission And Rewards From Your Validator
 
-    astrad tx distribution withdraw-rewards $(astrad keys show wallet --bech val -a) --commission --from wallet --chain-id astra_11110-1 --fees 40000000000000000aastra --gas=auto -y 
+    astrad tx distribution withdraw-rewards $(astrad keys show wallet --bech val -a) --commission --from wallet --chain-id astra_11110-1 --fees 22000000000000000aastra --gas=auto -y 
 
 Delegate to your self
 
-    astrad tx staking delegate $(astrad keys show wallet --bech val -a) 40000000000000000aastra --from wallet --chain-id astra_11110-1 --fees 40000000000000000aastra --gas=auto -y
+    astrad tx staking delegate $(astrad keys show wallet --bech val -a) aastra --from wallet --chain-id astra_11110-1 --fees 22000000000000000aastra --gas=auto -y
