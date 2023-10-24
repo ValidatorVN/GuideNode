@@ -5,7 +5,7 @@
 
 # Auto Install
 
-    wget -O mantra https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/AuraNetwork/mantra && chmod +x mantra && ./mantra
+    wget -O mantra https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/mantra && chmod +x mantra && ./mantra
 
 1/ Manual Installation
 
