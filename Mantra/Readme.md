@@ -3,6 +3,10 @@
     https://twitter.com/MANTRA_Chain
     https://discord.gg/gfenCRGT
 
+# Auto Install
+
+    wget -O mantra https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/AuraNetwork/mantra && chmod +x mantra && ./mantra
+
 1/ Manual Installation
 
     sudo apt update && sudo apt upgrade -y
