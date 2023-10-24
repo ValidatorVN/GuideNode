@@ -3,6 +3,7 @@
 1/ Register Account:
 
     https://bit.ly/DigitalOcean200
+    https://bit.ly/HetznerVPS
 
 2/ Rent a VPS with the same configuration as the project requires.
 
