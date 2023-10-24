@@ -71,8 +71,8 @@ mantrachaind version
 
 mantrachaind init $Validator_Name --chain-id $CHAIN_ID
 
-curl -Ls https://ss-t.mantra.nodestake.top/genesis.json > $HOME/.mantrachain/config/genesis.json 
-curl -Ls https://ss-t.mantra.nodestake.top/addrbook.json > $HOME/.mantrachain/config/addrbook.json
+wget -O $HOME/.mantrachain/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/genesis.json"
+wget -O $HOME/.mantrachain/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
