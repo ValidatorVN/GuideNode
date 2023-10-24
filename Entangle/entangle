@@ -78,7 +78,7 @@ echo -e "                     \e[1m\e[32m4. Node optimization and improvement-->
 sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025aNGL\"/;" ~/.entangled/config/app.toml
 external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.entangled/config/config.toml
-peers=""
+peers="dd4606ab0717b3255358406a62321b638e27b010@24.199.98.122:656,db0c275586b8fa5ac5a11538436d4994f92fb410@57.128.84.159:26656,7511b84e5de3ad357cd6b5c8c7fe0ee8dfa7197b@65.108.238.74:12356,8c1bcd6b38270c7026c102ee7860b1a949eb268a@65.109.101.53:19256,8f574a466c8c8f9d8d15bed98829364d79253a93@170.64.181.221:22656"
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.entangled/config/config.toml
 seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.entangled/config/config.toml
