@@ -14,6 +14,10 @@ Add new key
 
     mantrachaind keys add wallet
 
+Faucet Mantra
+
+    https://faucet.testnet.mantrachain.io/
+
 Recover existing key
 
     mantrachaind keys add wallet --recover
