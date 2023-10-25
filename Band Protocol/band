@@ -1,0 +1,145 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;33m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗███████╗██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   █████╗  ██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██╔══╝  ██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ███████╔██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝"
+echo "Guide: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/RunnodeVietNamese"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "******************************************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "******************************************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "******************************************"
+read Validator_Name
+echo "******************************************"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="laozi-mainnet" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.20.5" && \
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
+sudo rm -rf /usr/local/go && \
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
+rm "go$ver.linux-amd64.tar.gz" && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
+source $HOME/.bash_profile && \
+go version
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd $HOME
+rm -rf band
+git clone https://github.com/bandprotocol/chain band
+cd band
+git checkout v2.5.3
+make install
+
+bandd init $Validator_Name --chain-id $CHAIN_ID
+
+wget -O $HOME/.aura/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/BandProtocol/genesis.json"
+wget -O $HOME/.aura/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/BandProtocol/addrbook.json"
+
+echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
+
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025uband\"/;" ~/.band/config/app.toml
+external_address=$(wget -qO- eth0.me)
+sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.band/config/config.toml
+peers=""
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.band/config/config.toml
+seeds=""
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.band/config/config.toml
+
+# pruning and indexer
+pruning="custom" && \
+pruning_keep_recent="100" && \
+pruning_keep_every="0" && \
+pruning_interval="10" && \
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.band/config/app.toml && \
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.band/config/app.toml && \
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.band/config/app.toml && \
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.band/config/app.toml
+
+sudo tee /etc/systemd/system/bandd.service > /dev/null <<EOF
+[Unit]
+Description=band node
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which bandd) start
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+bandd tendermint unsafe-reset-all --home $HOME/.band --keep-addr-book
+
+curl -L https://snapshots.indonode.net/band/band-snapshot.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.band
+[[ -f $HOME/.band/data/upgrade-info.json ]] && cp $HOME/.band/data/upgrade-info.json $HOME/.band/cosmovisor/genesis/upgrade-info.json
+
+# start service
+sudo systemctl daemon-reload
+sudo systemctl enable bandd
+sudo systemctl restart bandd
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u bandd -f --no-hostname -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s bandd status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
+
+break
+;;
+"Delete Node")
+sudo systemctl stop bandd && \
+sudo systemctl disable bandd && \
+rm /etc/systemd/system/bandd.service && \
+sudo systemctl daemon-reload && \
+cd $HOME && \
+rm -rf .band && \
+rm -rf band && \
+rm -rf $(which bandd)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
