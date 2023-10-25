@@ -72,7 +72,7 @@ Description=Avail Node
 After=network-online.target
 [Service]
 User=$USER
-ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain kate --name "${Validator_Name}"
+ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain kate --name ${Validator_Name}
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=10000
