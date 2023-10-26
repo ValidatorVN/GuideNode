@@ -4,6 +4,13 @@
 
 # Command
 
+SystemD
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable availd
+    sudo systemctl start availd
+
+
 Check logs:
 
     sudo journalctl -u availd -f -o cat
