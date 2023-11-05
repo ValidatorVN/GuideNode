@@ -1,0 +1,147 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;33m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗███████╗██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   █████╗  ██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██╔══╝  ██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ███████╔██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝"
+echo "Guide: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/RunnodeVietNamese"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "******************************************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "******************************************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "******************************************"
+read Validator_Name
+echo "******************************************"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="dydx-mainnet-1" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.21.3" && \
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
+sudo rm -rf /usr/local/go && \
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
+rm "go$ver.linux-amd64.tar.gz" && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
+source $HOME/.bash_profile && \
+go version
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd || return
+rm -rf dydx-chain
+git clone https://github.com/dydxprotocol/v4-chain.git
+cd protocol || return
+git checkout protocol/v1.0.0
+make install
+make build
+
+dydxprotocold init $Validator_Name --chain-id $CHAIN_ID
+
+curl -Ls https://snapshots.kjnodes.com/dydx/genesis.json > $HOME/.dydxprotocol/config/genesis.json
+curl -Ls https://snapshots.kjnodes.com/dydx/addrbook.json > $HOME/.dydxprotocol/config/addrbook.json
+
+echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
+
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"12500000000adydx,0.025ibc\"/;" ~/.dydxprotocold/config/app.toml
+external_address=$(wget -qO- eth0.me)
+peers="0fb21381f73ec668d269d01bc334be2e5eee419e@109.123.230.6:2000,b82821cc8716bbc649c0d76165028a1c3e21b6eb@3.123.232.15:26656,f039faa940268b4f2a46a19a651c3d8d7bff5ee6@161.35.70.35:26656,c4c0555714c1130815c73770689f200915f4870e@23.106.231.92:2000,4e1c2471efb89239fb04a4b75f9f87177fd91d00@169.155.46.216:26656,7775502cb57e5df1275b1ac1b574b7060c07b6b0@65.21.72.174:26656,f996c9795ccd353174742e2ee111944c5772f8c7@116.202.208.214:2690,c9eda446ab47195fac8a7ccd34c2fe14d430ca99@125.131.208.69:26656,d9bfa29e0cf9c4ce0cc9c26d98e5d97228f93b0b@65.108.233.103:17056"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.dydxprotocol/config/config.toml
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.dydxprotocold/config/config.toml
+seeds="400f3d9e30b69e78a7fb891f60d76fa3c73f0ecc@dydx.rpc.kjnodes.com:17059"
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.dydxprotocold/config/config.toml
+sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.dydxprotocold/config/config.toml
+sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.dydxprotocold/config/config.toml
+
+# pruning and indexer
+pruning="custom" && \
+pruning_keep_recent="100" && \
+pruning_keep_every="0" && \
+pruning_interval="10" && \
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.dydxprotocold/config/app.toml && \
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.dydxprotocold/config/app.toml && \
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.dydxprotocold/config/app.toml && \
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.dydxprotocold/config/app.toml
+
+sudo tee /etc/systemd/system/dydxprotocold.service > /dev/null <<EOF
+[Unit]
+Description=dydxprotocold node
+After=network-online.target
+
+[Service]
+User=$USER
+ExecStart=$(which dydxprotocold) start
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=10000
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+aurad tendermint unsafe-reset-all --home $HOME/.dydxprotocold --keep-addr-book
+
+curl -L https://snapshots.kjnodes.com/dydx/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.dydxprotocol
+
+# start service
+sudo systemctl daemon-reload
+sudo systemctl enable dydxprotocold
+sudo systemctl restart dydxprotocold
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u dydxprotocold -f --no-hostname -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s dydxprotocold status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
+
+break
+;;
+"Delete Node")
+sudo systemctl stop dydxprotocold && \
+sudo systemctl disable dydxprotocold && \
+rm /etc/systemd/system/dydxprotocold.service && \
+sudo systemctl daemon-reload && \
+cd $HOME && \
+rm -rf .dydxprotocold && \
+rm -rf dydx-chain && \
+rm -rf $(which dydxprotocold)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
