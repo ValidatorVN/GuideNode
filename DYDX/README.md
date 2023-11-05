@@ -7,5 +7,5 @@ The minimum recommended specs for running a node is the following:
 
 # Auto Install
 
-    Wait public
+    wget -O dydx https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/DYDX/dydx && chmod +x dydx && ./dydx
 
