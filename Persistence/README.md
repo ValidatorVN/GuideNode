@@ -21,7 +21,7 @@ Delete Key
 
 Query Wallet Balance
 
-    persistenceCore q bank balances $(aurad keys show wallet -a)
+    persistenceCore q bank balances $(persistenceCore keys show wallet -a)
 
 Create New Validator
 
