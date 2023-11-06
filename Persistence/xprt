@@ -82,8 +82,6 @@ peers=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.aura/config/config.toml
 seeds=""
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.persistenceCore/config/config.toml
-sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.persistenceCore/config/config.toml
-sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.persistenceCore/config/config.toml
 
 # pruning and indexer
 pruning="custom" && \
@@ -125,7 +123,7 @@ sudo systemctl restart persistenceCore
 echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
 echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u persistenceCore -f --no-hostname -o cat\e[0m'
-echo -e "To check sync status: \e[1m\e[35mcurl -s persistenceCore status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e "To check sync status: \e[1m\e[35mpersistenceCore status 2>&1 | jq .SyncInfo.catching_up\e[0m"
 echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
 
 break
