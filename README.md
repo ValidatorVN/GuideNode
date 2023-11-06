@@ -16,6 +16,10 @@
 
     ssh root@IP-VPS
 
+# Video tutorial:
+
+    https://www.youtube.com/watch?v=Ne3L1uXETPs
+
 4/ Use Auto-Install guide.
 
     https://github.com/NodeValidatorVN/GuideNode
