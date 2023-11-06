@@ -111,10 +111,11 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 EOF
 
-aurad tendermint unsafe-reset-all --home $HOME/.persistenceCore --keep-addr-book
+persistenceCore tendermint unsafe-reset-all --home $HOME/.persistenceCore --keep-addr-book
 
 cd .persistenceCore
 wget -O persistence_snapshot.tar.gz https://snapshot.paranorm.pro/persistence/persistence_snapshot.tar.gz
+tar zxf persistence_snapshot.tar.gz
 
 # start service
 sudo systemctl daemon-reload
