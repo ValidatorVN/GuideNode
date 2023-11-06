@@ -1,7 +1,7 @@
 # Auto Install
 
-    Wait an announcement from admin imLuuTong
-
+    wget -O tia https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Celestia/tia && chmod +x tia && ./tia
+    
 # Command
 
 Add New Key
