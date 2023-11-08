@@ -67,6 +67,7 @@ cargo run --locked --release -- --chain goldberg -d ./output
 
 echo -e "              \e[1m\e[32m3. Create SystemD--> \e[0m" && sleep 1
 
+sudo tee /etc/systemd/system/availd.service > /dev/null <<EOF
 [Unit] 
 Description=Avail Validator
 After=network.target
