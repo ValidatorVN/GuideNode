@@ -1,3 +1,7 @@
+## Auto Install
+
+    wget -O nam https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Namada/nam && chmod +x nam && ./nam
+
 ## UPDATE for new release v0.23.2
 
 ```bash
