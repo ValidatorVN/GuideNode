@@ -1,0 +1,115 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;33m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗███████╗██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   █████╗  ██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██╔══╝  ██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ███████╔██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝"
+echo "Guide: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/RunnodeVietNamese"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+cd $HOME
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config git make libssl-dev libclang-dev libclang-12-dev -y
+sudo apt install jq build-essential bsdmainutils ncdu gcc git-core chrony liblz4-tool -y
+sudo apt install original-awk uidmap dbus-user-session protobuf-compiler unzip -y
+
+cd $HOME
+sudo apt update
+sudo curl https://sh.rustup.rs -sSf | sh -s -- -y
+. $HOME/.cargo/env
+curl https://deb.nodesource.com/setup_18.x | sudo bash
+sudo apt install cargo nodejs -y < "/dev/null"
+
+cargo --version
+node -v
+
+if ! [ -x "$(command -v go)" ]; then
+  ver="1.20.5"
+  cd $HOME
+  wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+  sudo rm -rf /usr/local/go
+  sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+  rm "go$ver.linux-amd64.tar.gz"
+  echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
+  source ~/.bash_profile
+fi
+
+go version
+
+cd $HOME && rustup update
+PROTOC_ZIP=protoc-23.3-linux-x86_64.zip
+curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v23.3/$PROTOC_ZIP
+sudo unzip -o $PROTOC_ZIP -d /usr/local bin/protoc
+sudo unzip -o $PROTOC_ZIP -d /usr/local 'include/*'
+rm -f $PROTOC_ZIP
+
+protoc --version
+
+sed -i '/public-testnet/d' "$HOME/.bash_profile"
+sed -i '/NAMADA_TAG/d' "$HOME/.bash_profile"
+sed -i '/WALLET_ADDRESS/d' "$HOME/.bash_profile"
+sed -i '/CBFT/d' "$HOME/.bash_profile"
+
+echo "export NAMADA_TAG=v0.23.2" >> ~/.bash_profile
+echo "export CBFT=v0.37.2" >> ~/.bash_profile
+echo "export NAMADA_CHAIN_ID=public-testnet-14.5d79b6958580" >> ~/.bash_profile
+echo "export WALLET=wallet" >> ~/.bash_profile
+echo "export BASE_DIR=$HOME/.local/share/namada" >> ~/.bash_profile
+
+echo "export VALIDATOR_ALIAS=YOUR_MONIKER" >> ~/.bash_profile
+
+source ~/.bash_profile
+
+cd $HOME && git clone https://github.com/anoma/namada && cd namada && git checkout $NAMADA_TAG
+make build-release
+cargo fix --lib -p namada_apps
+
+cd $HOME && git clone https://github.com/cometbft/cometbft.git && cd cometbft && git checkout $CBFT
+make build
+
+cd $HOME && cp $HOME/cometbft/build/cometbft /usr/local/bin/cometbft && \
+cp "$HOME/namada/target/release/namada" /usr/local/bin/namada && \
+cp "$HOME/namada/target/release/namadac" /usr/local/bin/namadac && \
+cp "$HOME/namada/target/release/namadan" /usr/local/bin/namadan && \
+cp "$HOME/namada/target/release/namadaw" /usr/local/bin/namadaw && \
+cp "$HOME/namada/target/release/namadar" /usr/local/bin/namadar
+
+cometbft version
+namada --version
+
+sudo tee /etc/systemd/system/namadad.service > /dev/null <<EOF
+[Unit]
+Description=namada
+After=network-online.target
+[Service]
+User=$USER
+WorkingDirectory=$HOME/.local/share/namada
+Environment=TM_LOG_LEVEL=p2p:none,pex:error
+Environment=NAMADA_CMT_STDOUT=true
+ExecStart=/usr/local/bin/namada node ledger run 
+StandardOutput=syslog
+StandardError=syslog
+Restart=always
+RestartSec=10
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable namadad
+
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo systemctl restart namadad && sudo journalctl -u namadad -f -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mcurl -s localhost:26657/status\e[0m"
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
