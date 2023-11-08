@@ -18,3 +18,7 @@ Check logs:
 Check node:
 
     https://telemetry.avail.tools/
+
+Create wallet:
+
+    https://goldberg.avail.tools/
