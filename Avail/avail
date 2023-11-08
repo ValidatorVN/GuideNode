@@ -60,9 +60,10 @@ cd || return
 rm -rf avail
 git clone https://github.com/availproject/avail.git
 cd avail || return
+git checkout v1.8.0.0
 mkdir -p output
 mkdir -p data
-cargo run --locked --release -- --chain kate -d ./output
+cargo run --locked --release -- --chain goldberg -d ./output
 
 echo -e "              \e[1m\e[32m3. Create SystemD--> \e[0m" && sleep 1
 
@@ -72,7 +73,7 @@ After=network.target
 StartLimitIntervalSec=0
 [Service] 
 User=root 
-ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain kate --name "${Validator_Name}"
+ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain goldberg --name "${Validator_Name}"
 Restart=always 
 RestartSec=120
 [Install] 
