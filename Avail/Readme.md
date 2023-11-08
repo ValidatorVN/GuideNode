@@ -22,3 +22,7 @@ Check node:
 Create wallet:
 
     https://goldberg.avail.tools/
+
+Get key for active Validator:
+
+    curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "author_rotateKeys", "params":[]}' http://localhost:9944
