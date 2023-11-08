@@ -116,7 +116,7 @@ sudo systemctl start namadad && sudo journalctl -u namadad -f -o cat
 
 ```
 
-## namada setup  
+## Namada Manual Setup  
 ```bash
 #install update and libs
 cd $HOME
