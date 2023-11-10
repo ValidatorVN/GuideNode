@@ -18,130 +18,98 @@ echo "Github: https://github.com/NodeValidatorVN"
 echo -e "\e[0m"
 
 
+#!/bin/bash
+# Setup node on Testnet
 
-# Menu
+# Enter any settings changes here
+MONIKER=
+MINIMUM_GAS_PRICE="0.0001uaum"
+SEEDS="a9a71700397ce950a9396421877196ac19e7cde0@mantra-testnet-seed.itrocket.net:22656"
+PEERS="1a46b1db53d1ff3dbec56ec93269f6a0d15faeb4@mantra-testnet-peer.itrocket.net:22656,63763bfb78d296187754c367a9740e24730a7fc4@167.235.14.83:32656,64691a4202c1ad29a416b21ce21bfc9659783406@34.136.169.18:26656,d44eb6a1ea69263eb0a61bab354fb267396b27e1@34.70.189.2:26656,62cadc3da28e1a4785a2abf76c40f1c4e0eaeebd@34.123.40.240:26656,c4bec34390d2ab1004b9a25580c75e4743e033a1@65.108.72.253:22656,e6921a8a228e12ebab0ab70d9bcdb5364c5dece5@65.108.200.40:47656,2d2f8b62feee6b0fcbdec78d51d4ba9959e33c87@65.108.124.219:34656,4a22a9cbabe4313674d2058a964aef2863af9213@185.197.251.195:26656,c0828205f0dea4ef6feb61ee7a9e8f376be210f4@161.97.149.123:29656,30235fa097d100a14d2b534fdbf67e34e8d5f6cf@65.21.133.86:21656"
+ENABLE_METRICS=true
+METRICS_ADDR="0.0.0.0:26660"
+# Address to listen for incoming connections 
+MANTRA_ADDR="tcp://0.0.0.0:26656"
+# External Address to advertise to peers so they can connect
+# Should be domain:port but can be ip:port or blank
+MANTRA_EXTERNAL_ADDR=""
 
-PS3='Select an action: '
-options=(
-"Install Node"
-"Delete Node"
-"Exit")
-select opt in "${options[@]}"
-do
-case $opt in
+BINARY_URL="https://testnet-files.itrocket.net/mantra/mantrachaind-linux-amd64.zip"
+GENESIS_URL="https://testnet-files.itrocket.net/mantra/genesis.json"
+CHAIN_ID="mantrachain-testnet-1"
+INDEXER="null"
+APP_TOML="$HOME/.mantrad/config/app.toml"
+CONFIG_TOML="$HOME/.mantrad/config/config.toml"
+# Can be everything for a validator none for archive default or custom
+PRUNING="everything"
 
-"Install Node")
-echo "******************************************"
-echo -e "\e[1m\e[35m		Lets's begin\e[0m"
-echo "******************************************"
-echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
-echo "******************************************"
-read Validator_Name
-echo "******************************************"
-echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="mantrachain-1" >> $HOME/.bash_profile
-source ~/.bash_profile
-
-echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
-#UPDATE APT
+# Install Prerequisites
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+sudo apt install lz4 unzip jq -y
+sudo wget -O /usr/lib/libwasmvm.x86_64.so https://github.com/CosmWasm/wasmvm/releases/download/v1.3.0/libwasmvm.x86_64.so
 
-echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
-#INSTALL GO
-ver="1.20.5" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
-source $HOME/.bash_profile && \
-go version
-
-echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
-#INSTALL
-cd || return
-mkdir -p $HOME/go/bin/
-wget https://github.com/MANTRA-Finance/public/raw/main/mantrachain-testnet/mantrachaind-linux-amd64.zip
+# Install the binary
+wget $BINARY_URL
 unzip mantrachaind-linux-amd64.zip
 rm mantrachaind-linux-amd64.zip
-mv mantrachaind $HOME/go/bin/
-sudo wget -P /usr/lib https://github.com/CosmWasm/wasmvm/releases/download/v1.3.0/libwasmvm.x86_64.so
-mantrachaind version
+sudo mv mantrachaind /usr/local/bin/mantrad
 
-mantrachaind init $Validator_Name --chain-id $CHAIN_ID
+# Initialize the node
+mantrad init $MONIKER --chain-id $CHAIN_ID --home $HOME/.mantrad
+wget -O $HOME/.mantrad/config/genesis.json $GENESIS_URL 
 
-wget -O $HOME/.mantrachain/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/genesis.json"
-wget -O $HOME/.mantrachain/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/addrbook.json"
+# Edit the app.toml file
+sed -i.bak -E "s|^(pruning[[:space:]]+=[[:space:]]+).*$|\1\"$PRUNING\"| ; \
+s|^(minimum-gas-prices[[:space:]]+=[[:space:]]+).*$|\1\"$MINIMUM_GAS_PRICE\"|" $APP_TOML 
 
-echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
+# Edit the config.toml file
+sed -i.bak -E "s|^(prometheus[[:space:]]+=[[:space:]]+).*$|\1\"$ENABLE_METRICS\"| ; \
+s|^(indexer[[:space:]]+=[[:space:]]+).*$|\1\"null\"| ; \
+s|^(external_address[[:space:]]+=[[:space:]]+).*$|\1\"$MANTRA_EXTERNAL_ADDR\"| ; \
+s|^(laddr[[:space:]]+=[[:space:]]+).*$|\1\"$MANTRA_ADDR\"| ; \
+s|^(prometheus_listen_addr[[:space:]]+=[[:space:]]+).*$|\1\"$PROMETHEUS_ADDR\"| ; \
+s|^(persistent_peers[[:space:]]+=[[:space:]]+).*$|\1\"$PEERS\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"$SEEDS\"|" $CONFIG_TOML
 
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0uaum\"/;" ~/.mantrachain/config/app.toml
-external_address=$(wget -qO- eth0.me)
-sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.mantrachain/config/config.toml
-peers="dd4606ab0717b3255358406a62321b638e27b010@24.199.98.122:656,db0c275586b8fa5ac5a11538436d4994f92fb410@57.128.84.159:26656,7511b84e5de3ad357cd6b5c8c7fe0ee8dfa7197b@65.108.238.74:12356,8c1bcd6b38270c7026c102ee7860b1a949eb268a@65.109.101.53:19256,8f574a466c8c8f9d8d15bed98829364d79253a93@170.64.181.221:22656"
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.mantrachain/config/config.toml
-seeds=""
-sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.mantrachain/config/config.toml
+# Configure state sync
+STATE_SYNC_RPC="https://mantra-testnet-rpc.itrocket.net"
+SYNC_BLOCK_HASH="68C1A657AE776DF75348EE11C15547051CF651CB8A7DC3F040AD795874161F23"
+SYNC_BLOCK_HEIGHT="23000"
+SYNC_TRUST_PERIOD="168h"
 
-# pruning and indexer
-pruning="custom" && \
-pruning_keep_recent="100" && \
-pruning_keep_every="0" && \
-pruning_interval="10" && \
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.mantrachain/config/app.toml && \
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.mantrachain/config/app.toml && \
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.mantrachain/config/app.toml && \
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.mantrachain/config/app.toml
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$STATE_SYNC_RPC,$STATE_SYNC_RPC1\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$SYNC_BLOCK_HEIGHT| ; \
+s|^(trust_period[[:space:]]+=[[:space:]]+).*$|\1$SYNC_TRUST_PERIOD| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$SYNC_BLOCK_HASH\"|" $CONFIG_TOML
 
-sudo tee /etc/systemd/system/mantrachaind.service > /dev/null <<EOF
+# reset and download snapshot from https://itrocket.net/services/testnet/mantra/installation/
+mantrachaind tendermint unsafe-reset-all --home $HOME/.mantrachain
+if curl -s --head curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar.lz4 | head -n 1 | grep "200" > /dev/null; then
+  curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.mantrachain
+    else
+  echo no have snap
+fi
+
+# Install the systemd service
+sudo cat <<EOF >> /etc/systemd/system/mantrad.service
 [Unit]
-Description=mantrachaind node
+Description=Mantra Node
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which mantrachaind) start
+WorkingDirectory=$HOME/.mantrad
+ExecStart=/usr/local/bin/mantrad start --home $HOME/.mantrad
 Restart=on-failure
-RestartSec=3
+RestartSec=5
 LimitNOFILE=65535
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-mantrachaind tendermint unsafe-reset-all --home $HOME/.mantrachaind --keep-addr-book
-
-SNAP_NAME=$(curl -s https://ss-t.mantra.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
-curl -o - -L https://ss-t.mantra.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.mantrachain
-
-# start service
 sudo systemctl daemon-reload
-sudo systemctl enable mantrachaind
-sudo systemctl restart mantrachaind
+sudo systemctl enable mantrad
 
-echo '=============== SETUP FINISHED ==================='
-echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
-echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u mantrachaind -f --no-hostname -o cat\e[0m'
-echo -e "To check sync status: \e[1m\e[35mcurl -s mantrachaind status 2>&1 | jq .SyncInfo.catching_up\e[0m"
-echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
-
-break
-;;
-"Delete Node")
-sudo systemctl stop mantrachaind && \
-sudo systemctl disable mantrachaind && \
-rm /etc/systemd/system/mantrachaind.service && \
-sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf .mantrachain && \
-rm -rf mantrachain && \
-rm -rf $(which mantrachaind)
-
-break
-;;
-"Exit")
-exit
-esac
-done
-done
+echo -e "You have completed the mantrad node setup to start your new node use:\n\n  systemctl start mantrad\n"
