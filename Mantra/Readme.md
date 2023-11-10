@@ -12,33 +12,29 @@
 
 Add new key
 
-    mantrachaind keys add wallet
-
-Faucet Mantra
-
-    https://faucet.testnet.mantrachain.io/
+    mantrad keys add wallet
 
 Recover existing key
 
-    mantrachaind keys add wallet --recover
+    mantrad keys add wallet --recover
 
 List All key
 
-    mantrachaind keys list
+    mantrad keys list
 
 Delete key
 
-    mantrachaind keys delete wallet
+    mantrad keys delete wallet
 
 Query Wallet Balance
 
-    mantrachaind q bank balances $(mantrachaind keys show wallet -a)
+    mantrad q bank balances $(mantrad keys show wallet -a)
 
 5/ Create a validator
 
-    mantrachaind tx staking create-validator \
+    mantrad tx staking create-validator \
     --amount "1000000uaum" \
-    --pubkey $(mantrachaind tendermint show-validator) \
+    --pubkey $(mantrad tendermint show-validator) \
     --moniker "MONIKER" \
     --identity "KEYBASE_ID" \
     --details "YOUR DETAILS" \
