@@ -43,12 +43,12 @@ Query Wallet Balance
     --identity "KEYBASE_ID" \
     --details "YOUR DETAILS" \
     --website "YOUR WEBSITE" \
-    --chain-id mantrachain-1 \
+    --chain-id mantrachain-testnet-1 \
     --commission-rate "0.05" \
     --commission-max-rate "0.20" \
     --commission-max-change-rate "0.01" \
     --min-self-delegation "1" \
-    --gas-prices "0uaum" \
+    --gas-prices "0.001uaum" \
     --gas "auto" \
     --gas-adjustment "1.5" \
     --from wallet \
