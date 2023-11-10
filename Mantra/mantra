@@ -17,10 +17,6 @@ echo "Chanel: https://t.me/ValidatorVN"
 echo "Github: https://github.com/NodeValidatorVN"
 echo -e "\e[0m"
 
-
-#!/bin/bash
-# Setup node on Testnet
-
 # Enter any settings changes here
 MONIKER=
 MINIMUM_GAS_PRICE="0.0001uaum"
