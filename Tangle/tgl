@@ -1,0 +1,128 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝"
+echo "Gitbook: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "******************************************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "******************************************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "******************************************"
+read Validator_Name
+echo "******************************************"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="xstaxy-1" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev libgmp3-dev tar clang bsdmainutils ncdu unzip llvm libudev-dev make protobuf-compiler -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.20.5" && \
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
+sudo rm -rf /usr/local/go && \
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
+rm "go$ver.linux-amd64.tar.gz" && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
+source $HOME/.bash_profile && \
+go version
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd || return
+mkdir -p $HOME/.tangle && cd $HOME/.tangle
+wget -O tangle https://github.com/webb-tools/tangle/releases/download/v5.0.0/tangle-standalone-linux-amd64
+chmod 744 tangle
+mv tangle /usr/bin/
+tangle --version
+# 0.5.0-e892e17-x86_64-linux-gnu
+
+wget -O $HOME/.tangle/tangle-standalone.json "https://raw.githubusercontent.com/webb-tools/tangle/main/chainspecs/testnet/tangle-standalone.json"
+chmod 744 ~/.tangle/tangle-standalone.json
+
+sudo tee /etc/systemd/system/tangle.service > /dev/null <<EOF
+Description=Tangle Validator Node
+After=network-online.target
+StartLimitIntervalSec=0
+[Service]
+User=$USER
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+ExecStart=/usr/bin/tangle \
+  --base-path $HOME/.tangle/data/ \
+  --name '${Validator_Name}' \
+  --chain $HOME/.tangle/tangle-standalone.json \
+  --node-key-file "$HOME/.tangle/node-key" \
+  --port 30333 \
+  --rpc-port 9933 \
+  --prometheus-port 9615 \
+  --auto-insert-keys \
+  --validator \
+  --telemetry-url "wss://telemetry.polkadot.io/submit 0" \
+  --no-mdns
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# start service
+systemctl daemon-reload
+systemctl enable tangle
+systemctl start tangle
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u tangle -f --no-hostname -o cat\e[0m'
+echo -e "To check status: \e[1m\e[35msudo systemctl status tangle\e[0m"
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
+
+break
+;;
+"Delete Node")
+sudo systemctl stop tangle && \
+sudo systemctl disable tangle && \
+rm /etc/systemd/system/tangle.service && \
+sudo systemctl daemon-reload && \
+cd $HOME && \
+rm -rf .tangle && \
+rm -rf tangle && \
+rm -rf $(which tangle)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
