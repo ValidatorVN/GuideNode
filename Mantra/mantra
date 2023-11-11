@@ -61,10 +61,12 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
 #INSTALL
-wget https://testnet-files.itrocket.net/mantra/mantrachaind-linux-amd64.zip
+wget https://github.com/MANTRA-Finance/public/blob/main/mantrachain-testnet/mantrachaind-linux-amd64.zip
 unzip mantrachaind-linux-amd64.zip
 rm mantrachaind-linux-amd64.zip
-sudo mv mantrachaind /usr/local/bin/mantrad
+mv mantrachaind $HOME/go/bin/
+sudo wget -P /usr/lib https://github.com/CosmWasm/wasmvm/releases/download/v1.3.0/libwasmvm.x86_64.so
+mantrachaind version
 
 mantrad init $Validator_Name --chain-id $CHAIN_ID
 
