@@ -60,16 +60,8 @@ go version
 
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
-BINARY_URL="https://testnet-files.itrocket.net/mantra/mantrachaind-linux-amd64.zip"
-CHAIN_ID="mantrachain-testnet-1"
-INDEXER="null"
-APP_TOML="$HOME/.mantrachain/config/app.toml"
-CONFIG_TOML="$HOME/.mantrachain/config/config.toml"
-PRUNING="everything"
-MINIMUM_GAS_PRICE="0.0001uaum"
-
 #INSTALL
-wget $BINARY_URL
+wget https://testnet-files.itrocket.net/mantra/mantrachaind-linux-amd64.zip
 unzip mantrachaind-linux-amd64.zip
 rm mantrachaind-linux-amd64.zip
 sudo mv mantrachaind /usr/local/bin/mantrad
@@ -81,19 +73,18 @@ wget -O $HOME/.mantrachain/config/addrbook.json "https://raw.githubusercontent.c
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
-# Edit the app.toml file
-sed -i.bak -E "s|^(pruning[[:space:]]+=[[:space:]]+).*$|\1\"$PRUNING\"| ; \
-s|^(minimum-gas-prices[[:space:]]+=[[:space:]]+).*$|\1\"$MINIMUM_GAS_PRICE\"|" $APP_TOML 
+# pruning and indexer
+SEEDS=""
+PEERS=""
+sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.mantrachain/config/config.toml
 
-# Edit the config.toml file
-sed -i.bak -E "s|^(prometheus[[:space:]]+=[[:space:]]+).*$|\1\"$ENABLE_METRICS\"| ; \
-s|^(indexer[[:space:]]+=[[:space:]]+).*$|\1\"null\"| ; \
-s|^(external_address[[:space:]]+=[[:space:]]+).*$|\1\"$MANTRA_EXTERNAL_ADDR\"| ; \
-s|^(laddr[[:space:]]+=[[:space:]]+).*$|\1\"$MANTRA_ADDR\"| ; \
-s|^(prometheus_listen_addr[[:space:]]+=[[:space:]]+).*$|\1\"$PROMETHEUS_ADDR\"| ; \
-s|^(persistent_peers[[:space:]]+=[[:space:]]+).*$|\1\"$PEERS\"| ; \
-s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"$SEEDS\"|" $CONFIG_TOML
+sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.mantrachain/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.mantrachain/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.mantrachain/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.mantrachain/config/app.toml
 
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.01uaum"|g' $HOME/.mantrachain/config/app.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.mantrachain/config/config.toml
 
 # create service
 sudo tee /etc/systemd/system/mantrad.service > /dev/null <<EOF
@@ -114,7 +105,8 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable mantrad
 
-mantrachaind tendermint unsafe-reset-all --home $HOME/.mantrachain
+mantrad tendermint unsafe-reset-all --home $HOME/.mantrachain
+
 if curl -s --head curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar.lz4 | head -n 1 | grep "200" > /dev/null; then
   curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.mantrachain
     else
