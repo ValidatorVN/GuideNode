@@ -35,9 +35,9 @@ echo -e "\e[1m\e[35m		Lets's begin\e[0m"
 echo "******************************************"
 echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
 echo "******************************************"
-read Validator_Name
+read Node_Name
 echo "******************************************"
-echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export Node_Name=${Node_Name} >> $HOME/.bash_profile
 echo export CHAIN_ID="mantrachain-testnet-1" >> $HOME/.bash_profile
 source ~/.bash_profile
 
@@ -48,8 +48,7 @@ sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq bui
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
-#INSTALL GO
-ver="1.20.5" && \
+ver="1.21.1" && \
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
 sudo rm -rf /usr/local/go && \
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
@@ -61,6 +60,7 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
 #INSTALL
+mkdir /go/bin
 wget https://github.com/MANTRA-Finance/public/blob/main/mantrachain-testnet/mantrachaind-linux-amd64.zip
 unzip mantrachaind-linux-amd64.zip
 rm mantrachaind-linux-amd64.zip
@@ -68,7 +68,7 @@ mv mantrachaind $HOME/go/bin/
 sudo wget -P /usr/lib https://github.com/CosmWasm/wasmvm/releases/download/v1.3.0/libwasmvm.x86_64.so
 mantrachaind version
 
-mantrad init $Validator_Name --chain-id $CHAIN_ID
+mantrad init $Node_Name --chain-id $CHAIN_ID
 
 wget -O $HOME/.mantrachain/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/genesis.json"
 wget -O $HOME/.mantrachain/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/addrbook.json"
@@ -107,7 +107,7 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable mantrad
 
-mantrad tendermint unsafe-reset-all --home $HOME/.mantrachain
+mantrad tendermint unsafe-reset-all --home $HOME/.mantrachain --keep-addr-book
 
 if curl -s --head curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar.lz4 | head -n 1 | grep "200" > /dev/null; then
   curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.mantrachain
