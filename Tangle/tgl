@@ -52,13 +52,11 @@ rustup target add wasm32-unknown-unknown --toolchain nightly
 
 echo -e "              \e[1m\e[32m2. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
+mkdir -p .tangle
 cd || return
-mkdir -p $HOME/.tangle && cd $HOME/.tangle
-wget -O tangle https://github.com/webb-tools/tangle/releases/download/v5.0.0/tangle-standalone-linux-amd64
-chmod 744 tangle
-mv tangle /usr/bin/
-tangle --version
-# 0.5.0-e892e17-x86_64-linux-gnu
+git clone https://github.com/webb-tools/tangle.git
+cd tangle
+cargo build --release 
 
 wget -O $HOME/.tangle/tangle-standalone.json "https://raw.githubusercontent.com/webb-tools/tangle/main/chainspecs/testnet/tangle-standalone.json"
 chmod 744 ~/.tangle/tangle-standalone.json
