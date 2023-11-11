@@ -42,7 +42,7 @@ source ~/.bash_profile
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
 #UPDATE APT
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl iptables build-essential git wget jq cmake gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev libgmp3-dev tar clang bsdmainutils ncdu unzip llvm libudev-dev make protobuf-compiler -y
+sudo apt install --assume-yes git clang curl libssl-dev protobuf-compiler iptables build-essential git wget jq cmake gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev libgmp3-dev tar clang bsdmainutils ncdu unzip llvm libudev-dev make -y
 
 echo -e "              \e[1m\e[32m2. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
@@ -88,9 +88,9 @@ systemctl enable tangle
 systemctl start tangle
 
 echo '=============== SETUP FINISHED ==================='
-echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'Congratulations:      \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
 echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u tangle -f --no-hostname -o cat\e[0m'
-echo -e "To check status: \e[1m\e[35msudo systemctl status tangle\e[0m"
+echo -e "To check status:      \e[1m\e[35msudo systemctl status tangle\e[0m"
 echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
 
 break
