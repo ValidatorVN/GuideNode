@@ -69,7 +69,7 @@ mv mantrachaind $HOME/go/bin/
 sudo wget -P /usr/lib https://github.com/CosmWasm/wasmvm/releases/download/v1.3.0/libwasmvm.x86_64.so
 mantrachaind version
 
-mantrad init $Node_Name --chain-id $CHAIN_ID
+mantrachaind init $Node_Name --chain-id $CHAIN_ID
 
 wget -O $HOME/.mantrachain/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/genesis.json"
 wget -O $HOME/.mantrachain/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/addrbook.json"
@@ -90,25 +90,23 @@ sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.01uaum"|g' $HOME/.man
 sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.mantrachain/config/config.toml
 
 # create service
-sudo tee /etc/systemd/system/mantrad.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/mantrachaind.service > /dev/null <<EOF
 [Unit]
-Description=Mantra Node
+Description=mantrachaind Daemon
 After=network-online.target
-
 [Service]
 User=$USER
-ExecStart=$(which mantrad) start
-Restart=on-failure
-RestartSec=5
+ExecStart=$(which mantrachaind) start
+Restart=always
+RestartSec=3
 LimitNOFILE=65535
-
 [Install]
 WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload
-sudo systemctl enable mantrad
+sudo systemctl enable mantrachaind
 
-mantrad tendermint unsafe-reset-all --home $HOME/.mantrachain --keep-addr-book
+mantrachaind tendermint unsafe-reset-all --home $HOME/.mantrachain --keep-addr-book
 
 if curl -s --head curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar.lz4 | head -n 1 | grep "200" > /dev/null; then
   curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.mantrachain
@@ -117,25 +115,25 @@ if curl -s --head curl https://testnet-files.itrocket.net/mantra/snap_mantra.tar
 fi
 
 # start service
-sudo systemctl restart mantrad
+sudo systemctl restart mantrachaind
 
 echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
-echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u mantrad -f --no-hostname -o cat\e[0m'
-echo -e "To check sync status: \e[1m\e[35mmantrad status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u mantrachaind -f --no-hostname -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35mmantrachaind status 2>&1 | jq .SyncInfo.catching_up\e[0m"
 echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
 
 break
 ;;
 "Delete Node")
-sudo systemctl stop mantrad && \
-sudo systemctl disable mantrad && \
-rm /etc/systemd/system/mantrad.service && \
+sudo systemctl stop mantrachaind && \
+sudo systemctl disable mantrachaind && \
+rm /etc/systemd/system/mantrachaind.service && \
 sudo systemctl daemon-reload && \
 cd $HOME && \
-rm -rf .mantrad mantra && \
-rm -rf mantrad && \
-rm -rf $(which mantrad)
+rm -rf .mantrachain mantra && \
+rm -rf mantrachain && \
+rm -rf $(which mantrachaind)
 
 break
 ;;
