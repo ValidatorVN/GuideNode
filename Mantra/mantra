@@ -56,7 +56,6 @@ eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
 BINARY_URL="https://testnet-files.itrocket.net/mantra/mantrachaind-linux-amd64.zip"
-GENESIS_URL="https://testnet-files.itrocket.net/mantra/genesis.json"
 CHAIN_ID="mantrachain-testnet-1"
 INDEXER="null"
 APP_TOML="$HOME/.mantrad/config/app.toml"
@@ -72,7 +71,8 @@ sudo mv mantrachaind /usr/local/bin/mantrad
 
 mantrad init $Validator_Name --chain-id $CHAIN_ID
 
-wget -O $HOME/.mantrad/config/genesis.json $GENESIS_URL 
+wget -O $HOME/.mantrachain/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/genesis.json"
+wget -O $HOME/.mantrachain/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Mantra/addrbook.json"
 
 echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
 
