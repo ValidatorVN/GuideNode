@@ -109,3 +109,5 @@ sudo systemctl daemon-reload
 sudo systemctl enable mantrad
 
 echo -e "You have completed the mantrad node setup to start your new node use:\n\n  systemctl start mantrad\n"
+done
+done
