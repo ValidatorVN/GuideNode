@@ -133,7 +133,7 @@ sudo systemctl disable mantrad && \
 rm /etc/systemd/system/mantrad.service && \
 sudo systemctl daemon-reload && \
 cd $HOME && \
-rm -rf .mantrad && \
+rm -rf .mantrad mantra && \
 rm -rf mantrad && \
 rm -rf $(which mantrad)
 
