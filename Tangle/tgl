@@ -17,8 +17,6 @@ echo "Chanel: https://t.me/ValidatorVN"
 echo "Github: https://github.com/NodeValidatorVN"
 echo -e "\e[0m"
 
-
-
 # Menu
 
 PS3='Select an action: '
@@ -39,7 +37,6 @@ echo "******************************************"
 read Validator_Name
 echo "******************************************"
 echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
-echo export CHAIN_ID="xstaxy-1" >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
