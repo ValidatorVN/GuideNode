@@ -21,7 +21,7 @@ Check node:
 
 Create wallet:
 
-    [https://goldberg.avail.tools/](https://polkadot.js.org/apps/?rpc=wss%253A%252F%252Frpc.tangle.tools&ref=blog.webb.tools#/staking)
+    https://polkadot.js.org/apps/?rpc=wss%253A%252F%252Frpc.tangle.tools&ref=blog.webb.tools#/staking
 
 Get key for active Validator:
 
