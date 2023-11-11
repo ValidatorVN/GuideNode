@@ -33,7 +33,7 @@ case $opt in
 echo "******************************************"
 echo -e "\e[1m\e[35m		Lets's begin\e[0m"
 echo "******************************************"
-echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo -e "\e[1m\e[32m	Enter your Node_Name:\e[0m"
 echo "******************************************"
 read Node_Name
 echo "******************************************"
@@ -48,7 +48,7 @@ sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq bui
 
 echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
-ver="1.21.1" && \
+ver="1.20.0" && \
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
 sudo rm -rf /usr/local/go && \
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
@@ -60,8 +60,9 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
 #INSTALL
-mkdir /go/bin
-wget https://github.com/MANTRA-Finance/public/blob/main/mantrachain-testnet/mantrachaind-linux-amd64.zip
+cd $HOME
+mkdir -p $HOME/go/bin/
+wget https://github.com/MANTRA-Finance/public/raw/main/mantrachain-testnet/mantrachaind-linux-amd64.zip
 unzip mantrachaind-linux-amd64.zip
 rm mantrachaind-linux-amd64.zip
 mv mantrachaind $HOME/go/bin/
