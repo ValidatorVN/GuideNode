@@ -43,6 +43,12 @@ echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
 #UPDATE APT
 sudo apt update && sudo apt upgrade -y
 sudo apt install --assume-yes git clang curl libssl-dev protobuf-compiler iptables build-essential git wget jq cmake gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev libgmp3-dev tar clang bsdmainutils ncdu unzip llvm libudev-dev make -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+rustup default stable
+rustup update
+rustup update nightly
+rustup target add wasm32-unknown-unknown --toolchain nightly
 
 echo -e "              \e[1m\e[32m2. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
