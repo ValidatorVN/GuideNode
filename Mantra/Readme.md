@@ -12,29 +12,29 @@
 
 Add new key
 
-    mantrad keys add wallet
+    mantrachaind keys add wallet
 
 Recover existing key
 
-    mantrad keys add wallet --recover
+    mantrachaind keys add wallet --recover
 
 List All key
 
-    mantrad keys list
+    mantrachaind keys list
 
 Delete key
 
-    mantrad keys delete wallet
+    mantrachaind keys delete wallet
 
 Query Wallet Balance
 
-    mantrad q bank balances $(mantrad keys show wallet -a)
+    mantrachaind q bank balances $(mantrachaind keys show wallet -a)
 
 5/ Create a validator
 
-    mantrad tx staking create-validator \
+    mantrachaind tx staking create-validator \
     --amount "1000000uaum" \
-    --pubkey $(mantrad tendermint show-validator) \
+    --pubkey $(mantrachaind tendermint show-validator) \
     --moniker "MONIKER" \
     --identity "KEYBASE_ID" \
     --details "YOUR DETAILS" \
