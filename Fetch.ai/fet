@@ -115,7 +115,7 @@ EOF
 
 fetchd tendermint unsafe-reset-all --home $HOME/.fetchd --keep-addr-book
 
-curl -o - -L https://snapshots.polkachu.com/snapshots/fetch/fetch_13412171.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.fetchd
+curl -o - -L https://snapshots.polkachu.com/snapshots/fetch/fetch_13749911.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.fetchd
 
 # start service
 sudo systemctl daemon-reload
