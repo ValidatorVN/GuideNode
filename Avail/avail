@@ -60,7 +60,7 @@ cd || return
 rm -rf avail
 git clone https://github.com/availproject/avail.git
 cd avail || return
-git checkout v1.8.0.1
+git checkout v1.8.0.0
 mkdir -p output
 mkdir -p data
 cargo run --locked --release -- --chain goldberg -d ./output
