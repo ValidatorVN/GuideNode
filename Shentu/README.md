@@ -1,3 +1,7 @@
+# Auto install
+
+    wget -O ctk https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Shentu/ctk && chmod +x ctk && ./ctk
+
 # Command
 
 Add New Key
