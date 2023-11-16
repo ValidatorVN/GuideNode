@@ -110,7 +110,7 @@ shentud tendermint unsafe-reset-all --home $HOME/.shentud --keep-addr-book
 wget -c https://services.shentu-2.2.shentu.aviaone.com/shentu-2.2_2023-11-16.tar.gz -O - | tar -xz -C $HOME/.shentud
 
 # start service
-sudo systemctl restart celestia-appd
+sudo systemctl restart shentud
 
 echo '=============== SETUP FINISHED ==================='
 echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
