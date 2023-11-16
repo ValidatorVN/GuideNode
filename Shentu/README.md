@@ -47,6 +47,12 @@ Edit Existing Validator
     --gas-adjustment=1.5 \
     --gas=auto \
     -y
+
+Reload systemD
+
+    sudo systemctl enable shentud 
+    sudo systemctl daemon-reload
+    sudo systemctl restart shentud && journalctl -u shentud -f --no-hostname -o cat
     
 Get Sync Status
 
