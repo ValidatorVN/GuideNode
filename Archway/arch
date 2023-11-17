@@ -1,0 +1,140 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝"
+echo "Gitbook: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Install Node"
+"Delete Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+"Install Node")
+echo "******************************************"
+echo -e "\e[1m\e[35m		Lets's begin\e[0m"
+echo "******************************************"
+echo -e "\e[1m\e[32m	Enter your Validator_Name:\e[0m"
+echo "******************************************"
+read Validator_Name
+echo "******************************************"
+echo export Validator_Name=${Validator_Name} >> $HOME/.bash_profile
+echo export CHAIN_ID="archway-1" >> $HOME/.bash_profile
+source ~/.bash_profile
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.20.5" 
+cd $HOME 
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" 
+
+sudo rm -rf /usr/local/go 
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" 
+rm "go$ver.linux-amd64.tar.gz"
+
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
+echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+#INSTALL
+cd || return
+rm -rf celestia-app
+git clone https://github.com/archway-network/archway.git
+cd archway
+git checkout v4.0.2
+make install
+
+archwayd init $Validator_Name --chain-id $CHAIN_ID
+
+curl -Ls https://ss.archway.nodestake.top/genesis.json > $HOME/.archway/config/genesis.json
+curl -Ls https://ss.archway.nodestake.top/addrbook.json > $HOME/.archway/config/addrbook.json
+
+echo -e "                     \e[1m\e[32m4. Node optimization and improvement--> \e[0m" && sleep 1
+
+# pruning and indexer
+SEEDS=""
+PEERS=""
+sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.archway/config/config.toml
+
+sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.celestia-app/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.archway/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.archway/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.archway/config/app.toml
+
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = ""|g' $HOME/.archway/config/app.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.archway/config/config.toml
+
+# create service
+sudo tee /etc/systemd/system/archwayd.service > /dev/null <<EOF
+[Unit]
+Description=archwayd Daemon
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=$(which archwayd) start
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable archwayd
+
+archwayd tendermint unsafe-reset-all --home $HOME/.archway --keep-addr-book
+
+SNAP_NAME=$(curl -s https://ss.archway.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+curl -o - -L https://ss.archway.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.archway
+
+# start service
+sudo systemctl restart archwayd
+
+echo '=============== SETUP FINISHED ==================='
+echo -e 'Congratulations:        \e[1m\e[32mSUCCESSFUL NODE INSTALLATION\e[0m'
+echo -e 'To check logs:        \e[1m\e[33msudo journalctl -u archwayd -f --no-hostname -o cat\e[0m'
+echo -e "To check sync status: \e[1m\e[35marchwayd status 2>&1 | jq .SyncInfo.catching_up\e[0m"
+echo -e "Guide node:           \e[1m\e[35mhttps://docs.validatorvn.com\e[0m"
+
+break
+;;
+"Delete Node")
+sudo systemctl stop archwayd && \
+sudo systemctl disable archwayd && \
+rm /etc/systemd/system/archwayd.service && \
+sudo systemctl daemon-reload && \
+cd $HOME && \
+rm -rf .archway && \
+rm -rf archway && \
+rm -rf $(which archwayd)
+
+break
+;;
+"Exit")
+exit
+esac
+done
+done
