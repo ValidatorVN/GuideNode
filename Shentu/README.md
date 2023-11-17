@@ -36,6 +36,10 @@ Unjail Validator
 
     shentud tx slashing unjail --from wallet --chain-id shentu-2.2 --gas-prices 0uctk --gas-adjustment 1.5 --gas auto -y
 
+Withdraw rewards & commission validator
+
+    shentud tx distribution withdraw-rewards $(shentud keys show wallet --bech val -a) --commission --from wallet --chain-id shentu-2.2 ----gas-prices 0uctk --gas-adjustment 1.5 --gas auto -y 
+
 Delegate to yourself
 
     shentud tx staking delegate $(shentud keys show wallet --bech val -a) 1000000uctk --from wallet --chain-id shentu-2.2 --gas-prices 0uctk --gas-adjustment 1.5 --gas auto -y
