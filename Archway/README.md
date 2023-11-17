@@ -57,12 +57,9 @@ Get Latest Height
 Create a validator
 
     archwayd tx staking create-validator \
-    --amount 52811250500000000000aarch \
+    --amount 500000000000aarch \
     --pubkey $(archwayd tendermint show-validator) \
-    --moniker NodeValidator \
-    --identity 6CB6AC3E672AAB9D \
-    --details "Trusted Proof-of-Stake validator across Cosmos universe. Active ecosystem contributor, IBC relayer and chain service provider since 2023." \
-    --website “https://docs.validatorvn.com” \
+    --moniker "Name" \
     --chain-id archway-1 \
     --commission-rate 0.05 \
     --commission-max-rate 0.20 \
