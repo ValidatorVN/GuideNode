@@ -1,6 +1,6 @@
 # Auto Install
 
-  vltk
+    wget -O arch https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Archway/arch && chmod +x arch && ./arch
 
 # Command
 
@@ -42,9 +42,9 @@ Delegate to yourself
 
 Reload systemD
 
-sudo systemctl enable archwayd 
-sudo systemctl daemon-reload
-sudo systemctl restart archwayd && journalctl -u archwayd -f --no-hostname -o cat
+    sudo systemctl enable archwayd 
+    sudo systemctl daemon-reload
+    sudo systemctl restart archwayd && journalctl -u archwayd -f --no-hostname -o cat
 
 Get Sync Status
 
