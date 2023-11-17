@@ -74,7 +74,7 @@ After=network.target
 StartLimitIntervalSec=0
 [Service] 
 User=root 
-ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain goldberg --name "${Validator_Name}"
+ExecStart= /root/avail/target/release/data-avail --base-path `pwd`/data --chain goldberg --validator --name "${Validator_Name}"
 Restart=always 
 RestartSec=120
 [Install] 
