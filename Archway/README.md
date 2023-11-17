@@ -38,7 +38,7 @@ Unjail Validator
 
 Delegate to yourself
 
-    archwayd tx staking delegate $(archwayd keys show wallet --bech val -a) 1000000archway --from wallet --chain-id archway-1 --gas-prices 0archway --gas-adjustment 1.5 --gas auto -y
+    archwayd tx staking delegate $(archwayd keys show wallet --bech val -a) 1000000000000aarch --from wallet --chain-id archway-1 --gas-prices 1000000000000aarch --gas-adjustment 1.5 --gas auto -y
 
 Reload systemD
 
