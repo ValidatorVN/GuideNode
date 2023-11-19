@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # File name for saving parameters, e.g. "cosmos.log"
-LOG_FILE="$HOME/alerts/alerts.log"
+LOG_FILE="$HOME/alerts/nodealerts.log"
 # Your node RPC address, e.g. "http://127.0.0.1:26657"
 NODE_RPC="http://127.0.0.1:26657"
 source 
 # Trusted node RPC address, e.g. "https://rpc.cosmos.network:26657"
-SIDE_RPC="https::443"
+SIDE_RPC=""
 ip=$(wget -qO- eth0.me)
 
 touch $LOG_FILE
@@ -26,7 +26,7 @@ echo 'LAST_POWER="'"$VOTING_POWER"'"' >> $LOG_FILE
 source $HOME/.bash_profile
 curl -s "$NODE_RPC/status"> /dev/null
 if [[ $? -ne 0 ]]; then
-    MSG="Node is stopped!"
+    MSG="$ip node is stopped!!! ( узел остановлен )"
     MSG="NODE $MSG"
     SEND=$(curl -s -X POST -H "Content-Type:multipart/form-data" "https://api.telegram.org/bot$TG_API/sendMessage?chat_id=$TG_ID&text=$MSG"); exit 1
 fi
