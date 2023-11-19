@@ -34,13 +34,15 @@ echo "============================================================"
 read TG_API
 echo export TG_API=${TG_API} >> $HOME/.bash_profile
 echo "============================================================"
-echo "Chat ID Telegram"
+echo "Setup your Chat ID"
 echo "============================================================"
 read TG_ID
 echo export TG_ID=${TG_ID} >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-wget -O https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Telegram/config && chmod +x config && ./config
+mkdir $HOME/alerts
+wget -O $HOME/alerts/alerts.sh https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Telegram/alerts.sh
+chmod +x $HOME/alerts/alerts.sh
 break
 ;;
             
