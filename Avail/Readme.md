@@ -33,11 +33,11 @@ systemD
     Restart=always
     RestartSec=120
     ExecStart=${HOME}/avail-node/data-avail \
-    -d ${HOME}/avail-node/data \
-    --chain goldberg --port 30333 \
-    --validator \
-    --name $yourname
-
+     -d ${HOME}/avail-node/data \
+     --chain goldberg --port 30333 \
+     --validator \
+     --name $yourname
+    
     [Install]
     WantedBy=multi-user.target
     EOF
