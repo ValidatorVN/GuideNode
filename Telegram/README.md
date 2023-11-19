@@ -1,5 +1,4 @@
 # Auto Install
 
-    wget -O bot https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Telegram/bot && chmod +x bot && ./bot
+    curl -s https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Telegram/alerts.sh > start.sh && chmod +x start.sh && ./start.sh
 
-    */1 * * * *  /bin/bash $HOME/config
