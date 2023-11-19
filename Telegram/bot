@@ -40,7 +40,6 @@ read TG_ID
 echo export TG_ID=${TG_ID} >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-mkdir $HOME/alerts
 wget -O https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Telegram/config && chmod +x config && ./config
 break
 ;;
