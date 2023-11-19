@@ -40,7 +40,7 @@ read TG_ID
 echo export TG_ID=${TG_ID} >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-mkdir $HOME/alerts
+mkdir -p $HOME/alerts
 wget -O $HOME/alerts/alerts.sh https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Telegram/alerts.sh
 chmod +x $HOME/alerts/alerts.sh
 break
