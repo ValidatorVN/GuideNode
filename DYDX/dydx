@@ -63,8 +63,9 @@ echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m"
 cd || return
 rm -rf dydx-chain
 git clone https://github.com/dydxprotocol/v4-chain.git
-cd protocol || return
-git checkout protocol/v1.0.0
+cd v4-chain
+cd protocol
+git checkout protocol/v1.0.1
 make install
 make build
 
