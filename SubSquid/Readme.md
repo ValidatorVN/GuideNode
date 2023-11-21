@@ -17,7 +17,7 @@ Install & Update
 
     sudo apt-get install -y nodejs
 
-Dùng email đã điền form, đăng kí tài khoản Subsquid
+Filled form and register subsquid account.
 
     https://app.subsquid.io/squids/
 
