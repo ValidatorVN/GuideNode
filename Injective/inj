@@ -25,7 +25,6 @@ BINARY_NAME="injectived"
 GITHUB="https://github.com/NodeValidatorVN"
 BINARY_VERSION_TAG="v1.12.0-1699475904"
 
-printLine
 echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
 echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
 echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
@@ -109,6 +108,5 @@ echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-h
 echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
 echo -e "More commands:         ${CYAN}$GITHUB${NC}"
 
-esac
 done
 done
