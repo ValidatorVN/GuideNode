@@ -37,7 +37,7 @@ echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
 
-echo -e "        \e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+echo -e "\e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
 #INSTALL GO
 ver="1.20.5" 
 cd $HOME 
@@ -50,7 +50,7 @@ rm "go$ver.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
 cd || return
 wget https://github.com/InjectiveLabs/injective-chain-releases/releases/download/v1.12.0-1699475904/linux-amd64.zip
@@ -77,7 +77,7 @@ sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.injectived/con
 sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "500000000inj"|g' $HOME/.injectived/config/app.toml
 sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.injectived/config/config.toml
 
-echo -e "              \e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
+echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
 
 sudo tee /etc/systemd/system/injectived.service > /dev/null << EOF
 [Unit]
