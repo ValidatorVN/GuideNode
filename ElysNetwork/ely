@@ -29,7 +29,7 @@ echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
 echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
 echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
 echo -e "Binary version tag:  ${CYAN}$BINARY_VERSION_TAG${NC}"
-printLine
+
 sleep 1
 
 echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
