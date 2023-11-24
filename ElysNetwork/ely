@@ -1,8 +1,5 @@
 #!/bin/bash
 
-while true
-do
-
 # Logo
 
 echo -e "\033[0;34m"
@@ -108,6 +105,3 @@ echo '=============== SETUP FINISHED ==================='
 echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
 echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
 echo -e "More commands:         ${CYAN}$GITHUB${NC}"
-
-done
-done
