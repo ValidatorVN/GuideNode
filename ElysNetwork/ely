@@ -1,0 +1,114 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝"
+echo "Gitbook: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+read -r -p "Enter node moniker: " NODE_MONIKER
+
+CHAIN_ID="elystestnet-1"
+CHAIN_DENOM="elys"
+BINARY_NAME="elysd"
+GITHUB="https://github.com/NodeValidatorVN"
+BINARY_VERSION_TAG="v0.15.0"
+
+echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
+echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
+echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
+echo -e "Binary version tag:  ${CYAN}$BINARY_VERSION_TAG${NC}"
+printLine
+sleep 1
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "\e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.20.5" 
+cd $HOME 
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" 
+
+sudo rm -rf /usr/local/go 
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" 
+rm "go$ver.linux-amd64.tar.gz"
+
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
+echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+
+cd || return
+rm -rf elys
+git clone https://github.com/elys-network/elys elys
+cd elys
+git checkout v0.15.0
+make install
+elysd version
+
+elysd config chain-id $CHAIN_ID
+elysd init "$NODE_MONIKER" --chain-id $CHAIN_ID
+
+curl -Ls https://ss-t.elys.nodestake.top/genesis.json > $HOME/.elys/config/genesis.json
+curl -Ls https://ss-t.elys.nodestake.top/addrbook.json > $HOME/.elys/config/addrbook.json
+
+SEEDS=""
+PEERS=""
+sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.elys/config/config.toml
+
+sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.elys/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.elys/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.elys/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.elys/config/app.toml
+
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.025elys"|g' $HOME/.elys/config/app.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.elys/config/config.toml
+
+echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
+
+sudo tee /etc/systemd/system/elysd.service > /dev/null <<EOF
+[Unit]
+Description=elysd Daemon
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=$(which elysd) start
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable elysd
+
+elysd tendermint unsafe-reset-all --home $HOME/.elys --keep-addr-book
+
+SNAP_NAME=$(curl -s https://ss-t.elys.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+curl -o - -L https://ss-t.elys.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.elys
+
+sudo systemctl daemon-reload
+sudo systemctl enable elysd
+sudo systemctl start elysd
+
+echo '=============== SETUP FINISHED ==================='
+echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
+echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
+echo -e "More commands:         ${CYAN}$GITHUB${NC}"
+
+done
+done
