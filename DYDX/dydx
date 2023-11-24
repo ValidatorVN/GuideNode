@@ -61,7 +61,7 @@ go version
 echo -e "              \e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 #INSTALL
 cd || return
-rm -rf dydx-chain
+rm -rf v4-chain
 git clone https://github.com/dydxprotocol/v4-chain.git
 cd v4-chain
 cd protocol
