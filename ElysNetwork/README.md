@@ -36,26 +36,26 @@ Create New Validator
     --commission-max-change-rate=0.01 \
     --min-self-delegation=1 \
     --from=wallet \
-    --gas-prices=0.1elys \
+    --gas-prices=0.00025uelys \
     --gas-adjustment=1.5 \
     --gas=auto \
     -y 
 
 Unjail Validator
 
-    elysd tx slashing unjail --from wallet --chain-id elystestnet-1 --gas-prices 0.1elys --gas-adjustment 1.5 --gas auto -y
+    elysd tx slashing unjail --from wallet --chain-id elystestnet-1 --gas-prices 0.00025uelys --gas-adjustment 1.5 --gas auto -y
 
 Withdraw Rewards From All Validators
 
-    elysd tx distribution withdraw-all-rewards --from wallet --chain-id elystestnet-1 --gas-prices 0.1elys --gas-adjustment 1.5 --gas auto -y
+    elysd tx distribution withdraw-all-rewards --from wallet --chain-id elystestnet-1 --gas-prices 0.00025uelys --gas-adjustment 1.5 --gas auto -y
 
 Withdraw Commission And Rewards From Your Validator
 
-    elysd tx distribution withdraw-rewards $(elysd keys show wallet --bech val -a) --commission --from wallet --chain-id elystestnet-1 --gas-prices 0.1elys --gas-adjustment 1.5 --gas auto -y
+    elysd tx distribution withdraw-rewards $(elysd keys show wallet --bech val -a) --commission --from wallet --chain-id elystestnet-1 --gas-prices 0.00025uelys --gas-adjustment 1.5 --gas auto -y
 
 Delegate to yourself
 
-    elysd tx staking delegate $(elysd keys show wallet --bech val -a) 1000000elys --from wallet --chain-id elystestnet-1 --gas-prices 0.1elys --gas-adjustment 1.5 --gas auto -y
+    elysd tx staking delegate $(elysd keys show wallet --bech val -a) 1000000elys --from wallet --chain-id elystestnet-1 --gas-prices 0.00025uelys --gas-adjustment 1.5 --gas auto -y
 
 Get Validator Info
 
