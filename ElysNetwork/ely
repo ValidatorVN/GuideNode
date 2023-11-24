@@ -23,7 +23,7 @@ CHAIN_ID="elystestnet-1"
 CHAIN_DENOM="elys"
 BINARY_NAME="elysd"
 GITHUB="https://github.com/NodeValidatorVN"
-BINARY_VERSION_TAG="v0.15.0"
+BINARY_VERSION_TAG="v0.16.0"
 
 echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
 echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
@@ -56,7 +56,7 @@ cd || return
 rm -rf elys
 git clone https://github.com/elys-network/elys elys
 cd elys
-git checkout v0.15.0
+git checkout v0.16.0
 make install
 elysd version
 
