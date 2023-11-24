@@ -62,8 +62,8 @@ elysd version
 elysd config chain-id $CHAIN_ID
 elysd init "$NODE_MONIKER" --chain-id $CHAIN_ID
 
-curl -Ls https://ss-t.elys.nodestake.top/genesis.json > $HOME/.elys/config/genesis.json
-curl -Ls https://ss-t.elys.nodestake.top/addrbook.json > $HOME/.elys/config/addrbook.json
+wget -O $HOME/.elys/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/ElysNetwork/genesis.json"
+wget -O $HOME/.elys/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/ElysNetwork/addrbook.json"
 
 SEEDS=""
 PEERS=""
