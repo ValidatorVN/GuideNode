@@ -27,7 +27,7 @@ Query Wallet Balance
 Create New Validator
 
     elysd tx staking create-validator \
-    --amount=1000000elys \
+    --amount=1000000uelys \
     --pubkey=$(elysd tendermint show-validator) \
     --moniker="Moniker" \
     --chain-id=elystestnet-1 \
