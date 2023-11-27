@@ -1,3 +1,18 @@
+# RPC, API, gRPC.
+Public Endpoints:
+
+- RPC
+
+    https://celestia-rpc.validatorvn.com
+
+- API
+
+    https://celestia-api.validatorvn.com
+
+- gRPC
+
+    celestia-grpc.validatorvn.com:9090
+
 # Auto Install
 
     wget -O tia https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Celestia/tia && chmod +x tia && ./tia
