@@ -65,7 +65,7 @@ cd || return
 rm -rf celestia-app
 git clone https://github.com/celestiaorg/celestia-app.git
 cd celestia-app || return
-git checkout v1.3.0
+git checkout v1.4.0
 make install
 celestia-appd version
 
@@ -86,7 +86,7 @@ sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.celes
 sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.celestia-app/config/app.toml
 sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.celestia-app/config/app.toml
 
-sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.01utia"|g' $HOME/.celestia-app/config/app.toml
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.002utia"|g' $HOME/.celestia-app/config/app.toml
 sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.celestia-app/config/config.toml
 
 # create service
