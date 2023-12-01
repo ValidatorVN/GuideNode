@@ -12,7 +12,7 @@
 2/ Dowload the binary
 
     sudo mkdir -p $HOME/avail-node && cd $HOME/avail-node
-    sudo wget https://github.com/availproject/avail/releases/download/v1.8.0.2/amd64-ubuntu-2204-data-avail.tar.gz
+    sudo wget https://github.com/availproject/avail/releases/download/v1.8.0.3/amd64-ubuntu-2204-data-avail.tar.gz
     sudo tar xvzf amd64-ubuntu-2204-data-avail.tar.gz
     sudo mv amd64-ubuntu-2204-data-avail data-avail
 
