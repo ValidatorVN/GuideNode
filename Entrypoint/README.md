@@ -10,6 +10,10 @@ API
 gRPC
 
     entrypoint-grpc.validatorvn.com
+
+Explorer
+
+    https://explorer.entrypoint.zone/entrypoint/staking
     
 # Auto Install
 
@@ -84,35 +88,35 @@ Get sync status
 
     entrypointd status 2>&1 | jq .SyncInfo.catching_up
 
-# Reload Service
+Reload Service
 
     sudo systemctl daemon-reload
 ​
-# Enable Service
+Enable Service
 
     sudo systemctl enable entrypointd
 ​
-# Disable Service
+Disable Service
 
     sudo systemctl disable entrypointd
 ​
-# Start Service
+Start Service
 
     sudo systemctl start entrypointd
 ​
-# Stop Service
+Stop Service
 
     sudo systemctl stop entrypointd
 ​
-# Restart Service
+Restart Service
 
     sudo systemctl restart entrypointd
 ​
-# Check Service Status
+Check Service Status
 
     sudo systemctl status entrypointd
 ​
-# Check Service Logs
+Check Service Logs
 
     sudo journalctl -u entrypointd -f --no-hostname -o cat
 ​
