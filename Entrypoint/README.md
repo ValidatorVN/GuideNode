@@ -39,9 +39,6 @@ Create Validator
     --amount 1000000uentry \
     --pubkey $(entrypointd tendermint show-validator) \
     --moniker "MONIKER" \
-    --identity="YOUR_KEYBASE_ID" \
-    --details="YOUR_DETAILS" \
-    --website="YOUR_WEBSITE_URL" \
     --chain-id entrypoint-pubtest-2 \
     --commission-rate="0.05" \
     --commission-max-rate="0.20" \
@@ -57,9 +54,6 @@ Edit Validator
 
     entrypointd tx staking edit-validator \
     --new-moniker="MONIKER" \
-    --identity="YOUR_KEYBASE_ID" \
-    --details="YOUR_DETAILS" \
-    --website="YOUR_WEBSITE_URL" \
     --chain-id entrypoint-pubtest-2 \
     --commission-rate=0.05 \
     --gas-prices="0.01ibc/8A138BC76D0FB2665F8937EC2BF01B9F6A714F6127221A0E155106A45E09BCC5" \
