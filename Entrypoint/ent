@@ -56,21 +56,23 @@ sudo mv entrypointd /usr/local/bin
 entrypointd version
 
 entrypointd config chain-id $CHAIN_ID
+entrypointd config keyring-backend test
 entrypointd init "$NODE_MONIKER" --chain-id $CHAIN_ID
 
 # Add Genesis File and Addrbook
-wget -O $HOME/.entrypoint/config/genesis.json https://testnet-files.itrocket.net/entrypoint/genesis.json
-wget -O $HOME/.entrypoint/config/addrbook.json https://testnet-files.itrocket.net/entrypoint/addrbook.json
+wget -O $HOME/.entrypoint/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Entrypoint/genesis.json"
+wget -O $HOME/.entrypoint/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Entrypoint/addrbook.json"
 
 #Configure Seeds and Peers
-PEERS="$(curl -sS https://rpc.entrypoint-t.indonode.net/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.entrypoint/config/config.toml
-
+peers="81bf2ade773a30eccdfee58a041974461f1838d8@185.107.68.148:26656,d57c7572d58cb3043770f2c0ba412b35035233ad@80.64.208.169:26656"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.entrypoint/config/config.toml
+seeds=""
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.entrypoint/config/config.toml
 
 # Set Pruning, Enable Prometheus, Gas Prices, and Indexer
 PRUNING="custom"
 PRUNING_KEEP_RECENT="100"
-PRUNING_INTERVAL="19"
+PRUNING_INTERVAL="10"
 
 sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.entrypoint/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
@@ -99,12 +101,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable entrypointd
 
 # Download Snapshot for fast sync
-entrypointd tendermint unsafe-reset-all --home $HOME/.entrypoint
-if curl -s --head curl https://testnet-files.itrocket.net/entrypoint/snap_entrypoint.tar.lz4 | head -n 1 | grep "200" > /dev/null; then
-  curl https://testnet-files.itrocket.net/entrypoint/snap_entrypoint.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.entrypoint
-    else
-  echo no have snap
-fi
+rm -rf $HOME/.entrypoint/data $HOME/.entrypoint/wasmPath
+curl https://testnet-files.itrocket.net/entrypoint/snap_entrypoint.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.entrypoint
 
 # Start the Node
 sudo systemctl restart entrypointd
