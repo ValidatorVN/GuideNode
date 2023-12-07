@@ -69,3 +69,7 @@ Get Sync Status
 Get Latest Height
 
     shentud status 2>&1 | jq .SyncInfo.latest_block_height
+
+Vote proposal
+
+    shentud tx gov vote 1 yes --from wallet --chain-id shentu-2.2 --gas-prices 0uctk --gas-adjustment 1.5 --gas auto -y 
