@@ -70,3 +70,7 @@ Create a validator
     --gas auto \
     --gas-prices 1000000000000aarch \
     -y
+
+Note gov
+
+    archwayd tx gov vote 34 yes --from wallet --chain-id archway-1 --gas-prices 1000000000000aarch --gas-adjustment 1.4 --gas auto -y
