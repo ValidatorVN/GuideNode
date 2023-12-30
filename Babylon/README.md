@@ -7,6 +7,14 @@
 Wallet
 
     babylond keys add wallet
+
+Create BLS key
+
+    babylond create-bls-key $(babylond keys show wallet -a)
+
+Restart node
+
+    systemctl restart babylond
     
 Validator
 
