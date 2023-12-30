@@ -6,8 +6,6 @@
 
 Wallet
 
-    babylond config chain-id bbn-test-2
-    babylond config keyring-backend test
     babylond keys add wallet
     
 Validator
