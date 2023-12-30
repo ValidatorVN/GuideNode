@@ -61,15 +61,11 @@ babylond config keyring-backend test
 babylond config chain-id bbn-test-2
 babylond init "$NODE_MONIKER" --chain-id bbn-test-2
 
-curl -L https://github.com/babylonchain/networks/raw/main/bbn-test-2/genesis.tar.bz2 > genesis.tar.bz2
-tar -xjf genesis.tar.bz2
-rm genesis.tar.bz2
-mv genesis.json ~/.babylond/config/genesis.json
-
-curl -s https://snapshots-testnet.nodejumper.io/babylon-testnet/addrbook.json > $HOME/.babylond/config/addrbook.json
+wget -O $HOME/.babylond/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Babylon/genesis.json"
+wget -O $HOME/.babylond/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Babylon/addrbook.json"
 
 SEEDS="8da45f9ff83b4f8dd45bbcb4f850999637fbfe3b@seed0.testnet.babylonchain.io:26656,4b1f8a774220ba1073a4e9f4881de218b8a49c99@seed1.testnet.babylonchain.io:26656"
-PEERS=""
+PEERS="79872752b7899f9598a43400bc3a9781800113c0@157.90.160.182:31156,6f55a3138d18e8c0eaa66e347794428db698bf2a@148.251.176.236:2000,3287ddbe454cfb5a162799b468c1405b7370c541@95.217.199.12:26601,b6300c3bf3a9fa9492c1c7e970265e9dad8d2929@95.216.244.226:16456,444c24ec5ed261aa910239718e0fe95f05b6ba20@31.220.75.6:16456,554d32e757570b24cba0c883306fd948b4576fe8@161.97.84.178:16456,65426c82d1fe68ab25b165a58c44eeb5db1fad7d@164.68.113.249:16456,9d80974ef078f939d33d9f2f4a62805846a98bc9@161.97.131.16:16456,e2da8ac45ff6782cd34bac4fe33e2776e998357d@86.48.0.80:16456,475cd560ed1b70f91a77359fd13d2b75dd40e0ba@82.208.22.179:16456,a0d3319734621488ea841a3349f44ca331bea2eb@62.171.178.100:16456,7d2ffebe2b55bf1ab6236a08030bbceeb859d1e2@45.8.132.173:16456,10ca9934f1779d4e487b35cca58e25cea91b0d51@194.163.170.114:26656,3118e751541323b0136b8ce6bcae80947d318d27@65.109.92.235:11046,ee0193717c50822c79ab5e4587f859bef5b70f1e@164.68.127.3:16456,23bc62fab2070014fae6abd28ea2292411c2aaa1@89.117.56.177:16456,c1495b52ebde9560ff7182f3b66c70f3868c29f2@161.97.123.215:16456,a7db91c07fa092527f64049f84411f68895af025@38.242.225.232:16456,92d1bd23b1021fac700a7d143a7c2a99a7bd20da@217.76.57.227:16456,164a75d55a55ca3a7b94db4bec684abcb93c944b@158.178.200.224:16456,fb49fb56549229401886fd26154ed9cf03e40bf7@158.220.81.251:16456,a6a9e601039ff8eaa70fe8506195eead25a4f9bf@161.97.110.54:16456,52a51eb04c194f4218baabc93852529c568de89c@65.108.68.86:21756,d5519e378247dfb61dfe90652d1fe3e2b3005a5b@65.109.68.190:16456"
 sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.babylond/config/config.toml
 
 sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.babylond/config/app.toml
@@ -103,8 +99,6 @@ curl "https://snapshots-testnet.nodejumper.io/babylon-testnet/${SNAP_NAME}" | lz
 sudo systemctl daemon-reload
 sudo systemctl enable babylond
 sudo systemctl start babylond
-
-sudo journalctl -u babylond -f --no-hostname -o cat
 
 echo '=============== SETUP FINISHED ==================='
 echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
