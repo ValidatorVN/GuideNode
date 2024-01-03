@@ -89,14 +89,12 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload
-sudo systemctl enable elysd
+sudo systemctl enable seid
 
 seid tendermint unsafe-reset-all --home $HOME/.sei --keep-addr-book
 
 curl -o - -L https://snapshots.polkachu.com/snapshots/sei/sei_49414322.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sei
 
-sudo systemctl daemon-reload
-sudo systemctl enable seid
 sudo systemctl start seid
 
 echo '=============== SETUP FINISHED ==================='
