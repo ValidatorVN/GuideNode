@@ -1,0 +1,105 @@
+#!/bin/bash
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝"
+echo "Gitbook: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+read -r -p "Enter node moniker: " NODE_MONIKER
+
+CHAIN_ID="pacific-1"
+CHAIN_DENOM="sei"
+BINARY_NAME="seid"
+GITHUB="https://github.com/NodeValidatorVN"
+BINARY_VERSION_TAG="v3.5.0"
+
+echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
+echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
+echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
+echo -e "Binary version tag:  ${CYAN}$BINARY_VERSION_TAG${NC}"
+
+sleep 1
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "\e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.21.5" 
+cd $HOME 
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" 
+sudo rm -rf /usr/local/go 
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" 
+rm "go$ver.linux-amd64.tar.gz"
+
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
+echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+
+cd || return
+rm -rf sei-chain
+git clone https://github.com/sei-protocol/sei-chain/ sei
+cd sei
+git checkout v3.5.0
+make install
+seid version
+
+seid config chain-id $CHAIN_ID
+seid init "$NODE_MONIKER" --chain-id $CHAIN_ID
+
+wget -O genesis.json https://snapshots.polkachu.com/genesis/sei/genesis.json --inet4-only
+mv genesis.json ~/.sei/config
+
+SEEDS="400f3d9e30b69e78a7fb891f60d76fa3c73f0ecc@sei.rpc.kjnodes.com:16859,ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:11956"
+PEERS="d9bfa29e0cf9c4ce0cc9c26d98e5d97228f93b0b@sei.rpc.kjnodes.com:16856"
+sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.sei/config/config.toml
+
+sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.sei/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.sei/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.sei/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.sei/config/app.toml
+
+sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0.01usei,0.001ibc/6D45A5CD1AADE4B527E459025AC1A5AEF41AE99091EF3069F3FEAACAFCECCD21\"|" $HOME/.sei/config/app.toml
+
+echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
+
+sudo tee /etc/systemd/system/seid.service > /dev/null <<EOF
+[Unit]
+Description=sei Daemon
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=$(which seid) start
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable elysd
+
+seid tendermint unsafe-reset-all --home $HOME/.sei --keep-addr-book
+
+curl -o - -L https://snapshots.polkachu.com/snapshots/sei/sei_49414322.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.sei
+
+sudo systemctl daemon-reload
+sudo systemctl enable seid
+sudo systemctl start seid
+
+echo '=============== SETUP FINISHED ==================='
+echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
+echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
+echo -e "More commands:         ${CYAN}$GITHUB${NC}"
