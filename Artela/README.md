@@ -12,6 +12,6 @@ Export wallet -> private key -> Import metamask
 
 Create a validator
 
-    artelad tx staking create-validator --amount 1000000art --pubkey $(artelad tendermint show-validator) --moniker "Moniker" --chain-id artela_11822-1 --commission-rate 0.1 --commission-max-rate 0.20 --commission-max-change-rate 0.05 --min-self-delegation 1 --from wallet --gas-adjustment 1.4 --gas auto --gas-prices 0.025art -y
+    artelad tx staking create-validator --amount 900000000000000000uart --pubkey $(artelad tendermint show-validator) --moniker "Moniker" --chain-id artela_11822-1 --commission-rate 0.1 --commission-max-rate 0.20 --commission-max-change-rate 0.05 --min-self-delegation 1 --from wallet --gas-adjustment 1.4 --gas auto --gas-prices 200000uart -y
 
     
