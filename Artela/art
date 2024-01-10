@@ -1,0 +1,104 @@
+#!/bin/bash
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝"
+echo "Gitbook: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+read -r -p "Enter node moniker: " NODE_MONIKER
+
+CHAIN_ID="artela_11822-1"
+CHAIN_DENOM="artela"
+BINARY_NAME="artelad"
+GITHUB="https://github.com/NodeValidatorVN"
+BINARY_VERSION_TAG="v0.4.7-rc4"
+
+echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
+echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
+echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
+echo -e "Binary version tag:  ${CYAN}$BINARY_VERSION_TAG${NC}"
+
+sleep 1
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "\e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.21.5" 
+cd $HOME 
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" 
+sudo rm -rf /usr/local/go 
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" 
+rm "go$ver.linux-amd64.tar.gz"
+
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
+echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+
+cd $HOME
+rm -rf artela
+git clone https://github.com/artela-network/artela
+cd artela
+git checkout v0.4.7-rc4
+make install
+
+artelad config chain-id $CHAIN_ID
+artelad init "$NODE_MONIKER" --chain-id $CHAIN_ID
+
+wget -O $HOME/.artelad/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Artela/genesis.json"
+wget -O $HOME/.artelad/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Artela/addrbook.json"
+
+SEEDS=""
+PEERS="b23bc610c374fd071c20ce4a2349bf91b8fbd7db@65.108.72.233:11656"
+sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.artelad/config/config.toml
+
+sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.artelad/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.artelad/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.artelad/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.artelad/config/app.toml
+
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.025art"|g' $HOME/.artelad/config/app.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.artelad/config/config.toml
+
+echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
+
+sudo tee /etc/systemd/system/artelad.service > /dev/null << EOF
+[Unit]
+Description=artela node
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=$(which artelad) start
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=10000
+[Install]
+WantedBy=multi-user.target
+EOF
+
+artelad tendermint unsafe-reset-all --home $HOME/.artelad --keep-addr-book
+
+curl -L https://t-ss.nodeist.net/artela/snapshot_latest.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.artelad --strip-components 2
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable artelad
+sudo systemctl start artelad
+
+echo '=============== SETUP FINISHED ==================='
+echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
+echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
+echo -e "More commands:         ${CYAN}$GITHUB${NC}"
