@@ -96,6 +96,7 @@ curl -L https://t-ss.nodeist.net/artela/snapshot_latest.tar.lz4 | lz4 -dc - | ta
 sudo systemctl daemon-reload
 sudo systemctl enable artelad
 sudo systemctl start artelad
+source $HOME/.bash_profile
 
 echo '=============== SETUP FINISHED ==================='
 echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
