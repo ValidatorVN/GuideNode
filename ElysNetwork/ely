@@ -20,7 +20,7 @@ CHAIN_ID="elystestnet-1"
 CHAIN_DENOM="elys"
 BINARY_NAME="elysd"
 GITHUB="https://github.com/NodeValidatorVN"
-BINARY_VERSION_TAG="v0.19.0"
+BINARY_VERSION_TAG="v0.24.0"
 
 echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
 echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
