@@ -20,7 +20,7 @@ CHAIN_ID="elystestnet-1"
 CHAIN_DENOM="elys"
 BINARY_NAME="elysd"
 GITHUB="https://github.com/NodeValidatorVN"
-BINARY_VERSION_TAG="v0.24.0"
+BINARY_VERSION_TAG="v0.26.0"
 
 echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
 echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
@@ -52,9 +52,10 @@ cd || return
 rm -rf elys
 git clone https://github.com/elys-network/elys elys
 cd elys
-git checkout v0.24.0
+git checkout v0.26.0
 make install
 elysd version
+source $HOME/.bash_profile
 
 elysd config chain-id $CHAIN_ID
 elysd init "$NODE_MONIKER" --chain-id $CHAIN_ID
@@ -100,6 +101,7 @@ curl -o - -L https://ss-t.elys.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -
 sudo systemctl daemon-reload
 sudo systemctl enable elysd
 sudo systemctl start elysd
+source $HOME/.bash_profile
 
 echo '=============== SETUP FINISHED ==================='
 echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
