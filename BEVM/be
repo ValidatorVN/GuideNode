@@ -53,10 +53,10 @@ ExecStart=/usr/bin/bevm \
 --chain=testnet --name="$MONIKER" \
 --pruning=archive \
 --telemetry-url "wss://telemetry.bevm.io/submit 0" \
+
 [Install]
 WantedBy=multi-user.target
 EOF
-
 sudo systemctl daemon-reload
 sudo systemctl enable bevmd
 sudo systemctl restart bevmd
