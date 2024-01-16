@@ -175,7 +175,7 @@ Upload your PR https://github.com/anoma/namada-shielded-expedition
 
 
 ```bash
-cd $HOME && wget -q -O grafana.sh https://raw.githubusercontent.com/systemd-run/manuals/main/namada/grafana.sh && chmod +x grafana.sh && ./grafana.sh
+cd $HOME && wget -q -O grafana.sh https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Namada/grafana.sh && chmod +x grafana.sh && ./grafana.sh
 
 
 #Grafana is accessible at: http://localhost:9346
