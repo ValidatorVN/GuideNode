@@ -1,3 +1,8 @@
+# Public Endpoints:
+
+    RPC: https://blockx-rpc.validatorvn.com/
+    API: https://blockx-api.validatorvn.com/
+
 # Auto Install
 
     wget -O blx https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Blockx/blx && chmod +x blx && ./blx
