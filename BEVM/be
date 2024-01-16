@@ -14,7 +14,7 @@ echo "Chanel: https://t.me/ValidatorVN"
 echo "Github: https://github.com/NodeValidatorVN"
 echo -e "\e[0m"
 
-read -r -p "Enter wallet moniker: " NODE_MONIKER
+read -r -p "Enter wallet address: " MONIKER
 
 CHAIN_ID="testnet0.1.1"
 CHAIN_DENOM="bevm"
