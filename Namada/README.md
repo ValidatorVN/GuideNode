@@ -195,7 +195,13 @@ Create a validator
       --commission-rate <enter-your-commission-rate> \
       --max-commission-rate-change <enter-decimal-rate> \
       --email $EMAIL
-      
+
+ Unjail
+
+    VALIDATOR_ALIAS="<your-validator-alias>"
+    SIGNING_KEYS="<your-signing-key(s)>"
+    namada client unjail-validator --validator $VALIDATOR_ALIAS --signing-keys $SIGNING_KEYS
+    
 ## INSTALL GRAFANA MONITORING
 
 
