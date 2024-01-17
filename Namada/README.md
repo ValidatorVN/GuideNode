@@ -110,7 +110,7 @@ Copy file
     sudo systemctl daemon-reload
     sudo systemctl enable namadad
 
-#ONLY for PRE genesis validator
+# ONLY for PRE genesis validator (2m6 Naan Pilot)
 
 Import mnemonic (wallet gen from namada extension make sence balances.toml file)
 
@@ -170,7 +170,32 @@ Upload your PR https://github.com/anoma/namada-shielded-expedition
 
 #End for PRE genesis validator ----------------------------------------------------------------------
 
+# Post-genesis validators (28k Naan)
 
+Create wallet
+
+    KEY_ALIAS="wallet"
+    namada wallet gen --alias $KEY_ALIAS
+
+Recover wallet
+
+    namadaw --pre-genesis derive --alias $ALIAS
+
+Fill your information:
+
+    export VALIDATOR_ALIAS="<your-validator-name>"
+    export EMAIL="<your-validator-email-for-communication>"
+
+Create a validator
+
+    namada client init-validator \
+      --alias $VALIDATOR_ALIAS \
+      --account-keys $KEY_ALIAS \
+      --signing-keys $KEY_ALIAS \
+      --commission-rate <enter-your-commission-rate> \
+      --max-commission-rate-change <enter-decimal-rate> \
+      --email $EMAIL
+      
 ## INSTALL GRAFANA MONITORING
 
 
