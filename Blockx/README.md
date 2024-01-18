@@ -35,7 +35,7 @@ Import Key
 
 Query Wallet Balance
 
-    blockxd q bank balances $(aurad keys show wallet -a)
+    blockxd q bank balances $(blockxd keys show wallet -a)
 
 Create New Validator
 
@@ -68,7 +68,7 @@ Edit Existing Validator
 
 Unjail Validator
 
-    blockxd tx slashing unjail --from wallet --chain-id blockx_100-1 --gas-prices 0.1uaura --gas-adjustment 1.5 --gas auto -y
+    blockxd tx slashing unjail --from wallet --chain-id blockx_100-1 --gas-prices 0.1abcx --gas-adjustment 1.5 --gas auto -y
 
 Signing Info
 
@@ -108,7 +108,7 @@ Redelegate
 
 Unbond
 
-    blockxd tx staking unbond $(blockxd keys show wallet --bech val -a) 1000000abcxa --from wallet --chain-id blockx_100-1 --gas-prices 0.1abcx --gas-adjustment 1.5 --gas auto -y
+    blockxd tx staking unbond $(blockxd keys show wallet --bech val -a) 1000000abcx --from wallet --chain-id blockx_100-1 --gas-prices 0.1abcx --gas-adjustment 1.5 --gas auto -y
 
 Send
 
