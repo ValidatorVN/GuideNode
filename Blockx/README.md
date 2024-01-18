@@ -88,7 +88,7 @@ View Validator Details
 
 Withdraw Rewards From All Validators
 
-    blockxd tx distribution withdraw-all-rewards --from wallet --chain-id blockx_100-1 --gas-prices 0.1uaura --gas-adjustment 1.5 --gas auto -y
+    blockxd tx distribution withdraw-all-rewards --from wallet --chain-id blockx_100-1 --gas-prices 0abcx --gas-adjustment 1.5 --gas auto -y
 
 Withdraw Commission And Rewards From Your Validator
 
