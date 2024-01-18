@@ -92,7 +92,7 @@ Withdraw Rewards From All Validators
 
 Withdraw Commission And Rewards From Your Validator
 
-    blockxd tx distribution withdraw-rewards $(aurad keys show wallet --bech val -a) --commission --from wallet --chain-id blockx_100-1 --gas-prices 0.1abcx --gas-adjustment 1.5 --gas auto -y
+    blockxd tx distribution withdraw-rewards $(blockxd keys show wallet --bech val -a) --commission --from wallet --chain-id blockx_100-1 --gas-prices 0.1abcx --gas-adjustment 1.5 --gas auto -y
 
 Delegate to yourself
 
