@@ -20,7 +20,7 @@ CHAIN_ID="blockx_100-1"
 CHAIN_DENOM="blockx"
 BINARY_NAME="blockxd"
 GITHUB="https://github.com/NodeValidatorVN"
-BINARY_VERSION_TAG="v0.1.0"
+BINARY_VERSION_TAG="v10.0.0"
 
 echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
 echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
@@ -50,13 +50,13 @@ echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
 cd $HOME
 rm -rf blockx
-git clone 
-cd blockx
-git checkout
-make install
+curl -LO https://github.com/defi-ventures/blockx-node-public-compiled/releases/download/v10.0.0/blockxd
+chmod +x blockxd
+mkdir -p $HOME/go/bin/
+mv blockxd $HOME/go/bin/
 
-artelad config chain-id $CHAIN_ID
-artelad init "$NODE_MONIKER" --chain-id $CHAIN_ID
+blockxd config chain-id $CHAIN_ID
+blockxd init "$NODE_MONIKER" --chain-id $CHAIN_ID
 
 wget -O $HOME/.blockxd/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Blockx/genesis.json"
 wget -O $HOME/.blockxd/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Blockx/addrbook.json"
@@ -89,7 +89,9 @@ LimitNOFILE=10000
 WantedBy=multi-user.target
 EOF
 
-blockxd tendermint unsafe-reset-all --home $HOME/.artelad --keep-addr-book
+blockxd tendermint unsafe-reset-all --home $HOME/.blockxd --keep-addr-book
+SNAP_NAME=$(curl -s https://ss.blockx.nodestake.org/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+curl -o - -L https://ss.blockx.nodestake.org/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.blockxd
 
 sudo systemctl daemon-reload
 sudo systemctl enable blockxd
