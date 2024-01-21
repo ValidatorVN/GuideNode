@@ -40,7 +40,7 @@ Query Wallet Balance
 Create New Validator
 
     blockxd tx staking create-validator \
-    --amount=1000000uaura \
+    --amount=1000000abcx \
     --pubkey=$(blockxd tendermint show-validator) \
     --moniker="Moniker" \
     --chain-id=blockx_100-1 \
@@ -88,7 +88,7 @@ View Validator Details
 
 Withdraw Rewards From All Validators
 
-    blockxd tx distribution withdraw-all-rewards --from wallet --chain-id blockx_100-1 --gas-prices 0abcx --gas-adjustment 1.5 --gas auto -y
+    blockxd tx distribution withdraw-all-rewards --from wallet --chain-id blockx_100-1 --gas-prices 0.1abcx --gas-adjustment 1.5 --gas auto -y
 
 Withdraw Commission And Rewards From Your Validator
 
