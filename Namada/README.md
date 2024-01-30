@@ -52,7 +52,7 @@ Install rust
 
 #Setting up vars
 
-    echo "export NAMADA_TAG=v0.30.0" >> ~/.bash_profile
+    echo "export NAMADA_TAG=v0.30.3" >> ~/.bash_profile
     echo "export CBFT=v0.37.2" >> ~/.bash_profile
     echo "export NAMADA_CHAIN_ID=wait for announce" >> ~/.bash_profile
     echo "export WALLET=wallet" >> ~/.bash_profile
