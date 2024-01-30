@@ -1,7 +1,3 @@
-## Namada Auto-Install
-
-    wget -O nam https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Namada/nam && chmod +x nam && ./nam
-
 ## Namada Manual Setup  
 
 Install update and libs
