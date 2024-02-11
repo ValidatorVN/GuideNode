@@ -34,7 +34,7 @@ Create New Validator
     --commission-max-change-rate 0.01 \
     --min-self-delegation 1 \
     --pubkey $(pryzmd tendermint show-validator) \
-    --moniker "$MONIKER" \
+    --moniker "$NODE_MONIKER" \
     --chain-id indigo-1 \
     --fees 3000upryzm \
     -y
