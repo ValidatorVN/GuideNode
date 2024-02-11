@@ -46,3 +46,7 @@ Create New Validator
     --chain-id indigo-1 \
     --fees 3000upryzm \
     -y
+
+Delete node
+
+    sudo systemctl stop pryzmd && sudo systemctl disable pryzmd && sudo rm /etc/systemd/system/pryzmd.service && sudo systemctl daemon-reload && rm -rf $HOME/.pryzm && rm -rf pryzm && sudo rm -rf $(which pryzmd)
