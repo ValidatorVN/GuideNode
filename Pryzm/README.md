@@ -24,6 +24,10 @@ Query Wallet Balance
 
     pryzmd q bank balances $(pryzmd keys show wallet -a)
 
+Sync info
+
+    pryzmd status 2>&1 | jq .SyncInfo
+
 Create New Validator
 
     pryzmd tx staking create-validator \
