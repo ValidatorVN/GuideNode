@@ -28,6 +28,10 @@ Sync info
 
     pryzmd status 2>&1 | jq .SyncInfo
 
+Check logs
+
+    sudo journalctl -fu pryzmd -o cat
+
 Create New Validator
 
     pryzmd tx staking create-validator \
