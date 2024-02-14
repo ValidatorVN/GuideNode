@@ -32,7 +32,7 @@ Check logs
 
     sudo journalctl -fu pryzmd -o cat
 
-Create New Validator
+Create New Validator: *** replace "Moniker" -> YourName ***
 
     pryzmd tx staking create-validator \
     --amount 1000000upryzm \
@@ -42,7 +42,7 @@ Create New Validator
     --commission-max-change-rate 0.01 \
     --min-self-delegation 1 \
     --pubkey $(pryzmd tendermint show-validator) \
-    --moniker "$NODE_MONIKER" \
+    --moniker "Moniker" \
     --chain-id indigo-1 \
     --fees 3000upryzm \
     -y
