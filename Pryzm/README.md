@@ -3,6 +3,10 @@
     RPC: https://pryzm-prc.validatorvn.com/
     API: https://pryzm-api.validatorvn.com/
 
+# Peer:
+
+    11976618c5ccb90d7ea0cd99472968f12477bf54@64.23.128.252:26656
+
 # Auto Install
 
     wget -O prz https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Pryzm/prz && chmod +x prz && ./prz
