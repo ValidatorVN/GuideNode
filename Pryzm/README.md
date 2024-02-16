@@ -1,3 +1,8 @@
+# Public Endpoints:
+
+    RPC: https://pryzm-prc.validatorvn.com/
+    API: https://pryzm-api.validatorvn.com/
+
 # Auto Install
 
     wget -O prz https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Pryzm/prz && chmod +x prz && ./prz
