@@ -1,0 +1,104 @@
+#!/bin/bash
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝"
+echo "Gitbook: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+read -r -p "Enter node moniker: " NODE_MONIKER
+
+CHAIN_ID="self-dev-1"
+CHAIN_DENOM="self"
+BINARY_NAME="selfchaind"
+GITHUB="https://github.com/NodeValidatorVN"
+BINARY_VERSION_TAG="devnet"
+
+echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
+echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
+echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
+echo -e "Binary version tag:  ${CYAN}$BINARY_VERSION_TAG${NC}"
+
+sleep 1
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "\e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+cd $HOME
+VER="1.20.5"
+wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
+rm "go$VER.linux-amd64.tar.gz"
+[ ! -f ~/.bash_profile ] && touch ~/.bash_profile
+echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
+source $HOME/.bash_profile
+[ ! -d ~/go/bin ] && mkdir -p ~/go/bin
+
+echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+
+cd $HOME
+mkdir -p $HOME/go/bin/
+wget https://ss-t.self.nodestake.org/selfchaind
+chmod +x selfchaind
+mv selfchaind $HOME/go/bin/
+selfchaind version
+
+selfchaind config chain-id $CHAIN_ID
+selfchaind init "$NODE_MONIKER" --chain-id $CHAIN_ID
+
+wget -O $HOME/.selfchain/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Selfchain/genesis.json"
+wget -O $HOME/.selfchain/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Selfchain/addrbook.json"
+
+SEEDS="6dffc4d6f3a59da646807034f2bd04124971805b@rpc-t.selfchain.nodestake.org:666"
+PEERS="2425d2ba5f493a10d4decd0fb42ef47dc13efec2@206.189.206.88:26656,d6585951e41b0eddb0d7721f3927b195688b95a4@5.78.66.239:26656,35f478c534e2d58dc2c4acdf3eb22eeb6f23357f@165.232.125.66:26656,20acbc925fd59afa2dee3c1c7e4e691f470d4ecc@194.163.176.105:34656,34d1145cdacad0548fa62e034b02a00c3884d2f5@194.163.165.176:33656,f282af2ba286abb9d4aab611a8f39176c26d6928@213.239.207.175:61656,543b57e573d3df58072a375ae31fe54904ec9320@95.217.107.96:26656,ca4b6131d616d4d5930e50f1f557950f17fe4091@188.166.218.244:26656,0df9b2a46b836020516fb53c53c042f820eab1cb@65.108.229.93:38656,e8502eb858f555051f3f80edc13f46ea942e7507@23.111.23.233:26656,d3b5b6ca39c8c62152abbeac4669816166d96831@165.22.24.236:26656,09232328cb361431993f77c5e3a220d93b5ed6dd@46.166.170.57:26656"
+sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.selfchain/config/config.toml
+
+sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.selfchain/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.selfchain/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"20\"/" $HOME/.selfchain/config/app.toml
+
+sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.005uself"|g' $HOME/.selfchain/config/app.toml
+sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.selfchain/config/config.toml
+sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.selfchain/config/config.toml
+
+echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
+
+sudo tee /etc/systemd/system/selfchaind.service > /dev/null <<EOF
+[Unit]
+Description=selfchaind Daemon
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=$(which selfchaind) start
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable selfchaind
+
+SNAP_NAME=$(curl -s https://ss-t.selfchain.nodestake.org/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+curl -o - -L https://ss-t.selfchain.nodestake.org/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.selfchain
+
+sudo systemctl restart selfchaind
+source $HOME/.bash_profile
+
+echo '=============== SETUP FINISHED ==================='
+echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
+echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
+echo -e "More commands:         ${CYAN}$GITHUB${NC}"
