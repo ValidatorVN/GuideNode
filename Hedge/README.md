@@ -1,3 +1,9 @@
+# Public Endpoints:
+
+    RPC: https://hedge-rpc.validatorvn.com/
+    API: https://hedge-api.validatorvn.com/
+    Peer: 3b058acd78da7162c00fe022b79b46f1b6cb1e02@hedge.validatorvn.com:10076
+    
 # Manual Install
 
 Update && Upgrade:
@@ -79,3 +85,24 @@ Create Service:
 Check Logs:
 
     sudo systemctl start hedged && journalctl -u hedged -f -o cat
+
+Statesync:
+
+    sudo systemctl stop hedged
+    hedged tendermint unsafe-reset-all --home ~/.hedge/ --keep-addr-book
+    SNAP_RPC="https://hedge-rpc.validatorvn.com:443"
+    
+    LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+    BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
+    TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+    echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+    sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+    s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+    s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" ~/.hedge/config/config.toml
+    more ~/.hedge/config/config.toml | grep 'rpc_servers'
+    more ~/.hedge/config/config.toml | grep 'trust_height'
+    more ~/.hedge/config/config.toml | grep 'trust_hash'
+
+    sudo systemctl restart hedged && journalctl -u blockxd -f -o cat
