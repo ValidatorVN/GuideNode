@@ -1,0 +1,684 @@
+{
+  "genesis_time": "2024-02-01T17:55:07.164705386Z",
+  "chain_id": "berberis-1",
+  "initial_height": "1",
+  "consensus_params": {
+    "block": {
+      "max_bytes": "2000000",
+      "max_gas": "20000000"
+    },
+    "evidence": {
+      "max_age_num_blocks": "100000",
+      "max_age_duration": "172800000000000",
+      "max_bytes": "1048576"
+    },
+    "validator": {
+      "pub_key_types": [
+        "ed25519"
+      ]
+    },
+    "version": {
+      "app": "0"
+    }
+  },
+  "app_hash": "",
+  "app_state": {
+    "07-tendermint": null,
+    "auth": {
+      "params": {
+        "max_memo_characters": "256",
+        "tx_sig_limit": "7",
+        "tx_size_cost_per_byte": "10",
+        "sig_verify_cost_ed25519": "590",
+        "sig_verify_cost_secp256k1": "1000"
+      },
+      "accounts": [
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge19seg70nnk9lccvhgv4s9hh5a9eunp87xl4zsce",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge19l730qk0euq92qfsphfv8zt0v6zamt7kqxvel5",
+          "pub_key": null,
+          "account_number": "1",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge14uya0r6qm8p8dp22c9dxr5qpj6yd00nkt3040d",
+          "pub_key": null,
+          "account_number": "2",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1xn4tc8nac29ljrxv9qdpukx3nd3hv5kaft8ldh",
+          "pub_key": null,
+          "account_number": "3",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge140cmm0lfalcu9rqkn0de3hs59navk4vuvrzsk6",
+          "pub_key": null,
+          "account_number": "4",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1a838zwfl83pkv9vnumzv8dem5wyz53eegplmuz",
+          "pub_key": null,
+          "account_number": "5",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1zvslk9nrwul36f9kggz2sp0ahfqckj329m9any",
+          "pub_key": null,
+          "account_number": "6",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1ednagu4773m5mh3zsang0qk2fpqp9zvg6h6yfa",
+          "pub_key": null,
+          "account_number": "7",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1gw28rxnrrsdn4agw4f4ygnalxp03nsvnajdsmx",
+          "pub_key": null,
+          "account_number": "8",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge15yggerfv8vs8p05ug5v8l5h7t0atrfxuctvw8e",
+          "pub_key": null,
+          "account_number": "9",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1d24x9jz65v3c3jm383sxmrvywxrx797henfsxh",
+          "pub_key": null,
+          "account_number": "10",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1hzrc0jdjmqqa45ffaz3fp0j8pzu2v03ez0gg9h",
+          "pub_key": null,
+          "account_number": "11",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge14qgracnea3r7tkf7454k3xhvze0scf6h7wq0mg",
+          "pub_key": null,
+          "account_number": "12",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1j9mzradg9kx6ef6tks7xwrenvfrrz3y5ax50vd",
+          "pub_key": null,
+          "account_number": "13",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1wvwu4tugqyck86cljus0ltc6tc5ulpk7u4qy6r",
+          "pub_key": null,
+          "account_number": "14",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1yvwknwp03y7k0qqp7s3havfmzwcaevq4l5wa7y",
+          "pub_key": null,
+          "account_number": "15",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1zcf3vjz0uz4x27w9v3w0s6ttshw6hcy2fyf7rv",
+          "pub_key": null,
+          "account_number": "16",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1vrkvgsku3n20kgq4yezwd43y737mlmr7485n48",
+          "pub_key": null,
+          "account_number": "17",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1xvkxd47v5mgqt9frfdvrr7tgqnh0g09hxn58gy",
+          "pub_key": null,
+          "account_number": "18",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "hedge1ke2xlmfrrp0lvp3e9dxlzr5lf62v3dagwzazld",
+          "pub_key": null,
+          "account_number": "19",
+          "sequence": "0"
+        }
+      ]
+    },
+    "authz": {
+      "authorization": []
+    },
+    "bank": {
+      "params": {
+        "send_enabled": [],
+        "default_send_enabled": true
+      },
+      "balances": [
+        {
+          "address": "hedge1zvslk9nrwul36f9kggz2sp0ahfqckj329m9any",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "315000000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1zcf3vjz0uz4x27w9v3w0s6ttshw6hcy2fyf7rv",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1yvwknwp03y7k0qqp7s3havfmzwcaevq4l5wa7y",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge19seg70nnk9lccvhgv4s9hh5a9eunp87xl4zsce",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "48000000000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge19l730qk0euq92qfsphfv8zt0v6zamt7kqxvel5",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "36000000000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1xvkxd47v5mgqt9frfdvrr7tgqnh0g09hxn58gy",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1xn4tc8nac29ljrxv9qdpukx3nd3hv5kaft8ldh",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "315000000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1gw28rxnrrsdn4agw4f4ygnalxp03nsvnajdsmx",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "168750000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1vrkvgsku3n20kgq4yezwd43y737mlmr7485n48",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1d24x9jz65v3c3jm383sxmrvywxrx797henfsxh",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "168750000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1wvwu4tugqyck86cljus0ltc6tc5ulpk7u4qy6r",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1j9mzradg9kx6ef6tks7xwrenvfrrz3y5ax50vd",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge15yggerfv8vs8p05ug5v8l5h7t0atrfxuctvw8e",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "168750000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge14qgracnea3r7tkf7454k3xhvze0scf6h7wq0mg",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge140cmm0lfalcu9rqkn0de3hs59navk4vuvrzsk6",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "315000000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge14uya0r6qm8p8dp22c9dxr5qpj6yd00nkt3040d",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "315000000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1ke2xlmfrrp0lvp3e9dxlzr5lf62v3dagwzazld",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1hzrc0jdjmqqa45ffaz3fp0j8pzu2v03ez0gg9h",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "112500000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1ednagu4773m5mh3zsang0qk2fpqp9zvg6h6yfa",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "168750000000"
+            }
+          ]
+        },
+        {
+          "address": "hedge1a838zwfl83pkv9vnumzv8dem5wyz53eegplmuz",
+          "coins": [
+            {
+              "denom": "uhedge",
+              "amount": "315000000000"
+            }
+          ]
+        }
+      ],
+      "supply": [
+        {
+          "denom": "uhedge",
+          "amount": "87262500000000"
+        }
+      ],
+      "denom_metadata": [
+        {
+          "description": "The native staking token of the Hedge blockchain.",
+          "denom_units": [
+            {
+              "denom": "hedge",
+              "exponent": 0,
+              "aliases": []
+            },
+            {
+              "denom": "uhedge",
+              "exponent": 6,
+              "aliases": []
+            }
+          ],
+          "base": "hedge",
+          "display": "hedge",
+          "name": "Berberis HEDGE",
+          "symbol": "HEDGE"
+        }
+      ],
+      "send_enabled": []
+    },
+    "capability": {
+      "index": "1",
+      "owners": []
+    },
+    "consensus": null,
+    "crisis": {
+      "constant_fee": {
+        "denom": "uhedge",
+        "amount": "1000"
+      }
+    },
+    "distribution": {
+      "params": {
+        "community_tax": "0.020000000000000000",
+        "base_proposer_reward": "0.000000000000000000",
+        "bonus_proposer_reward": "0.000000000000000000",
+        "withdraw_addr_enabled": true
+      },
+      "fee_pool": {
+        "community_pool": []
+      },
+      "delegator_withdraw_infos": [],
+      "previous_proposer": "",
+      "outstanding_rewards": [],
+      "validator_accumulated_commissions": [],
+      "validator_historical_rewards": [],
+      "validator_current_rewards": [],
+      "delegator_starting_infos": [],
+      "validator_slash_events": []
+    },
+    "evidence": {
+      "evidence": []
+    },
+    "feegrant": {
+      "allowances": []
+    },
+    "feeibc": {
+      "identified_fees": [],
+      "fee_enabled_channels": [],
+      "registered_payees": [],
+      "registered_counterparty_payees": [],
+      "forward_relayers": []
+    },
+    "genutil": {
+      "gen_txs": [
+        {
+          "body": {
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "description": {
+                  "moniker": "berberis-1",
+                  "identity": "",
+                  "website": "",
+                  "security_contact": "",
+                  "details": ""
+                },
+                "commission": {
+                  "rate": "0.100000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "max_change_rate": "0.010000000000000000"
+                },
+                "min_self_delegation": "1",
+                "delegator_address": "hedge19seg70nnk9lccvhgv4s9hh5a9eunp87xl4zsce",
+                "validator_address": "hedgevaloper19seg70nnk9lccvhgv4s9hh5a9eunp87xnujyam",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "9bnSy07HIe76A5V3BPhAhDW7TvD/eZ4qWPmdSuwrh90="
+                },
+                "value": {
+                  "denom": "uhedge",
+                  "amount": "42000000000000"
+                }
+              }
+            ],
+            "memo": "7879005ab63c009743f4d8d220abd05b64cfee3d@172.17.0.3:26656",
+            "timeout_height": "0",
+            "extension_options": [],
+            "non_critical_extension_options": []
+          },
+          "auth_info": {
+            "signer_infos": [
+              {
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "A57amyLN2xBl15y9nxf2EGp3WmtRzUD1Eu8x5/cdcSKs"
+                },
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "sequence": "0"
+              }
+            ],
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "payer": "",
+              "granter": ""
+            },
+            "tip": null
+          },
+          "signatures": [
+            "1VDu1UBzCgG4HvuNxfHNDpDBjOo/vaRoQH1E6VfnIDcitFv2a58NePzHDSBolCfa4GhlISJPhy2eDvHW1WcE5g=="
+          ]
+        }
+      ]
+    },
+    "globalfee": {
+      "params": {
+        "minimum_gas_prices": [
+          {
+            "amount": "0.002500000000000000",
+            "denom": "uhedge"
+          }
+        ]
+      }
+    },
+    "gov": {
+      "starting_proposal_id": "1",
+      "deposits": [],
+      "votes": [],
+      "proposals": [],
+      "deposit_params": null,
+      "voting_params": {
+        "voting_period": "172800s"
+      },
+      "tally_params": null,
+      "params": {
+        "min_deposit": [
+          {
+            "denom": "uhedge",
+            "amount": "6000000"
+          }
+        ],
+        "max_deposit_period": "172800s",
+        "voting_period": "172800s",
+        "quorum": "0.334000000000000000",
+        "threshold": "0.500000000000000000",
+        "veto_threshold": "0.334000000000000000",
+        "min_initial_deposit_ratio": "0.000000000000000000",
+        "burn_vote_quorum": false,
+        "burn_proposal_deposit_prevote": false,
+        "burn_vote_veto": true
+      }
+    },
+    "ibc": {
+      "client_genesis": {
+        "clients": [],
+        "clients_consensus": [],
+        "clients_metadata": [],
+        "params": {
+          "allowed_clients": [
+            "06-solomachine",
+            "07-tendermint",
+            "09-localhost"
+          ]
+        },
+        "create_localhost": false,
+        "next_client_sequence": "0"
+      },
+      "connection_genesis": {
+        "connections": [],
+        "client_connection_paths": [],
+        "next_connection_sequence": "0",
+        "params": {
+          "max_expected_time_per_block": "30000000000"
+        }
+      },
+      "channel_genesis": {
+        "channels": [],
+        "acknowledgements": [],
+        "commitments": [],
+        "receipts": [],
+        "send_sequences": [],
+        "recv_sequences": [],
+        "ack_sequences": [],
+        "next_channel_sequence": "0"
+      }
+    },
+    "ibchooks": {},
+    "interchainaccounts": {
+      "controller_genesis_state": {
+        "active_channels": [],
+        "interchain_accounts": [],
+        "ports": [],
+        "params": {
+          "controller_enabled": true
+        }
+      },
+      "host_genesis_state": {
+        "active_channels": [],
+        "interchain_accounts": [],
+        "port": "icahost",
+        "params": {
+          "host_enabled": true,
+          "allow_messages": [
+            "*"
+          ]
+        }
+      }
+    },
+    "interchainquery": {
+      "host_port": "icqhost",
+      "params": {
+        "host_enabled": true,
+        "allow_queries": []
+      }
+    },
+    "mint": {
+      "minter": {
+        "inflation": "0.130000000000000000",
+        "annual_provisions": "0.000000000000000000"
+      },
+      "params": {
+        "mint_denom": "uhedge",
+        "inflation_rate_change": "0.130000000000000000",
+        "inflation_max": "0.100000000000000000",
+        "inflation_min": "0.100000000000000000",
+        "goal_bonded": "0.670000000000000000",
+        "blocks_per_year": "5259600"
+      }
+    },
+    "nft": {
+      "classes": [],
+      "entries": []
+    },
+    "packetfowardmiddleware": {
+      "params": {
+        "fee_percentage": "0.000000000000000000"
+      },
+      "in_flight_packets": {}
+    },
+    "params": null,
+    "slashing": {
+      "params": {
+        "signed_blocks_window": "100",
+        "min_signed_per_window": "0.500000000000000000",
+        "downtime_jail_duration": "600s",
+        "slash_fraction_double_sign": "0.050000000000000000",
+        "slash_fraction_downtime": "0.010000000000000000"
+      },
+      "signing_infos": [],
+      "missed_blocks": []
+    },
+    "staking": {
+      "params": {
+        "unbonding_time": "1814400s",
+        "max_validators": 100,
+        "max_entries": 7,
+        "historical_entries": 10000,
+        "bond_denom": "uhedge",
+        "min_commission_rate": "0.000000000000000000"
+      },
+      "last_total_power": "0",
+      "last_validator_powers": [],
+      "validators": [],
+      "delegations": [],
+      "unbonding_delegations": [],
+      "redelegations": [],
+      "exported": false
+    },
+    "transfer": {
+      "port_id": "transfer",
+      "denom_traces": [],
+      "params": {
+        "send_enabled": true,
+        "receive_enabled": true
+      },
+      "total_escrowed": []
+    },
+    "upgrade": {},
+    "vesting": {},
+    "wasm": {
+      "params": {
+        "code_upload_access": {
+          "permission": "Everybody",
+          "addresses": []
+        },
+        "instantiate_default_permission": "Everybody"
+      },
+      "codes": [],
+      "contracts": [],
+      "sequences": []
+    }
+  }
+}
