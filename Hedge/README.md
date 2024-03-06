@@ -34,9 +34,33 @@ Config Node:
     hedged config keyring-backend test
     hedged init "Moniker" --chain-id berberis-1
 
+    sudo wget -O $HOME/.hedge/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Hedge/genesis.json"
+    sudo wget -O $HOME/.hedge/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Hedge/addrbook.json"
+
+    sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"200000uhedge\"/;" ~/.hedge/config/app.toml
+    external_address=$(wget -qO- eth0.me)
+    sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.hedge/config/config.toml
+    peers=""
+    sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.hedge/config/config.toml
+    seeds="7879005ab63c009743f4d8d220abd05b64cfee3d@54.92.167.150:26656"
+    sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.hedge/config/config.toml
+    sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/.hedge/config/config.toml
+    sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/.hedge/config/config.toml
+
+Pruning and indexer
+
+    pruning="custom" && \
+    pruning_keep_recent="100" && \
+    pruning_keep_every="0" && \
+    pruning_interval="10" && \
+    sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.hedge/config/app.toml && \
+    sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.hedge/config/app.toml && \
+    sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.hedge/config/app.toml && \
+    sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.hedge/config/app.toml
+
 Create Service:
 
-    sudo tee /etc/systemd/system/artelad.service > /dev/null <<EOF
+    sudo tee /etc/systemd/system/hedged.service > /dev/null <<EOF
     [Unit]
     Description=Hedged Node
     After=network-online.target
