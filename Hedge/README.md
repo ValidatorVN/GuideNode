@@ -43,7 +43,7 @@ Config Node:
     sudo wget -O $HOME/.hedge/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Hedge/genesis.json"
     sudo wget -O $HOME/.hedge/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Hedge/addrbook.json"
 
-    sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"200000uhedge\"/;" ~/.hedge/config/app.toml
+    sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025uhedge\"/;" ~/.hedge/config/app.toml
     external_address=$(wget -qO- eth0.me)
     sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.hedge/config/config.toml
     peers=""
@@ -106,3 +106,13 @@ Statesync:
     more ~/.hedge/config/config.toml | grep 'trust_hash'
 
     sudo systemctl restart hedged && journalctl -u blockxd -f -o cat
+
+Check Balance:
+
+    hedged q bank balances $(hedged keys show wallet -a)
+
+Create a Validator:
+
+    hedged tx staking create-validator --amount=1000000uhedge --pubkey=$(hedged tendermint show-validator) --moniker="Moniker" --chain-id=berberis-1 --commission-rate=0.10 --commission-max-rate=0.20 --commission-max-change-rate=0.1 --min-self-delegation=1 --from=wallet --gas-prices=0.025uhedge --gas-adjustment=1.5 --gas=auto -y
+
+    
