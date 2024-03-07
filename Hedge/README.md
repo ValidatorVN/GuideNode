@@ -33,6 +33,8 @@ Install Node:
     chmod +x hedged
     mkdir -p $HOME/go/bin
     sudo mv hedged /go/bin
+    set -eux; \
+  wget -O /lib/libwasmvm.x86_64.so https://github.com/CosmWasm/wasmvm/releases/download/v1.3.0/libwasmvm.x86_64.so
 
 Config Node:
 
