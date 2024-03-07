@@ -2,7 +2,7 @@
 
     RPC: https://hedge-rpc.validatorvn.com/
     API: https://hedge-api.validatorvn.com/
-    Peer: 3b058acd78da7162c00fe022b79b46f1b6cb1e02@hedge.validatorvn.com:10076
+    Peer: bc64e8794465dd46399bf6f49a564098e09b0843@164.92.96.212:26656
     
 # Manual Install
 
