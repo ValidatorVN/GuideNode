@@ -107,6 +107,36 @@ Statesync:
 
     sudo systemctl restart hedged && journalctl -u blockxd -f -o cat
 
+# Command
+
+Add New Key
+
+    hedged keys add wallet
+
+Recover Existing Key
+
+    hedged keys add wallet --recover
+
+List All Keys
+
+    hedged keys list
+
+Delete Key
+
+    hedged keys delete wallet
+
+Export Key (save to wallet.backup)
+
+    hedged keys export wallet
+
+Import Key
+
+    hedged keys import wallet wallet.backup
+
+Query Wallet Balance
+
+    hedged q bank balances $(aurad keys show wallet -a) 
+
 Check Balance:
 
     hedged q bank balances $(hedged keys show wallet -a)
@@ -119,3 +149,30 @@ Unjail:
 
     hedged tx slashing unjail --from wallet --chain-id=berberis-1 --gas-prices=0.025uhedge --gas-adjustment=1.5 --gas=auto -y 
     
+Get Validator Info
+
+    hedged status 2>&1 | jq -r '.ValidatorInfo // .validator_info'
+
+Get Denom Info
+
+    hedged q bank denom-metadata -oj | jq
+
+Get Sync Status
+
+    hedged status 2>&1 | jq -r '.SyncInfo.catching_up // .sync_info.catching_up'
+
+Get Latest Height
+
+    hedged status 2>&1 | jq -r '.SyncInfo.latest_block_height // .sync_info.latest_block_height'
+
+Get Peer
+
+    echo $(hedged tendermint show-node-id)'@'$(curl -s ifconfig.me)':'$(cat $HOME/.hedge/config/config.toml | sed -n '/Address to listen for incoming connection/{n;p;}' | sed 's/.*://; s/".*//')
+
+Reset Node
+
+    hedged tendermint unsafe-reset-all --home $HOME/.hedge --keep-addr-book
+
+Remove Node
+
+    sudo systemctl stop hedged && sudo systemctl disable hedged && sudo rm /etc/systemd/system/hedged.service && sudo systemctl daemon-reload && rm -rf $HOME/.hedge && rm -rf hedge && sudo rm -rf $(which hedged) 
