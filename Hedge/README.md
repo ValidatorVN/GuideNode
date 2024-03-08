@@ -147,11 +147,11 @@ Create a Validator:
 
 Withdraw rewards:
 
-    hedged tx distribution withdraw-rewards $(hedged keys show wallet --bech val -a) --commission --from wallet --chain-id berberis-1 --gas-prices.025uhedge --gas-adjustment=1.5 --gas=auto -y 
+    hedged tx distribution withdraw-rewards $(hedged keys show wallet --bech val -a) --commission --from wallet --chain-id berberis-1 --gas-prices=0.025uhedge --gas-adjustment=1.5 --gas=auto -y
 
 Delegate to your self:
 
-    hedged tx staking delegate $(hedged keys show wallet --bech val -a) 1000000uhedge --from wallet --chain-id berberis-1 --gas-prices.025uhedge --gas-adjustment=1.5 --gas=auto -y 
+    hedged tx staking delegate $(hedged keys show wallet --bech val -a) 1000000uhedge --from wallet --chain-id berberis-1 --gas-prices=0.025uhedge --gas-adjustment=1.5 --gas=auto -y
 
 Unjail:
 
