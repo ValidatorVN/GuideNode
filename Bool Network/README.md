@@ -20,7 +20,7 @@ Server Preparation
 
 Install Docker
 
-   sudo apt install docker.io -y
+       sudo apt install docker.io -y
 
 Install Node
 
