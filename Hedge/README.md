@@ -47,13 +47,18 @@ Install GO:
 
 Install Node:
 
-    sudo wget -O hedged https://github.com/hedgeblock/testnets/releases/download/v0.1.0/hedged_linux_amd64_v0.1.0
-    chmod +x hedged
-    mkdir -p $HOME/go/bin
-    sudo mv hedged /go/bin
+Dowload ibwasmvm.x86_64.so
+
     set -eux; \
       wget -O /lib/libwasmvm.x86_64.so https://github.com/CosmWasm/wasmvm/releases/download/v1.3.0/libwasmvm.x86_64.so
 
+Dowload Hedged:
+
+    mkdir -p $HOME/go/bin
+    sudo wget -O hedged https://github.com/hedgeblock/testnets/releases/download/v0.1.0/hedged_linux_amd64_v0.1.0
+    chmod +x hedged
+    sudo mv hedged /go/bin
+    
 Config Node:
 
     hedged config chain-id berberis-1
