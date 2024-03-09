@@ -128,7 +128,7 @@ Statesync:
     more ~/.hedge/config/config.toml | grep 'trust_height'
     more ~/.hedge/config/config.toml | grep 'trust_hash'
 
-    sudo systemctl restart hedged && journalctl -u blockxd -f -o cat
+    sudo systemctl restart hedged && journalctl -u hedged -f -o cat
 
 # Command
 
