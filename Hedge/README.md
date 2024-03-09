@@ -158,7 +158,7 @@ Import Key
 
 Query Wallet Balance
 
-    hedged q bank balances $(aurad keys show wallet -a) 
+    hedged q bank balances $(hedged keys show wallet -a) 
 
 Check Balance:
 
