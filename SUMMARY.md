@@ -1,6 +1,6 @@
 # Table of contents
 
-* [🇻🇳 ValidatorVN](README.md)
+* [☮️ ValidatorVN](README.md)
 * [📍 Mainnet Network](mainnet-network.md)
 * [Aura Network](aura-network.md)
 * [Blockx Network](blockx-network.md)

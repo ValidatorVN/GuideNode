@@ -2,8 +2,8 @@
 description: >-
   Trusted Proof-of-Stake validator & Tendermint chain service provider. Active
   ecosystem contributor, community manager & moderator.
-cover: .gitbook/assets/teamplate yTB-02.png
-coverY: 75.08148148148149
+cover: .gitbook/assets/1500x500.jpg
+coverY: 0
 layout:
   cover:
     visible: true
@@ -20,7 +20,7 @@ layout:
     visible: true
 ---
 
-# 🇻🇳 ValidatorVN
+# ☮️ ValidatorVN
 
 Support the growth of Web3 and the Proof-of-Stake ecosystem with our non-custodial staking service.
 
@@ -40,9 +40,7 @@ Passport: [http://passport.aura.network/p/validatorvn](https://t.co/JVN7z4bqHd)&
 
 Moderator of [@bool\_official](https://twitter.com/bool\_official), [@Autonity](https://twitter.com/autonity\_) \
 Ambassador: [@MANTRA\_Chain](https://twitter.com/MANTRA\_Chain)\
-Partner:[@PactusChain](https://twitter.com/PactusChain)
-
-Node Guides: [http://github.com/NodeValidatorVN](https://t.co/K7nvoPimGX)&#x20;
+Partner:[@PactusChain](https://twitter.com/PactusChain)&#x20;
 
 VPS Digital Ocean: [http://bit.ly/DigitalOcean200](https://t.co/JNN50k39yW)&#x20;
 
