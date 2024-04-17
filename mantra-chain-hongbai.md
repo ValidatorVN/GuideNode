@@ -32,11 +32,11 @@ curl -o - -L https://snapshots.validatorvn.com/mantra/data.tar.lz4  | lz4 -c -d 
 
 ```
 sudo systemctl stop mantrachaind
-hedged tendermint unsafe-reset-all --home ~/.mantrachain/ --keep-addr-book
+mantrachaind tendermint unsafe-reset-all --home ~/.mantrachain/ --keep-addr-book
 SNAP_RPC="https://mantra-rpc-testnet.validatorvn.com:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
 TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
 
