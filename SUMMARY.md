@@ -14,3 +14,4 @@
 * [Hedge Block](hedge-block.md)
 * [Elys Network](elys-network.md)
 * [Swisstronik](swisstronik.md)
+* [Mantra Chain - Hongbai](mantra-chain-hongbai.md)
