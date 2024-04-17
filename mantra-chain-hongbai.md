@@ -18,7 +18,9 @@ description: >-
 
 Peer Node: 723496f58f26b90d604bdb18bde79c378e3a5e01@65.21.219.229:10016
 
+## Explorer
 
+[https://explorer.validatorvn.com/Mantra-Testnet](https://explorer.validatorvn.com/Mantra-Testnet/staking)
 
 ## Snapshots
 
