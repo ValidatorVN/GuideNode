@@ -32,6 +32,9 @@ sudo systemctl stop wardend
 wardend tendermint unsafe-reset-all --home ~/.warden/ --keep-addr-book
 SNAP_RPC="https://warden-rpc.validatorvn.com:443"
 
+cp $HOME/.warden/data/priv_validator_state.json $HOME/.warden/priv_validator_state.json.backup
+wardend tendermint unsafe-reset-all --home $HOME/.warden
+
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
 TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
@@ -44,6 +47,8 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" ~/.warden/config
 more ~/.warden/config/config.toml | grep 'rpc_servers'
 more ~/.warden/config/config.toml | grep 'trust_height'
 more ~/.warden/config/config.toml | grep 'trust_hash'
+
+sudo mv $HOME/.warden/priv_validator_state.json.backup $HOME/.warden/data/priv_validator_state.json
 
 sudo systemctl restart wardend && journalctl -u wardend -f -o cat
 ```
