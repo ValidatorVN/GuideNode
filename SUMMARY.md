@@ -15,3 +15,4 @@
 * [Elys Network](elys-network.md)
 * [Swisstronik](swisstronik.md)
 * [Mantra Chain - Hongbai](mantra-chain-hongbai.md)
+* [Warden Protocol](warden-protocol.md)
