@@ -13,7 +13,7 @@ description: Next-gen Modular L1 Blockchain Infrastructure for Omnichain Applica
 
 [https://warden-api.validatorvn.com/](https://warden-api.validatorvn.com/)
 
-Peer Node:&#x20;
+Peer Node: 10f75c25cddeb85de9fbea50f7df7440bc29e7a1@116.105.188.164:13657
 
 ## Explorer
 
@@ -22,7 +22,7 @@ Peer Node:&#x20;
 ## Snapshots
 
 ```
-curl -o - -L https://snapshots.validatorvn.com/warden/data.tar.lz4  | lz4 -c -d - | tar -x -C $HOME/.mantrachain
+curl -o - -L https://snapshot.validatorvn.com/warden/data.tar.lz4  | lz4 -c -d - | tar -x -C $HOME/.warden
 ```
 
 ## State Sync
