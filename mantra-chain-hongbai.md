@@ -32,6 +32,7 @@ curl -o - -L https://snapshot.validatorvn.com/mantra/data.tar.lz4  | lz4 -c -d -
 
 ```
 sudo systemctl stop mantrachaind
+cp $HOME/.mantrachain/data/priv_validator_state.json $HOME/.mantrachain/priv_validator_state.json.backup
 mantrachaind tendermint unsafe-reset-all --home ~/.mantrachain/ --keep-addr-book
 SNAP_RPC="https://mantra-rpc-testnet.validatorvn.com:443"
 
@@ -48,6 +49,7 @@ more ~/.mantrachain/config/config.toml | grep 'rpc_servers'
 more ~/.mantrachain/config/config.toml | grep 'trust_height'
 more ~/.mantrachain/config/config.toml | grep 'trust_hash'
 
+sudo mv $HOME/.mantrachain/priv_validator_state.json.backup $HOME/.mantrachain/data/priv_validator_state.json
 sudo systemctl restart mantrachaind && journalctl -u mantrachaind -f -o cat
 ```
 

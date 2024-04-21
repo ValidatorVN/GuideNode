@@ -33,7 +33,6 @@ wardend tendermint unsafe-reset-all --home ~/.warden/ --keep-addr-book
 SNAP_RPC="https://warden-rpc.validatorvn.com:443"
 
 cp $HOME/.warden/data/priv_validator_state.json $HOME/.warden/priv_validator_state.json.backup
-wardend tendermint unsafe-reset-all --home $HOME/.warden
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
