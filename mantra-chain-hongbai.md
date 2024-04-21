@@ -25,7 +25,7 @@ Peer Node: 723496f58f26b90d604bdb18bde79c378e3a5e01@65.21.219.229:10016
 ## Snapshots
 
 ```
-curl -o - -L https://snapshots.validatorvn.com/mantra/data.tar.lz4  | lz4 -c -d - | tar -x -C $HOME/.mantrachain
+curl -o - -L https://snapshot.validatorvn.com/mantra/data.tar.lz4  | lz4 -c -d - | tar -x -C $HOME/.mantrachain
 ```
 
 ## State Sync
