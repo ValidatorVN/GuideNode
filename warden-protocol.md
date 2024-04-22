@@ -22,7 +22,16 @@ Peer Node: 10f75c25cddeb85de9fbea50f7df7440bc29e7a1@116.105.188.164:13657
 ## Snapshots
 
 ```
-curl -o - -L https://snapshot.validatorvn.com/warden/data.tar.lz4  | lz4 -c -d - | tar -x -C $HOME/.warden
+sudo systemctl stop wardend
+
+cp $HOME/.warden/data/priv_validator_state.json $HOME/.warden/priv_validator_state.json.backup
+
+rm -rf $HOME/.warden/data $HOME/.warden/wasmPath
+curl https://snapshot.validatorvn.com/warden/data.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.warden
+
+mv $HOME/.warden/priv_validator_state.json.backup $HOME/.warden/data/priv_validator_state.json
+
+sudo systemctl restart wardend && sudo journalctl -u wardend -f -o cat
 ```
 
 ## State Sync
