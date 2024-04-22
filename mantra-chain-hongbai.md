@@ -25,7 +25,16 @@ Peer Node: 723496f58f26b90d604bdb18bde79c378e3a5e01@65.21.219.229:10016
 ## Snapshots
 
 ```
-curl -o - -L https://snapshot.validatorvn.com/mantra/data.tar.lz4  | lz4 -c -d - | tar -x -C $HOME/.mantrachain
+sudo systemctl stop mantrachaind
+
+cp $HOME/.mantrachain/data/priv_validator_state.json $HOME/.mantrachain/priv_validator_state.json.backup
+
+rm -rf $HOME/.mantrachain/data $HOME/.mantrachain/wasmPath
+curl https://snapshot.validatorvn.com/mantra/data.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.mantrachain
+
+mv $HOME/.mantrachain/priv_validator_state.json.backup $HOME/.mantrachain/data/priv_validator_state.json
+
+sudo systemctl restart mantrachaind && sudo journalctl -u mantrachaind -f -o cat
 ```
 
 ## State Sync
