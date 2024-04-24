@@ -37,7 +37,7 @@ sudo systemctl stop mantrachaind
 cp $HOME/.mantrachain/data/priv_validator_state.json $HOME/.mantrachain/priv_validator_state.json.backup
 
 rm -rf $HOME/.mantrachain/data $HOME/.mantrachain/wasmPath
-curl https://snapshot.validatorvn.com/mantra/snap_mantra.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.mantrachain
+curl https://snapshot.validatorvn.com/mantra/data.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.mantrachain
 
 mv $HOME/.mantrachain/priv_validator_state.json.backup $HOME/.mantrachain/data/priv_validator_state.json
 
