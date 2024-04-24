@@ -83,9 +83,6 @@ WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload
 sudo systemctl enable ogd.service
-EOF
-sudo systemctl daemon-reload
-sudo systemctl enable ogd
 
 evmosd tendermint unsafe-reset-all --home $HOME/.evmosd --keep-addr-book
 
