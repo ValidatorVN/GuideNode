@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝"
+echo "Gitbook: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+read -r -p "Enter node name: " NODE_MONIKER
+
+CHAIN_ID="zgtendermint_9000-1"
+CHAIN_DENOM="evmos"
+BINARY_NAME="evmosd"
+GITHUB="https://github.com/NodeValidatorVN"
+BINARY_VERSION_TAG="v1.0.0-testnet"
+
+echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
+echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
+echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
+echo -e "Binary version tag:  ${CYAN}$BINARY_VERSION_TAG${NC}"
+
+sleep 1
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "\e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+sudo rm -rf /usr/local/go
+curl -L https://go.dev/dl/go1.21.6.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
+source .bash_profile
+
+echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+
+wget https://snapshot.validatorvn.com/og/evmosd
+chmod +x evmosd
+mv evmosd /usr/local/bin/
+evmosd version
+
+evmosd config chain-id $CHAIN_ID
+evmosd init "$NODE_MONIKER" --chain-id $CHAIN_ID
+
+wget -O $HOME/.evmosd/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/0G/genesis.json"
+wget -O $HOME/.evmosd/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/0G/addrbook.json"
+
+PEERS="c597d920f965da0d6ca37b1a3a91be7d4586d78d@78.46.71.227:56656,312d540450524b1332cdb2af1ddffed179e47601@88.99.254.62:21656,32109a1087bcd2e8c00cd975c39353e3dd799b5f@95.217.95.10:26656,9a8ac6f12e1d1be5c999ed5184cde64473a297c3@149.102.152.54:26656,6fbb5fdd7c6ef88fa89db0cb0ffe8086ee63d511@135.181.6.189:26656,ca31cf94d5878eeb74eda79d01a28e6d85e5e50d@5.104.82.110:26656,19892d9b9e7eec08c07b48b52a59c5f666bdd6fd@135.181.75.121:26656,5e3fef852150c077adfbfebfba840a01d0b0801d@37.27.59.176:17656,325c942608727d45f9cb87fb2c4b4fdd6be7e314@95.217.47.14:26656,e444f30ce4bf9783ee4748f7d9b075611336594c@84.247.156.62:26656,664d2d4f0be9fa44403eb3942e68db17581be619@178.170.39.168:61156"
+SEEDS="8c01665f88896bca44e8902a30e4278bed08033f@54.241.167.190:26656,b288e8b37f4b0dbd9a03e8ce926cd9c801aacf27@54.176.175.48:26656,8e20e8e88d504e67c7a3a58c2ea31d965aa2a890@54.193.250.204:26656,e50ac888b35175bfd4f999697bdeb5b7b52bfc06@54.215.187.94:26656,c9b8e7e220178817c84c7268e186b231bc943671@og-testnet-seed.itrocket.net:47656"
+sed -i -e "s/^seeds =./seeds = "$SEEDS"/; s/^persistent_peers =./persistent_peers = "$PEERS"/" $HOME/.evmosd/config/config.toml
+
+sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.evmosd/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.evmosd/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.evmosd/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.evmosd/config/app.toml
+
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.0018ibc/2180E84E20F5679FCC760D8C165B60F42065DEF7F46A72B447CFF1B7DC6C0A65,0.00025ibc/E2D2F6ADCC68AA3384B2F5DFACCA437923D137C14E86FB8A10207CF3BED0C8D4,0.00025uelys"|g' $HOME/.elys/config/app.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.elys/config/config.toml
+
+echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
+
+sudo tee /etc/systemd/system/elysd.service > /dev/null <<EOF
+[Unit]
+Description=elysd Daemon
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=$(which elysd) start
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable elysd
+
+elysd tendermint unsafe-reset-all --home $HOME/.elys --keep-addr-book
+
+SNAP_NAME=$(curl -s https://ss-t.elys.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+curl -o - -L https://ss-t.elys.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/.elys
+
+sudo systemctl daemon-reload
+sudo systemctl enable elysd
+sudo systemctl start elysd
+source $HOME/.bash_profile
+
+echo '=============== SETUP FINISHED ==================='
+echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
+echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
+echo -e "More commands:         ${CYAN}$GITHUB${NC}"
