@@ -12,6 +12,7 @@
 * [Zeta Chain](zeta-chain.md)
 * [📍 Testnet Network](testnet-network.md)
 * [Hedge Block](hedge-block.md)
+* [Side Protocol](side-protocol.md)
 * [Elys Network](elys-network.md)
 * [Swisstronik](swisstronik.md)
 * [Mantra Chain - Hongbai](mantra-chain-hongbai.md)
