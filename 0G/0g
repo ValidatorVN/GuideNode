@@ -68,20 +68,21 @@ sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.evmosd/config/config.toml
 
 echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
 
-sudo tee /etc/systemd/system/ogd.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/ogd.service > /dev/null << EOF
 [Unit]
-Description=OG Node
-After=network.target
-
+Description=0G node service
+After=network-online.target
 [Service]
 User=$USER
-Type=simple
-ExecStart=$(which evmosd) start --home $HOME/.evmosd
+ExecStart=$(which evmosd) start
 Restart=on-failure
+RestartSec=10
 LimitNOFILE=65535
-
 [Install]
 WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable ogd.service
 EOF
 sudo systemctl daemon-reload
 sudo systemctl enable ogd
