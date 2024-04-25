@@ -35,7 +35,7 @@ sudo systemctl stop sided
 
 SNAP_RPC="https://side-rpc.validatorvn.com:443"
 
-cp $HOME/.sided/data/priv_validator_state.json $HOME/.sided/priv_validator_state.json.backup
+cp $HOME/.side/data/priv_validator_state.json $HOME/.side/priv_validator_state.json.backup
 sided tendermint unsafe-reset-all --home ~/.side/ --keep-addr-book
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \

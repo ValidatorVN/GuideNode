@@ -12,6 +12,7 @@
 * [Zeta Chain](zeta-chain.md)
 * [📍 Testnet Network](testnet-network.md)
 * [Hedge Block](hedge-block.md)
+* [Aligned Layer](aligned-layer.md)
 * [Side Protocol](side-protocol.md)
 * [Elys Network](elys-network.md)
 * [Swisstronik](swisstronik.md)
