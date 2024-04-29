@@ -2,7 +2,7 @@
 description: Next-gen Modular L1 Blockchain Infrastructure for Omnichain Applications
 ---
 
-# Warden Protocol
+# ✅ Warden Protocol
 
 [https://twitter.com/wardenprotocol](https://twitter.com/wardenprotocol)\
 [https://discord.gg/wardenprotocol](https://discord.gg/wardenprotocol)
@@ -61,9 +61,12 @@ sudo mv $HOME/.warden/priv_validator_state.json.backup $HOME/.warden/data/priv_v
 sudo systemctl restart wardend && journalctl -u wardend -f -o cat
 ```
 
+## Genesis & Addrbook
 
-
-
+```
+curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/WardenProtocol/genesis.json > $HOME/.warden/config/genesis.json
+curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/WardenProtocol/addrbook.json > $HOME/.warden/config/addrbook.json
+```
 
 
 
