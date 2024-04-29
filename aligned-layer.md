@@ -63,5 +63,7 @@ sudo systemctl restart alignedlayerd && journalctl -u alignedlayerd -f -o cat
 ## Genesis & Addrbook
 
 ```
+curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/AlignedLayer/genesis.json > $HOME/.alignedlayer/config/genesis.json
+curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/AlignedLayer/addrbook.json > $HOME/.alignedlayer/config/addrbook.json
 ```
 
