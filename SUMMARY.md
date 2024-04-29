@@ -5,6 +5,7 @@
 * [☑️ Aura Network](aura-network.md)
 * [☑️ Blockx Network](blockx-network.md)
 * [☑️ Dymension](dymension.md)
+* [☑️ Entangle](entangle.md)
 * [☑️ Nibiru Chain](nibiru-chain.md)
 * [☑️ Fetch Chain](fetch-chain.md)
 * [☑️ Shentu Chain](shentu-chain.md)
