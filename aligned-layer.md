@@ -4,7 +4,7 @@ description: >-
   @yetanotherco and @class_lambda.
 ---
 
-# Aligned Layer
+# ✅ Aligned Layer
 
 [https://twitter.com/alignedlayer](https://twitter.com/alignedlayer)\
 [https://discord.gg/alignedlayer](https://discord.gg/alignedlayer)
@@ -60,5 +60,8 @@ sudo systemctl restart alignedlayerd && journalctl -u alignedlayerd -f -o cat
 
 ```
 
+## Genesis & Addrbook
 
+```
+```
 
