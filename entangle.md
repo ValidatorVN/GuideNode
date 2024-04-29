@@ -10,7 +10,7 @@ description: Omnichain Made Easy.
 ## Public Endpoints
 
 [https://entangle-rpc.validatorvn.com/](https://entangle-rpc.validatorvn.com/)\
-[https://entangle-api.validatorvn.com](https://entangle-api.validatorvn.com)
+[https://entangle-api.validatorvn.com/](https://entangle-api.validatorvn.com/)
 
 ## Explorer
 
