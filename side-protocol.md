@@ -2,7 +2,7 @@
 description: 'The Extension Layer of #Bitcoin'
 ---
 
-# Side Protocol
+# ✅ Side Protocol
 
 [https://twitter.com/SideProtocol](https://twitter.com/SideProtocol)\
 [https://discord.gg/sideprotocol](https://discord.gg/sideprotocol)
@@ -56,7 +56,10 @@ sudo mv $HOME/.side/priv_validator_state.json.backup $HOME/.side/data/priv_valid
 sudo systemctl restart sided && journalctl -u sided -f -o cat
 ```
 
+## Genesis & Addrbook
 
-
-
+```
+curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/SideProtocol/genesis.json > $HOME/.side/config/genesis.json
+curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/SideProtocol/addrbook.json > $HOME/.side/config/addrbook.json
+```
 
