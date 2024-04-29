@@ -23,6 +23,16 @@ curl -Ls https://snapshot.validatorvn.com/entangle/genesis.json > $HOME/.entangl
 curl -Ls https://snapshot.validatorvn.com/entangle/addrbook.json > $HOME/.entangled/config/addrbook.json
 ```
 
+## Peers
+
+```
+# Configure Seeds and Peers
+PEERS="$(curl -sS https://entangle-rpc.validatorvn.com/net_info | jq -r '.result.peers[] | "(.node_info.id)@(.remote_ip):(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|
+|,|g;s|.$||')"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = "$PEERS"|" $HOME/.entangled/config/config.toml
+
+```
+
 ## Snapshots
 
 ```
