@@ -13,6 +13,7 @@
 * [☑️ Zeta Chain](zeta-chain.md)
 * [📍 Testnet Network](testnet-network.md)
 * [✅ Aligned Layer](aligned-layer.md)
+* [✅ Artela Network](artela-network.md)
 * [✅ Elys Network](elys-network.md)
 * [✅ Hedge Block](hedge-block.md)
 * [✅ Side Protocol](side-protocol.md)
