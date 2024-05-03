@@ -5,7 +5,7 @@ description: >-
   SDK ⚛️
 ---
 
-# Elys Network
+# ✅ Elys Network
 
 website: [https://elys.network/](https://elys.network/)\
 x: [https://twitter.com/elys\_network](https://twitter.com/elys\_network)\
@@ -107,7 +107,7 @@ sudo systemctl restart elysd && journalctl -u elysd -f -o cat | grep heigh t
 
 ```
 sudo systemctl stop elysd
-hedged tendermint unsafe-reset-all --home ~/.hedge/ --keep-addr-book
+elysd tendermint unsafe-reset-all --home ~/.hedge/ --keep-addr-book
 SNAP_RPC="https://elys-rpc.validatorvn.com:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
