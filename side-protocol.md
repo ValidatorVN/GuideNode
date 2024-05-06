@@ -85,7 +85,11 @@ curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/SideProtoc
 ```
 PEERS=$(curl -sS https://side-rpc.validatorvn.com/net_info | \
 jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | \
-awk -F ':' '{printf "%s:%s%s", $1, $(NF), NR==NF?ORS:","}')
+awk -F ':' '{printf "%s:%s%s", $1, $(NF), NR==NF?"":","}')
+echo "$PEERS"
+```
+
+```
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.side/config/config.toml
 sudo systemctl restart sided && journalctl -fu sided -o cat
 ```
