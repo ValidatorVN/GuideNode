@@ -4,7 +4,7 @@ description: >-
   EVM++
 ---
 
-# ✅ Artela Network
+# 🧊 Artela Network
 
 [https://twitter.com/Artela\_Network](https://twitter.com/Artela\_Network)\
 [https://discord.gg/artela](https://discord.gg/artela)

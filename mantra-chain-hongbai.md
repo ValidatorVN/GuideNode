@@ -4,7 +4,7 @@ description: >-
   enforcement of real world regulatory requirements.
 ---
 
-# Mantra Chain - Hongbai
+# 🧊 Mantra Chain - Hongbai
 
 [https://twitter.com/MANTRA\_Chain](https://twitter.com/MANTRA\_Chain)
 

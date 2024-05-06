@@ -1,5 +1,21 @@
 ---
 description: 'The Extension Layer of #Bitcoin'
+cover: .gitbook/assets/side.jpg
+coverY: 0
+layout:
+  cover:
+    visible: true
+    size: hero
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
 ---
 
 # 🧊 Side Protocol

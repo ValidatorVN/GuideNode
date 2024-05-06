@@ -4,7 +4,7 @@ description: >-
   Collective Intelligence, Asset Tokenization, Smart Healthcare, and more.
 ---
 
-# Orai Chain
+# 🧊 Orai Chain
 
 website: [https://orai.io/](https://orai.io/)\
 x: [https://twitter.com/oraichain](https://twitter.com/oraichain)\

@@ -5,7 +5,7 @@ description: >-
   SDK ⚛️
 ---
 
-# ✅ Elys Network
+# 🧊 Elys Network
 
 website: [https://elys.network/](https://elys.network/)\
 x: [https://twitter.com/elys\_network](https://twitter.com/elys\_network)\

@@ -4,7 +4,7 @@ description: >-
   volatility & unstable yields, unlock future yield, and maximize profits.
 ---
 
-# ✅ Pryzm
+# 🧊 Pryzm
 
 [https://twitter.com/Pryzm\_Zone](https://twitter.com/Pryzm\_Zone)\
 [https://discord.gg/pryzm](https://discord.gg/pryzm)

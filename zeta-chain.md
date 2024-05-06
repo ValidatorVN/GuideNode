@@ -5,7 +5,7 @@ description: >-
   chain.
 ---
 
-# Zeta Chain
+# 🧊 Zeta Chain
 
 link3.to: [https://link3.to/zetachain](https://link3.to/zetachain)
 

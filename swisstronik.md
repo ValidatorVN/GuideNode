@@ -4,7 +4,7 @@ description: >-
   protection and privacy, while remaining compliant | Built on @cosmos
 ---
 
-# Swisstronik
+# 🧊 Swisstronik
 
 website: [https://swisstronik.com/](https://swisstronik.com/)\
 twitter: [https://twitter.com/swisstronik](https://twitter.com/swisstronik)\

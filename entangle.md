@@ -2,7 +2,7 @@
 description: Omnichain Made Easy.
 ---
 
-# ☑️ Entangle
+# 🧊 Entangle
 
 [https://twitter.com/Entanglefi](https://twitter.com/Entanglefi)\
 [https://discord.gg/entangle](https://discord.gg/entangle)

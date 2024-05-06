@@ -2,7 +2,7 @@
 description: Next-gen Modular L1 Blockchain Infrastructure for Omnichain Applications
 ---
 
-# ✅ Warden Protocol
+# 🧊 Warden Protocol
 
 [https://twitter.com/wardenprotocol](https://twitter.com/wardenprotocol)\
 [https://discord.gg/wardenprotocol](https://discord.gg/wardenprotocol)

@@ -5,7 +5,7 @@ description: >-
   reliable.
 ---
 
-# Hedge Block
+# 🧊 Hedge Block
 
 website: [https://hedgeblock.io/](https://hedgeblock.io/)\
 x: [https://twitter.com/hedgeblockio](https://twitter.com/hedgeblockio)\

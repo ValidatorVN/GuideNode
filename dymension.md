@@ -5,7 +5,7 @@ description: >-
   things Dymension.
 ---
 
-# Dymension
+# 🧊 Dymension
 
 website: [https://dymension.xyz/](https://docs.dymension.xyz/)\
 docs: [https://docs.dymension.xyz/](https://docs.dymension.xyz/)\

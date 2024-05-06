@@ -4,7 +4,7 @@ description: >-
   leading the mass adoption of Web3 in emerging markets.
 ---
 
-# Aura Network
+# 🧊 Aura Network
 
 website: [https://aura.network/](https://aura.network/)\
 x: [https://twitter.com/AuraNetworkHQ](https://twitter.com/AuraNetworkHQ)\

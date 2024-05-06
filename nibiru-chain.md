@@ -4,7 +4,7 @@ description: >-
   powering a smart contract hub with DeFi, RWAs, and more. https://nibiru.fi
 ---
 
-# Nibiru Chain
+# 🧊 Nibiru Chain
 
 website: [https://nibiru.fi/](https://nibiru.fi/)\
 x: [https://twitter.com/NibiruChain](https://twitter.com/NibiruChain)\

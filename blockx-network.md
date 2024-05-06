@@ -1,4 +1,4 @@
-# Blockx Network
+# 🧊 Blockx Network
 
 BlockX Network is a Layer 1 Ethereum alternative blockchain that offers multi-chain operability, an off-chain oracle infrastructure, and enables sovereign digital identity for the next-gen of Web3.
 

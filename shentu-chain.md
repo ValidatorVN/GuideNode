@@ -4,7 +4,7 @@ description: >-
   https://linktr.ee/shentuchain
 ---
 
-# Shentu Chain
+# 🧊 Shentu Chain
 
 website: [https://www.shentu.technology/](https://www.shentu.technology/)\
 x: [https://twitter.com/ShentuChain](https://twitter.com/ShentuChain)\

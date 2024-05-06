@@ -4,7 +4,7 @@ description: >-
   services at scale, anytime and anywhere.
 ---
 
-# Fetch Chain
+# 🧊 Fetch Chain
 
 website: [https://fetch.ai/](https://fetch.ai/)\
 x: [https://twitter.com/Fetch\_ai](https://twitter.com/Fetch\_ai)\
