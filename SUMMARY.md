@@ -1,7 +1,7 @@
 # Table of contents
 
 * [☮️ ValidatorVN](README.md)
-* [📍 Mainnet Network](mainnet-network.md)
+* [⛓️ Mainnet Network](mainnet-network.md)
 * [🧊 Aura Network](aura-network.md)
 * [🧊 Blockx Network](blockx-network.md)
 * [🧊 Dymension](dymension.md)
@@ -11,7 +11,7 @@
 * [🧊 Shentu Chain](shentu-chain.md)
 * [🧊 Orai Chain](orai-chain.md)
 * [🧊 Zeta Chain](zeta-chain.md)
-* [📍 Testnet Network](testnet-network.md)
+* [⛓️ Testnet Network](testnet-network.md)
 * [🧊 Aligned Layer](aligned-layer.md)
 * [🧊 Artela Network](artela-network.md)
 * [🧊 Pryzm](pryzm.md)

@@ -18,7 +18,7 @@ layout:
     visible: true
 ---
 
-# 📍 Testnet Network
+# ⛓️ Testnet Network
 
 **generate ssh keys**
 

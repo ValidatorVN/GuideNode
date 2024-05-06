@@ -18,7 +18,7 @@ layout:
     visible: true
 ---
 
-# 📍 Mainnet Network
+# ⛓️ Mainnet Network
 
 **generate ssh keys**
 
