@@ -56,12 +56,9 @@ sided init "$NODE_MONIKER" --chain-id $CHAIN_ID
 wget -O $HOME/.side/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/SideProtocol/genesis.json"
 wget -O $HOME/.side/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/SideProtocol/addrbook.json"
 
-PEERS=$(curl -sS https://side-rpc.validatorvn.com/net_info | \
-jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | \
-awk -F ':' '{printf "%s:%s%s", $1, $(NF), NR==NF?"":","}')
-echo "$PEERS"
-
-sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.side/config/config.toml
+SEEDS="9c14080752bdfa33f4624f83cd155e2d3976e303@side-testnet-seed.itrocket.net:45656"
+PEERS="bbbf623474e377664673bde3256fc35a36ba0df1@side-testnet-peer.itrocket.net:45656,519453a49e25826c04c9d2779ec7b5971876665d@138.201.51.154:32004,59fa36770ef7f6cdbb4fe9c70c13b501c1a6b258@95.214.55.138:4656,a442702f898c77bd1d09ffbbc683946f437c2ac1@209.145.55.218:26656,d5e7f1a7d45b2ad19714d640038cfe8f9f870acc@65.109.80.26:26656,a5fd292715327ca65a8c305fe176166cbe0b8207@146.59.53.93:45656,c41075d4a0f6efc47c3e36a8008a933e603c4313@45.129.147.247:36656,db6fc589d5db96b5ff4e733c16afd4a00488ae96@168.119.10.134:22956,af499b4f78ac7ecf0c340242b973d7592e98db62@213.199.39.54:45656,df3cb7c20c0ca87926a06424a4aebe5cc485301d@54.39.107.180:45656"
+sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.side/config/config.toml
 
 sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.side/config/app.toml
 sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.side/config/app.toml
