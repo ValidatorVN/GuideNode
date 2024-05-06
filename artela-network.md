@@ -67,3 +67,16 @@ curl -L https://snapshot.validatorvn.com/artela/addrbook.json > $HOME/.artelad/c
 curl -L https://snapshot.validatorvn.com/artela/genesis.json > $HOME/.artelad/config/genesis.json
 ```
 
+## Live Peers
+
+```
+readarray -t PEER_ARRAY < <(curl -sS https://artela-rpc.validatorvn.com/net_info | \
+jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"')
+PEERS=$(IFS=,; echo "${PEER_ARRAY[*]}")
+echo "$PEERS"
+```
+
+```
+sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.artela/config/config.toml
+sudo systemctl restart artelad && journalctl -fu artelad -o cat
+```

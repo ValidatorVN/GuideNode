@@ -18,7 +18,7 @@ layout:
     visible: true
 ---
 
-# Galactica
+# 🧊 Galactica
 
 [https://discord.gg/galactica](http://discord.gg/galactica)\
 [https://galactica.com/](https://galactica.com/)
@@ -83,9 +83,9 @@ wget -O $HOME/.galactica/config/addrbook.json https://snapshot.validatorvn.com/g
 ## Live Peers
 
 ```
-PEERS=$(curl -sS https://galactica-rpc.validatorvn.com/net_info | \
-jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | \
-awk -F ':' '{printf "%s:%s%s", $1, $(NF), NR==NF?"":","}')
+readarray -t PEER_ARRAY < <(curl -sS https://galactica-rpc.validatorvn.com/net_info | \
+jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"')
+PEERS=$(IFS=,; echo "${PEER_ARRAY[*]}")
 echo "$PEERS"
 ```
 
