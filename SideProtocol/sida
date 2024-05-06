@@ -64,9 +64,9 @@ echo "$PEERS"
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.side/config/config.toml
 
 sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.evmosd/config/app.toml
-sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.evmosd/config/app.toml
-sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.evmosd/config/app.toml
-sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.evmosd/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.side/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.side/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.side/config/app.toml
 
 sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.005uside"|g' $HOME/.side/config/app.toml
 sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.side/config/config.toml
