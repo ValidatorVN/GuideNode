@@ -16,6 +16,7 @@
 * [🧊 Artela Network](artela-network.md)
 * [🧊 Pryzm](pryzm.md)
 * [🧊 Elys Network](elys-network.md)
+* [Galactica](galactica.md)
 * [🧊 Hedge Block](hedge-block.md)
 * [🧊 Side Protocol](side-protocol.md)
 * [🧊 Swisstronik](swisstronik.md)
