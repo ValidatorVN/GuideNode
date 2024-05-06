@@ -93,3 +93,9 @@ echo "$PEERS"
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.side/config/config.toml
 sudo systemctl restart sided && journalctl -fu sided -o cat
 ```
+
+## Auto-Install
+
+```
+wget https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/SideProtocol/sida && chmod +x sida && ./sida
+```
