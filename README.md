@@ -2,7 +2,7 @@
 description: >-
   Trusted Proof-of-Stake validator & Tendermint chain service provider. Active
   ecosystem contributor, community manager & moderator.
-cover: .gitbook/assets/1500x500.jpg
+cover: .gitbook/assets/Screenshot 2024-05-06 at 8.48.38 PM.png
 coverY: 0
 layout:
   cover:
