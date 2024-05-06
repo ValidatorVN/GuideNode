@@ -2,7 +2,7 @@
 description: 'The Extension Layer of #Bitcoin'
 ---
 
-# ✅ Side Protocol
+# 🧊 Side Protocol
 
 [https://twitter.com/SideProtocol](https://twitter.com/SideProtocol)\
 [https://discord.gg/sideprotocol](https://discord.gg/sideprotocol)
@@ -19,6 +19,7 @@ description: 'The Extension Layer of #Bitcoin'
 ## Snapshots
 
 ```
+#Update every 12 hours
 sudo systemctl stop sided
 cp $HOME/.sided/data/priv_validator_state.json $HOME/.sided/priv_validator_state.json.backup
 rm -rf $HOME/.sided/data
@@ -63,3 +64,12 @@ curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/SideProtoc
 curl -Ls https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/SideProtocol/addrbook.json > $HOME/.side/config/addrbook.json
 ```
 
+## Live Peers
+
+```
+PEERS=$(curl -sS https://side-rpc.validatorvn.com/net_info | \
+jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | \
+awk -F ':' '{printf "%s:%s%s", $1, $(NF), NR==NF?ORS:","}')
+sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.side/config/config.toml
+sudo systemctl restart sided && journalctl -fu sided -o cat
+```
