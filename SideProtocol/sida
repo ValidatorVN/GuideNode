@@ -16,11 +16,11 @@ echo -e "\e[0m"
 
 read -r -p "Enter node name: " NODE_MONIKER
 
-CHAIN_ID="S2-testnet-1"
+CHAIN_ID="S2-testnet-2"
 CHAIN_DENOM="sided"
 BINARY_NAME="sided"
 GITHUB="https://github.com/ValidatorVN"
-BINARY_VERSION_TAG="v0.8.0"
+BINARY_VERSION_TAG="v0.8.1"
 
 echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
 echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
@@ -47,7 +47,7 @@ cd $HOME
 rm -rf side
 git clone https://github.com/sideprotocol/side.git
 cd side
-git checkout v0.8.0
+git checkout v0.8.1
 make install
 
 sided config chain-id $CHAIN_ID
@@ -57,7 +57,7 @@ wget -O $HOME/.side/config/genesis.json "https://raw.githubusercontent.com/NodeV
 wget -O $HOME/.side/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/SideProtocol/addrbook.json"
 
 SEEDS="9c14080752bdfa33f4624f83cd155e2d3976e303@side-testnet-seed.itrocket.net:45656"
-PEERS="bbbf623474e377664673bde3256fc35a36ba0df1@side-testnet-peer.itrocket.net:45656,519453a49e25826c04c9d2779ec7b5971876665d@138.201.51.154:32004,59fa36770ef7f6cdbb4fe9c70c13b501c1a6b258@95.214.55.138:4656,a442702f898c77bd1d09ffbbc683946f437c2ac1@209.145.55.218:26656,d5e7f1a7d45b2ad19714d640038cfe8f9f870acc@65.109.80.26:26656,a5fd292715327ca65a8c305fe176166cbe0b8207@146.59.53.93:45656,c41075d4a0f6efc47c3e36a8008a933e603c4313@45.129.147.247:36656,db6fc589d5db96b5ff4e733c16afd4a00488ae96@168.119.10.134:22956,af499b4f78ac7ecf0c340242b973d7592e98db62@213.199.39.54:45656,df3cb7c20c0ca87926a06424a4aebe5cc485301d@54.39.107.180:45656"
+PEERS="bbbf623474e377664673bde3256fc35a36ba0df1@side-testnet-peer.itrocket.net:45656,3003f4290ea8e3f5674e5d5f687ef8cd4b558036@152.228.208.164:26656,2b2ad344919d591cad2af6fe1b88e51fb02e926b@54.249.68.205:26656,d3a38688a2180658d15f6117b3e6a2771a3e650e@14.245.25.144:45656,541c500114bc5516c677f6a79a5bdfec13062e91@37.27.59.176:17456,aa3533e8c1ba70125fa62477c7fc6b9758976752@14.167.152.116:45656,bf6869c7192e8353765398e826e7934071710d68@81.17.100.237:26656,cb17dadfca6b899af4c807ad56a9c1b1d53c5cf9@134.209.179.45:26656"
 sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.side/config/config.toml
 
 sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.side/config/app.toml
