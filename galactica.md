@@ -83,9 +83,9 @@ wget -O $HOME/.galactica/config/addrbook.json https://snapshot.validatorvn.com/g
 ## Live Peers
 
 ```
-readarray -t PEER_ARRAY < <(curl -sS https://galactica-rpc.validatorvn.com/net_info | \
-jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"')
-PEERS=$(IFS=,; echo "${PEER_ARRAY[*]}")
+PEERS=$(curl -sS https://galactica-rpc.validatorvn.com/net_info | \
+jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | \
+awk -F ':' '{printf "%s:%s%s", $1, $(NF), NR==NF?"":","}')
 echo "$PEERS"
 ```
 
