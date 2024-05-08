@@ -34,7 +34,9 @@ Telegram: [http://t.me/ValidatorVN](https://t.co/4xF0gB7mvX)&#x20;
 
 Discord handle: validatorvn
 
-Github: [https://github.com/ValidatorVN](https://github.com/ValidatorVN)
+Github: [https://github.com/ValidatorVN](https://github.com/ValidatorVN)\
+\
+Youtube: [www.youtube.com/@validatorvn](http://www.youtube.com/@validatorvn)
 
 X: [https://twitter.com/ValidatorVN](https://twitter.com/ValidatorVN)
 
