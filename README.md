@@ -20,7 +20,7 @@ layout:
     visible: true
 ---
 
-# ☮️ ValidatorVN
+# 💈 ValidatorVN
 
 Support the growth of Web3 and the Proof-of-Stake ecosystem with our non-custodial staking service.
 
@@ -31,6 +31,8 @@ Services: [https://services.validatorvn.com](https://services.validatorvn.com)
 Website: [http://validatorvn.com](https://t.co/GK8AKV7GCe)&#x20;
 
 Telegram: [http://t.me/ValidatorVN](https://t.co/4xF0gB7mvX)&#x20;
+
+Discord handle: validatorvn
 
 Github: [https://github.com/ValidatorVN](https://github.com/ValidatorVN)
 
