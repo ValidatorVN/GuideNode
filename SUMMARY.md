@@ -12,6 +12,8 @@
 * [🧊 Orai Chain](orai-chain.md)
 * [🧊 Zeta Chain](zeta-chain.md)
 * [⛓️ Testnet Network](testnet-network.md)
+* [🧊 0G](0g.md)
+* [🧊 Airchains](airchains.md)
 * [🧊 Aligned Layer](aligned-layer.md)
 * [🧊 Artela Network](artela-network.md)
 * [🧊 Pryzm](pryzm.md)
@@ -22,4 +24,3 @@
 * [🧊 Swisstronik](swisstronik.md)
 * [🧊 Mantra Chain - Hongbai](mantra-chain-hongbai.md)
 * [🧊 Warden Protocol](warden-protocol.md)
-* [🧊 0G](0g.md)
