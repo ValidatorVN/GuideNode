@@ -66,13 +66,16 @@ sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.0gchain/config/config.toml
 
 echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
 
+cp $HOME/go/bin/0gchaind /usr/local/bin
+chmod +x /usr/local/bin/0gchaind
+
 sudo tee /etc/systemd/system/0gchaind.service > /dev/null << EOF
 [Unit]
 Description=0G node service
 After=network-online.target
 [Service]
 User=$USER
-ExecStart=$(which 0gchaind) start
+ExecStart=/usr/local/bin/0gchaind start --home $HOME/.0gchain
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=65535
