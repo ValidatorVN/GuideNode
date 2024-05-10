@@ -43,9 +43,10 @@ source .bash_profile
 
 echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
-git clone -b v0.1.0 https://github.com/0glabs/0g-chain.git
-./0g-chain/networks/testnet/install.sh
-source .profile
+wget https://snapshot.validatorvn.com/og/0gchaind
+chmod +x 0gchaind
+mv 0gchaind /usr/local/bin/
+0gchaind version
 
 0gchaind config chain-id $CHAIN_ID
 0gchaind init "$NODE_MONIKER" --chain-id $CHAIN_ID
