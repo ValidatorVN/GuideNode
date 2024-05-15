@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗   ██╗   ██╗███╗   ██╗"
+echo "██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗  ██║   ██║████╗  ██║"
+echo "██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝  ██║   ██║██╔██╗ ██║"
+echo "██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗  ██║   ██║██║╚██╗██║"
+echo "╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║  ╚██████╔╝██║ ╚████║"
+echo " ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═════╝ ╚═╝  ╚═══╝"
+echo "Services: https://services.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/ValidatorVN"
+echo -e "\e[0m"
+
+read -r -p "Enter node name: " NODE_MONIKER
+
+CHAIN_ID="initiation-1"
+CHAIN_DENOM="initiad"
+BINARY_NAME="initiad"
+GITHUB="https://github.com/ValidatorVN"
+BINARY_VERSION_TAG="v0.2.12"
+
+echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
+echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
+echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
+echo -e "Binary version tag:  ${CYAN}$BINARY_VERSION_TAG${NC}"
+
+sleep 1
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "\e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+sudo rm -rf /usr/local/go
+curl -L https://go.dev/dl/go1.22.2.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
+source .bash_profile
+
+echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+
+wget https://snapshot.validatorvn.com/initia/initiad
+chmod +x initiad
+mv initiad /usr/local/bin/
+0gchaind version
+
+initiad config chain-id $CHAIN_ID
+initiad init "$NODE_MONIKER" --chain-id $CHAIN_ID
+
+wget -O $HOME/.initia/config/genesis.json "https://snapshot.validatorvn.com/initia/genesis.json"
+wget -O $HOME/.initia/config/addrbook.json "https://snapshot.validatorvn.com/initia/addrbook.json"
+
+sed -i -e 's|^seeds *=.*|seeds = "cd69bcb00a6ecc1ba2b4a3465de4d4dd3e0a3db1@initia-testnet-seed.itrocket.net:51656"|' $HOME/.0gchain/config/config.toml
+PEERS="aee7083ab11910ba3f1b8126d1b3728f13f54943@initia-testnet-peer.itrocket.net:11656,2bfad62fa5ba7cc91af4e19ee8d1356997a01079@84.247.166.24:51656,e6a35b95ec73e511ef352085cb300e257536e075@37.252.186.213:26656,07632ab562028c3394ee8e78823069bfc8de7b4c@37.27.52.25:19656,b4778656f255169b8b1d660b6af3a0df68d68e65@176.57.189.36:15656,54d2302155d1bd2a95354ea1d54e196db70a5361@84.46.251.215:656,767fdcfdb0998209834b929c59a2b57d474cc496@207.148.114.112:26656,093e1b89a498b6a8760ad2188fbda30a05e4f300@35.240.207.217:26656,5f934bd7a9d60919ee67968d72405573b7b14ed0@65.21.202.124:29656,e15f6e83d7e35c12f99476674137f3edd1865654@161.97.143.182:16656"
+sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.initia/config/config.toml
+
+sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.initia/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.initia/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"50\"/" $HOME/.initia/config/app.toml
+
+# set minimum gas price, enable prometheus and disable indexing
+sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.15uinit,0.01uusdc"|g' $HOME/.initia/config/app.toml
+sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.initia/config/config.toml
+sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.initia/config/config.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.0gchain/config/config.toml
+
+echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
+
+sudo tee /etc/systemd/system/initiad.service > /dev/null <<EOF
+[Unit]
+Description=Initia node
+After=network-online.target
+[Service]
+User=$USER
+WorkingDirectory=$HOME/.initia
+ExecStart=$(which initiad) start --home $HOME/.initia
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable initiad.service
+
+initiad tendermint unsafe-reset-all --home $HOME/.initia --keep-addr-book
+
+curl https://snapshot.validatorvn.com/initia/data.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.initia
+
+sudo systemctl start initiad
+
+echo '=============== SETUP FINISHED ==================='
+echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
+echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
+echo -e "More commands:         ${CYAN}$GITHUB${NC}"
