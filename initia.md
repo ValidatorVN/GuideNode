@@ -73,4 +73,12 @@ sed -i \
     "$HOME/.initia/config/config.toml"
 ```
 
-## Auto-Install Initia Node (Soon)
+## Auto-Install Initia Node
+
+```
+wget https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/Initia/ini && chmod +x ini && ./ini
+```
+
+```
+https://youtu.be/ZnTA2sPzSnc
+```
