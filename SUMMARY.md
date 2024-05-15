@@ -24,3 +24,4 @@
 * [🧊 Swisstronik](swisstronik.md)
 * [🧊 Mantra Chain - Hongbai](mantra-chain-hongbai.md)
 * [🧊 Warden Protocol](warden-protocol.md)
+* [🧊 Initia](initia.md)
