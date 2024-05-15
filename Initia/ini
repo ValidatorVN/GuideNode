@@ -43,10 +43,10 @@ source .bash_profile
 
 echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
-wget https://snapshot.validatorvn.com/initia/initiad
-chmod +x initiad
-mv initiad /usr/local/bin/
-0gchaind version
+git clone https://github.com/initia-labs/initia.git
+cd initia
+git checkout v0.2.12
+make install
 
 initiad config chain-id $CHAIN_ID
 initiad init "$NODE_MONIKER" --chain-id $CHAIN_ID
