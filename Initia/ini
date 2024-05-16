@@ -71,7 +71,7 @@ sed -i \
 sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.15uinit,0.01uusdc"|g' $HOME/.initia/config/app.toml
 sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.initia/config/config.toml
 sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.initia/config/config.toml
-sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.0gchain/config/config.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.initia/config/config.toml
 
 echo -e "\e[1m\e[32m4. Starting service and synchronization...--> \e[0m" && sleep 1
 
