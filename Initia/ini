@@ -20,7 +20,7 @@ CHAIN_ID="initiation-1"
 CHAIN_DENOM="initiad"
 BINARY_NAME="initiad"
 GITHUB="https://github.com/ValidatorVN"
-BINARY_VERSION_TAG="v0.2.12"
+BINARY_VERSION_TAG="v0.2.14"
 
 echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
 echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
@@ -45,7 +45,7 @@ echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
 
 git clone https://github.com/initia-labs/initia.git
 cd initia
-git checkout v0.2.12
+git checkout v0.2.14
 make install
 
 initiad config chain-id $CHAIN_ID
