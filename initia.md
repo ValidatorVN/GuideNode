@@ -22,7 +22,7 @@ https://initia-api.validatorvn.com
 sudo systemctl stop initiad.service
 cp $HOME/.initia/data/priv_validator_state.json $HOME/.initia/priv_validator_state.json.backup
 rm -rf $HOME/.initia/data
-curl -L https://snapshots.kjnodes.com/initia-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.initia
+curl https://snapshot.validatorvn.com/initia/data.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.initia
 mv $HOME/.initia/priv_validator_state.json.backup $HOME/.initia/data/priv_validator_state.json
 sudo systemctl start initiad.service && sudo journalctl -u initiad.service -f --no-hostname -o cat
 
