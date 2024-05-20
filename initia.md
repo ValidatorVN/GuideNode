@@ -9,12 +9,7 @@ description: >-
 [https://twitter.com/initiaFDN](https://twitter.com/initiaFDN)\
 [https://discord.gg/initia](https://discord.gg/initia)
 
-## Public Endpoints
 
-```
-https://initia-rpc.validatorvn.com
-https://initia-api.validatorvn.com
-```
 
 ## Snapshots
 
