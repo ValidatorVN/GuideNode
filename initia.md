@@ -9,9 +9,17 @@ description: >-
 [https://twitter.com/initiaFDN](https://twitter.com/initiaFDN)\
 [https://discord.gg/initia](https://discord.gg/initia)
 
+## Install Initia Node
 
+```
+wget https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/Initia/ini && chmod +x ini && ./ini
+```
 
-## Snapshots
+```
+https://youtu.be/ZnTA2sPzSnc
+```
+
+## Snapshots (Every 24 hours at 2AM UTC)
 
 ```
 sudo systemctl stop initiad.service
@@ -28,7 +36,7 @@ sudo systemctl start initiad.service && sudo journalctl -u initiad.service -f --
 ```
 sudo systemctl stop initiad
 
-SNAP_RPC="https://initia-rpc.validatorvn.com:443"
+SNAP_RPC="https://rpc-initia-testnet.trusted-point.com:443"
 cp $HOME/.initia/data/priv_validator_state.json $HOME/.initia/priv_validator_state.json.backup
 initiad tendermint unsafe-reset-all --home ~/.initia/ --keep-addr-book
 
@@ -68,12 +76,3 @@ sed -i \
     "$HOME/.initia/config/config.toml"
 ```
 
-## Install Initia Node
-
-```
-wget https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/Initia/ini && chmod +x ini && ./ini
-```
-
-```
-https://youtu.be/ZnTA2sPzSnc
-```
