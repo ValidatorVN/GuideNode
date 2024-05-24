@@ -9,7 +9,9 @@ description: >-
 [https://x.com/namada](https://x.com/namada)\
 [https://discord.gg/namada](https://discord.gg/namada)
 
-Ranked 15 in Namada's Shielded Expedition
+Services will be available on Mainnet, Testnet is done
+
+Ranked 15th in Namada's Shielded Expedition - Pilot Rankings
 
 <figure><img src=".gitbook/assets/Screenshot 2024-05-24 at 2.10.41 PM.png" alt=""><figcaption></figcaption></figure>
 
