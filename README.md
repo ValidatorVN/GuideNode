@@ -20,7 +20,7 @@ layout:
     visible: true
 ---
 
-# 💈 ValidatorVN
+# ⚛️ ValidatorVN
 
 Support the growth of Web3 and the Proof-of-Stake ecosystem with our non-custodial staking service.
 
