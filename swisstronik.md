@@ -78,12 +78,12 @@ Detecting SGX, this may take a minute...
 You're all set to start running SGX programs!
 ```
 
-## Public Endpoints:
+## Public Endpoints
 
 ```
 RPC: https://swiss-rpc.validatorvn.com
 API: https://swiss-api.validatorvn.com
-gRPC: swiss-grpc.validatorvn.com
+gRPC: swiss-grpc.validatorvn.com:443
 ```
 
 ## **Building from source**
@@ -164,6 +164,19 @@ sudo systemctl enable swisstronikd
 
 SNAP_NAME=$(curl -s https://snap.konsortech.xyz/swisstronik/ | egrep -o ">swisstronik-snapshot.*\.tar.lz4" | tr -d ">")
 curl https://snap.konsortech.xyz/swisstronik/${SNAP_NAME} | lz4 -dc - | tar -xf - -C $HOME/.swisstronik
+```
+
+## Snapshot
+
+```
+#Update every 24 hours
+sudo systemctl stop swisstronikd
+cp $HOME/.swisstronik/data/priv_validator_state.json $HOME/.swisstronik/priv_validator_state.json.backup
+rm -rf $HOME/.swisstronik/data
+swisstronikd tendermint unsafe-reset-all --home ~/.swisstronik/ --keep-addr-book
+curl https://snapshot.validatorvn.com/swisstronik/data.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.swisstronik
+mv $HOME/.swisstronik/priv_validator_state.json.backup $HOME/.swisstronik/data/priv_validator_state.json
+sudo systemctl restart swisstronikd && sudo journalctl -u swisstronikd -f -o cat
 ```
 
 ## **Start the service & check logs**
