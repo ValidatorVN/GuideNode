@@ -105,13 +105,13 @@ source .bash_profile
 ## **Clone project repository**
 
 ```
-wget https://github.com/SigmaGmbH/swisstronik-chain/releases/download/v1.0.1/swisstronikd.deb.zip 
+wget https://github.com/SigmaGmbH/swisstronik-chain/releases/download/v1.0.2/swisstronikd.deb.zip 
 unzip swisstronikd.deb.zip  
-dpkg -i swisstronik_1.0.1-updated-binaries_amd64.deb 
+dpkg -i swisstronik_1.0.2-updated-binaries_amd64.deb 
 swisstronikd version
 
 mkdir -p /root/.swisstronik-enclave/
-cp /usr/lib/enclave.signed.so /root/.swisstronik-enclave/enclave.signed.so
+cp /usr/lib/v1.0.2_enclave.signed.so /root/.swisstronik-enclave/v1.0.2_enclave.signed.so
 ```
 
 ## **Node configuration**
