@@ -18,6 +18,13 @@ wget https://raw.githubusercontent.com/ValidatorVN/GuideNode/main/Initia/ini && 
 https://youtu.be/ZnTA2sPzSnc
 ```
 
+## Public Endpoints
+
+```
+RPC: https://initia-rpc.validatorvn.com/
+API: https://initia-api.validatorvn.com/
+```
+
 ## Snapshots (Every 24 hours at 2AM UTC)
 
 ```
