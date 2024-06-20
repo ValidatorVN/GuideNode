@@ -25,4 +25,5 @@
 * [🧊 Side Protocol](side-protocol.md)
 * [🧊 Swisstronik](swisstronik.md)
 * [🧊 Warden Protocol](warden-protocol.md)
-* [🧊 Initia](initia.md)
+* [🧊 Initia](initia/README.md)
+  * [Installation Guide](initia/installation-guide.md)
