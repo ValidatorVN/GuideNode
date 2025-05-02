@@ -1,0 +1,50 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux system files
+*~
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Node.js (in case scripts are added)
+node_modules/
+
+# Environment files
+.env
+.env.*
+
+# Markdown preview caches
+*.markdown.save
+*.md.save
+
+# Temporary files
+*.log
+*.swp
+*.bak
+*.tmp
+*.temp
+*.old
+
+# GitHub-specific
+.github/.DS_Store
+
+# Build/output folders (if any in future automation)
+build/
+dist/
+output/
+site/

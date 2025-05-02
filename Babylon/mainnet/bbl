@@ -1,0 +1,111 @@
+#!/bin/bash
+
+# Logo
+
+echo -e "\033[0;34m"
+echo "███╗   ██╗ ██████╗ ██████╗ ███████╗   ██╗   ██╗ █████╗ ██╗     ██╗ ██████╗  █████╗ ████████╗ ██████╗ ██████╗ "
+echo "████╗  ██║██╔═══██╗██╔══██╗██╔════╝   ██║   ██║██╔══██╗██║     ██║ ██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗"
+echo "██╔██╗ ██║██║   ██║██║  ██║█████╗     ██║   ██║███████║██║     ██║ ██║  ██║███████║   ██║   ██║   ██║██████╔╝"
+echo "██║╚██╗██║██║   ██║██║  ██║██╔══╝     ██║   ██║██╔══██║██║     ██║ ██║  ██║██╔══██║   ██║   ██║   ██║██╔══██╗"
+echo "██║ ╚████║╚██████╔╝██████╔╝███████╗   ╚██████╔╝██║  ██║███████║██║ ██████╔╝██║  ██║   ██║   ╚██████╔╝██║  ██║"
+echo "╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝"
+echo "Gitbook: https://docs.validatorvn.com"
+echo "Chanel: https://t.me/ValidatorVN"
+echo "Github: https://github.com/NodeValidatorVN"
+echo -e "\e[0m"
+
+read -r -p "Enter node moniker: " NODE_MONIKER
+
+CHAIN_ID="bbn-1"
+CHAIN_DENOM="ubbn"
+BINARY_NAME="babylond"
+GITHUB="https://github.com/NodeValidatorVN"
+BINARY_VERSION_TAG="v1.0.1"
+
+echo -e "Node moniker: ${CYAN}$NODE_MONIKER${NC}"
+echo -e "Chain id:     ${CYAN}$CHAIN_ID${NC}"
+echo -e "Chain demon:  ${CYAN}$CHAIN_DENOM${NC}"
+echo -e "Binary version tag:  ${CYAN}$BINARY_VERSION_TAG${NC}"
+
+sleep 1
+
+echo -e "\e[1m\e[32m1. Updating packages and dependencies--> \e[0m" && sleep 1
+#UPDATE APT
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop lz4 screen unzip bc fail2ban htop -y
+
+echo -e "\e[1m\e[32m2. Installing GO--> \e[0m" && sleep 1
+#INSTALL GO
+ver="1.23.4" 
+cd $HOME 
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" 
+
+sudo rm -rf /usr/local/go 
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" 
+rm "go$ver.linux-amd64.tar.gz"
+
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
+echo -e "\e[1m\e[32m3. Downloading and building binaries--> \e[0m" && sleep 1
+
+cd || return
+rm -rf babylon
+git clone https://github.com/babylonlabs-io/babylon
+cd babylon || return
+git checkout v1.0.1
+make install
+babylond version # v1.0.1
+
+babylond config keyring-backend test
+babylond config chain-id bbn-1
+babylond init "$NODE_MONIKER" --chain-id bbn-1
+
+wget -O $HOME/.babylond/config/genesis.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Babylon/mainnet/genesis.json"
+wget -O $HOME/.babylond/config/addrbook.json "https://raw.githubusercontent.com/NodeValidatorVN/GuideNode/main/Babylon/mainnet/addrbook.json"
+
+SEEDS="ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:20656"
+PEERS="01ea07483868229fb395f575a98421c7172e48ca@91.134.82.154:26656,4255dd8125558d8033898b3adcecd1be769b8212@176.9.25.125:26656,c22f68ea5bf4a5d5fb75194a02c4a59b4c1fc0e2@65.43.222.108:26656,7d9fe6bd6e57640a063820593c26176f477aef56@134.65.193.207:26656,2e97cd809ed495920cd0ac4568968395a3228967@3.71.28.172:26656,46a9d71a0ae9faed7dd27521aab6daeb0f36a457@18.184.221.122:26656,23fc63f1970cba0f7bcd7049d0e36509d2cd6b88@186.190.215.27:26656,69cfe128beea9bdf1956c973472586ca8221c3ec@145.239.1.190:26656,e1b058e5cfa2b836ddaa496b10911da62dcf182e@134.65.193.187:26656,8801b65a1c324391e62ff256e93ecd8f3c61a19d@74.118.143.212:26656,abeb1486dd9e37b0a644378575ed2d5304bf9a0c@34.90.201.204:26656,6d6760e129244a3f81b8976e9e6f2ef8779072fe@185.180.221.109:26656,2acadbf9b3c8773513297d69b0f8869682e5806d@141.94.193.28:55706,55407d8af19368e219896934ad6ed286282e4496@185.100.10.169:31325,f955a87a34a7ba96b23b64ed7ec42c61dec7e907@51.15.21.176:26656,66a591d569137e31c71e5b42c2e5ffb477bc1866@95.217.150.122:26656,c2c6a23b4d11aab048b71220020226695b278e1b@65.108.238.102:20656,5276d35cadd2f5f83e161c857378372237cd1933@103.219.168.175:55706,55e624c4593cd7c16c40a1704542e3b3c76d5ed2@149.50.108.172:56656,fe9979a527ccee230a71fbec454dfc5e1004f1a2@43.134.64.67:26656,e726816f42831689eab9378d5d577f1d06d25716@169.155.171.15:26656,c0b4e1652bf80e387811745ec5b045b9e28f4140@162.19.107.84:56856,a48d1e34fb0b583c33e80fa96ace1adea98ab547@15.235.43.242:26656,944c11a1ada4df035a82c174f7d3ffe0cb13b42a@160.202.131.231:26656,3ba2ee3fba64de8afd50b37849dc20a0746d765c@137.184.233.235:26656,393815c42a5e18aab187f6eda9ea31c9e3f684a2@64.176.83.103:26656,4b6400c93d17f95ef13322ef7dedfcd13e2d6c65@15.235.225.243:55706,bfd985bcc5e512f492fd206d6a973775ecd9a000@45.32.126.22:26656,3595c244f0dad647b2f9e914921b069681fcaa84@37.27.110.181:16156,8cf1b59917e8440003a8e8711c3707cc9bd0a61e@46.137.226.85:26656,d2f9884efcd377004155301010ab4add76f37341@51.91.80.136:13656,ae8092f201facf90dc754e0a605e30f6c7943eb4@57.129.86.253:20656,1932a24ad45655be555880f7e27da30e85152554@152.53.33.96:26756,126fb4d83afe93d1182e61b3140e066d8386151a@13.115.123.122:26656,b66ebc6612d36bf1017c2e136881898c7ff4cd57@43.133.180.64:26656,467bc317af80ac0629098f7ae46f28a8ea01afe9@3.130.65.14:26656,f2e72880c2f7d17d75be02251d8377eae2457899@54.76.67.25:30224,4d5d4321d32676183851f6a46e9d075e4068180e@195.192.213.197:26657,bf17aba0617f6a752691cefdeb7a1ecdd4ef17f4@65.109.153.62:26656,2d88da4bdb2cafeac4c071b780930b3f6e56430d@91.99.51.201:26656,033186aed8081ce6eea41936bd2f231eb18b2200@65.108.122.122:26656,96b3625bb25da5b6b9da6e840cebec7cbeb7fe4c@34.255.133.61:26656,77766287ac719c883cd9aa1472ad599c1575ea09@54.249.212.0:26656,933a9f758367625dc2dc324986716cae13bfcf59@47.76.133.226:26656,0c1ec77fa2204ce3c3cbab6792c337ba256bb253@35.228.58.95:26656,7c12d49f7641e82972c65024ded7ce5f9b359127@13.56.212.180:26656,5e104739593e95580dd2de510bff82066a4f44e8@154.91.1.91:26656,3cf268419dadc5992749f8e78c73a9614a721a92@205.209.103.218:26656,2a3adf98f0d48f4c4f8e0d6a74a4351e31be92c6@13.124.58.33:26656,1d22b04b7b98e24315276024793ad3d3f3bc3e9e@51.81.109.116:26656,52fb62abd34560518975cefefe89c3a1b587a666@54.184.123.43:26656,3e305e92657fd545c5420a137c693770ea84034e@88.99.163.178:20656,eee34de5e4dfbf970b5c2a9d150fe8cfa4a2b64b@8.52.196.100:27656,0b0561b615a382500311bff9bb380f2c39cd8334@67.213.114.49:26656,eaaa05270a569eec8a6d648e71edcaf7fec7d318@186.233.185.137:26656,b13eef5a4f25055edb25b499b564f85cadb854b1@46.17.103.41:20656,d33a0e9f1790ee07b3509929fa724508b1605fb9@141.98.217.151:26656,3cfb1962b46058056f3efd705c0e83299c614e36@138.68.89.107:31667,3c0e7cc2d5ceda93a303980bc1d38511c36615b1@74.118.136.169:26656,8d2a571b4582162a37db88cb57749aa567f59bc3@116.202.237.144:26656,84c2a781223b155722ac6573091411e7dc3690a3@54.193.251.35:26656,724ccde53de1de8cb8ab6be4496163538c1111dd@176.9.54.254:26656,ac5823bf406e348547c31829b1527d73c7ce7308@92.42.108.69:26656,cf4ca4acd4157b572bb0aee780f1af3ce2316206@116.202.84.8:26656,96b615cccae2e5694296f97de2943bc763108ece@65.108.77.179:26656,011ace1aa5562c5ec8524eb4c858b4d82ba10fe0@198.244.212.192:56856,f435db0e210cafa1ed320ba5348ca7daba5917b5@195.201.106.166:20656,d7bd5ff4ef46a44d9d34d36c38ce5f72ebbe0544@47.243.196.192:26656,b330b554e250bc85b28a9c2cd7121ebb59052b0a@47.236.156.238:26856,1b2e0a1908aba42068ff184171b55733b12a6c91@35.77.71.210:26656,647b00eedb4a2e2b85a661f12cbb9f3421b1e6db@184.107.244.74:18800,d7b6d45cb866f4d1f41d93cd88df0c9c5292ea02@8.219.49.223:26656,dd858b1c74b5cb0ba0a408ee6adba0510e528cee@135.181.61.200:31656,2265a5c20460b5291b8f17bdc65351eb027f5fc6@3.90.183.2:26656,4481ce2f6301295c06acc19d8883b9c353da51ce@141.94.160.4:26656,38badf1db162e9b7ddc8afbad1cf322567b452b1@207.148.118.251:26656,88172067af2b4821ecf9bb3b8617aa320e470c1e@150.109.20.161:26656,56c9a5081d1f25421985b5c4e10447b6285e18cc@3.85.236.246:26656,1c5114dccbd1a2235cb5944331f06154d75ccd17@91.210.101.108:26656,889572d63d92217fac9e1b82cf8f8b273678fd40@116.202.151.84:26656,0be212ed9d11339e0c993555531af29149834658@131.153.155.231:26656,e4ab225d6c4c0d0bf06a6610e07a5f29c2325bf5@88.99.101.149:20656,a2718161aa8c94996f11295d7ba02de767aa5b29@207.148.120.138:26656,7204572d86062b26636fe6eaa4694f0784c7a2fa@43.167.179.141:26656,c44be2c5d2bd7fc6d3354daba864b53a5b48c5e8@57.129.37.201:26656,98ca762667d0b50735a7d8c24d477a2895cea3c8@216.105.169.42:13656,454df8943ff6e90f2055e5f9c2907e1fd41319e0@91.134.78.98:26656,6485085642b5bda5b2380f4fbd68bba5aaf6d86c@88.198.2.25:3000,dc3bc8c1b4de9938810dba54cf6432c107d7e17e@51.222.152.221:26656,70702b007a536cc343752b3d275fceefbbf6cb3d@195.192.213.201:26657,a238579337364bb252c2db022067d3272a5d85d2@65.108.71.140:26656,dd1b5d1e1aca8dded9647a50b9fa9273ded8e658@176.9.110.89:13656,5cfa2302df297f698e54af6c02fb0fa4210796e0@45.32.100.113:26656,4ec19184a399c97b0c3d2df2247c904a22fa4748@52.42.141.130:26656,7d728de314f9746e499034bfcfc5a9023c672df5@84.32.32.149:18800,4032ff34320878a18f68980a7fcd87cf117d1b40@160.202.131.43:26656,3409c28dafa76e7bd5c058e2181cc15ee3fbc49a@103.219.169.97:55706,c29102fa4b3ed0446df29b8a9fd75da89df38cfa@64.176.85.121:26656,7f64c77b7dd7027b58880244697e8081771a1d68@164.90.181.78:26156,fe4870f884040cca2c73dd735680a3ac15df421e@95.214.53.176:30156,e80aa0305bea31f930facf5547e37c731ffffbc4@78.46.174.72:20656,b16397b576f2431c8a80efa4f5338c1b82583916@8.52.201.252:27656,7b4afaa832c4838256f4d4adc4636e7567f6938f@34.212.164.228:26656,b989dec7de647c9f8ab7385f766b981c6686d75e@64.25.109.169:26656,90a98ad595e84fa25f723221d2ff0d31299a35ae@23.227.221.218:26656,d7ec6bea37d20cc9600acfca96e0125d4176101e@88.198.65.44:20656,9e2559b4ebdf747bc81081fa314eff483a089a06@37.27.247.25:26656,4e54df7a5a7cbf3bfc2e399258b519a9d47cf744@157.180.22.79:26656,556dd65ea697d1dd1e1aad0af7286387dc04625f@173.234.17.193:26656,05fa3884ee5012cf23ef9731d611dfbdfb8adcc6@54.39.129.78:26656,6c9b4ffd6ad3fd3dee707fb508d71624bb2ca553@67.209.54.152:26656,c52c4eee092757baf2b0163fa20f41a894d7c4e5@93.115.25.106:56856,470ede4ced69bc6baf6c7e7c2ec46b86ba83a4b3@57.129.84.2:26656,963fe40738b96d4a0c13c98e85db2d57ddad7524@51.210.3.17:46656,f32f96231e337adbd079329bfb30f2c85dad5b9b@52.193.158.166:26656,53765bf86374d446d829b557c1c39ce3e9f461ec@35.79.88.217:26656,d73d597d771521ed43b9635a7e757097c2e21088@52.79.47.98:26656,ea0b3a3e32a3347942dd33b00bf823e998a54e6e@54.200.140.89:26656,1dee69bd169b708b8eedfc8bfe164a88c29c13ea@162.19.102.6:26656,6062a55849eb4ba8b4ed342d32c771cdc9cbd328@23.109.63.244:31839,256b79909a7298a49ec40cb061a129166b56d7b5@15.235.228.142:26656,80f2dc0fbf34d40f34fffdd973dacf76833049aa@65.21.238.109:26656,84a5725add3cf16e861c327ded6847d05f9d1933@51.222.40.48:26656,0b21c47420d8a88439850f2ac480a3b352a789ad@3.230.247.126:26656,66801507d35654069809e57972b25143cd140710@92.204.243.55:26656,6a156968f8ee093de90f16c27b67184d0db40a5c@18.142.182.2:26656,e77a454bbd510ca6df0c01bdd4ac26594fd05789@80.79.6.155:26656,071b9a9df3ddc2ad30685ec64d3f142a2d21b62d@205.209.111.82:20656,4e5325260439f361ca4c3363d57e7f2d4fcecb33@35.76.116.117:26656,e71b7cb3e371b0f1e5363bf447339cf892f388fa@65.21.221.85:20656,bb7841dba8ebd2ae7eb0ec9704c71f14b8472556@45.76.159.184:26656,b00493c1fe5217bd09e8b3d21043d44181f2735c@149.28.158.73:26656,72a88da5e1862be8b8b0bb70d9a05c0b7fc177cf@103.88.234.103:55706,735639d7213ccfcf91c64243a0a59a06e0e83341@45.76.179.64:26656,37c7c90242166045f3cd0e3baf626212a9dd80be@51.161.172.54:55706,2a05f9364d4a3539c8ccf93b3b49c530f044fd84@64.176.80.187:26656,49f3be84e4fd8ac121a40d1d1b24eeccf74c5278@50.21.173.72:26656"
+sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/.babylond/config/config.toml
+
+sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.babylond/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.babylond/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.babylond/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 0|g' $HOME/.babylond/config/app.toml
+
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.002ubbn"|g' $HOME/.babylond/config/app.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.babylond/config/config.toml
+sed -i 's|^network *=.*|network = "mainnet"|g' $HOME/.babylond/config/app.toml
+
+sudo tee /etc/systemd/system/babylond.service > /dev/null << EOF
+[Unit]
+Description=Babylon Node
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=$(which babylond) start --x-crisis-skip-assert-invariants
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=10000
+[Install]
+WantedBy=multi-user.target
+EOF
+
+babylond tendermint unsafe-reset-all --home $HOME/.babylond --keep-addr-book
+
+# TODO: 
+# snapshot is updated in every 24 hours and previous snapshots are deleted, 
+# need a way to dynamically download the snapshot 
+# wget -O babylon_206371.tar.lz4 https://snapshots.polkachu.com/snapshots/babylon/babylon_206371.tar.lz4 --inet4-only
+echo "Check and Download the latest snapshot:"
+echo 
+echo "https://polkachu.com/tendermint_snapshots/babylon"
+
+sudo systemctl daemon-reload
+sudo systemctl enable babylond
+sudo systemctl start babylond
+
+echo '=============== SETUP FINISHED ==================='
+echo -e "Check logs:            ${CYAN}sudo journalctl -u $BINARY_NAME -f --no-hostname -o cat ${NC}"
+echo -e "Check synchronization: ${CYAN}$BINARY_NAME status 2>&1 | jq .SyncInfo.catching_up${NC}"
+echo -e "More commands:         ${CYAN}$GITHUB${NC}"
